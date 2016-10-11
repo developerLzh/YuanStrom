@@ -14,7 +14,6 @@ import okhttp3.OkHttpClient;
 public class MyApplication extends Application {
 
     private static MyApplication context;
-    public static OkHttpClient okHttpClient;
     public static SharedPreferences sharedPreferences;
     public static SharedPreferences.Editor editor;
 
@@ -29,13 +28,6 @@ public class MyApplication extends Application {
 
     public static MyApplication getInstance() {
         return context;
-    }
-
-    public OkHttpClient getOkHttpClient() {
-        if (okHttpClient == null) {
-            okHttpClient = RetrofitUtils.genericClient();
-        }
-        return okHttpClient;
     }
 
     public SharedPreferences getSharedPreferences() {

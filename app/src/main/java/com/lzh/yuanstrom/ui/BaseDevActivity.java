@@ -83,30 +83,30 @@ public class BaseDevActivity extends AppCompatActivity {
         //TODO
     }
 
-    protected void updateCloudDev(String jsonDevsList) {
-        FormBody.Builder bodyBuilder = new FormBody.Builder();
-        bodyBuilder.add("preferences_json", jsonDevsList);
-        FormBody formBody = bodyBuilder.build();
-        Request request = new Request.Builder()
-                .url("http://user.hekr.me/user/setPreferences.json?accesskey=" + MyApplication.getInstance().getSharedPreferences().getString("USERACCESSKEY", ""))
-                .post(formBody)
-                .build();
-        MyApplication.getInstance().getOkHttpClient().newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                ToastUtil.showMessage(BaseDevActivity.this, getResources().getString(R.string.upload_dev_failed));
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (response.code() != 200) {
-                    onFailure(null, null);
-                    return;
-                }
-                Log.e("updateCloudDev", "upload success");
-            }
-        });
-    }
+//    protected void updateCloudDev(String jsonDevsList) {
+//        FormBody.Builder bodyBuilder = new FormBody.Builder();
+//        bodyBuilder.add("preferences_json", jsonDevsList);
+//        FormBody formBody = bodyBuilder.build();
+//        Request request = new Request.Builder()
+//                .url("http://user.hekr.me/user/setPreferences.json?accesskey=" + MyApplication.getInstance().getSharedPreferences().getString("USERACCESSKEY", ""))
+//                .post(formBody)
+//                .build();
+//        MyApplication.getInstance().getOkHttpClient().newCall(request).enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                ToastUtil.showMessage(BaseDevActivity.this, getResources().getString(R.string.upload_dev_failed));
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                if (response.code() != 200) {
+//                    onFailure(null, null);
+//                    return;
+//                }
+//                Log.e("updateCloudDev", "upload success");
+//            }
+//        });
+//    }
 
     public void writeMessage(String message){
         String fullCommand = "(@devcall " + "\"" + tid + "\" (uartdata \"" + message + "\") (lambda x x))\n";

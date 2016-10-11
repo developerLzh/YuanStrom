@@ -135,7 +135,7 @@ public class DevActivity extends BaseDevActivity {
                         devRecycler.setVisibility(View.VISIBLE);
                         adapter.setBeans(deviceInfos);
                         /**    同步云端数据       **/
-                        updateCloudDev(DeviceInfo.list2Json(DeviceInfo.findALll()));
+//                        updateCloudDev(DeviceInfo.list2Json(DeviceInfo.findALll()));
                         break;
                     case 1://加载中
                         devRecycler.setVisibility(View.GONE);
@@ -203,63 +203,63 @@ public class DevActivity extends BaseDevActivity {
         devSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getDevFromCloud();
+//                getDevFromCloud();
             }
         });
-        getDevFromCloud();
+//        getDevFromCloud();
     }
 
-    public void getDevFromCloud() {
-        deviceInfos.clear();
-        Request request = new Request.Builder()
-                .url("http://user.hekr.me/user/getPreferences.json?accesskey=" + MyApplication.getInstance().getSharedPreferences().getString("USERACCESSKEY", ""))
-                .get()
-                .build();
-        handler.sendEmptyMessage(0);
-        MyApplication.getInstance().getOkHttpClient().newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                ToastUtil.showMessage(DevActivity.this, getResources().getString(R.string.get_dev_from_cloud_failed));
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (response.code() != 200) {
-                    onFailure(null, null);
-                    return;
-                }
-                String data = response.body().string();
-                if (StringUtils.isNotBlank(data)) {
-                    try {
-                        JSONObject jbroot = new JSONObject(data.replace("\\", "").replace("\"[", "[").replace("]\"", "]"));
-                        JSONArray ja = jbroot.getJSONArray("preferences_json");
-                        DeviceInfo.deletAll();
-                        for (int i = 0; i < ja.length(); i++) {
-                            JSONObject jb = ja.optJSONObject(i);
-                            String a = jb.toString();
-                            Gson gson = new Gson();
-                            DeviceInfo deviceInfo = gson.fromJson(a, DeviceInfo.class);
-                            deviceInfo.isChecked = false;//未对比
-                            deviceInfo.saveNew();
-                        }
-                        generateCateList();
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-                if (MyApplication.getInstance().isLoginSuccessed()) {
-                    String getAllDevComm = "(@devcall " + "\"" + gateWayBean.tid + "\" (uartdata \"" + "48070200100060" + "\") (lambda x x))\n";
-                    Intent intent = new Intent(DevActivity.this, SocketService.class);
-                    intent.setPackage(getPackageName());
-                    intent.setAction(SocketService.WRITE_MESSAGE);
-                    intent.putExtra("msg", getAllDevComm);
-                    startService(intent);
-                    //获取网关下所有设备信息
-                }
-            }
-        });
-    }
+//    public void getDevFromCloud() {
+//        deviceInfos.clear();
+//        Request request = new Request.Builder()
+//                .url("http://user.hekr.me/user/getPreferences.json?accesskey=" + MyApplication.getInstance().getSharedPreferences().getString("USERACCESSKEY", ""))
+//                .get()
+//                .build();
+//        handler.sendEmptyMessage(0);
+//        MyApplication.getInstance().getOkHttpClient().newCall(request).enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                ToastUtil.showMessage(DevActivity.this, getResources().getString(R.string.get_dev_from_cloud_failed));
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                if (response.code() != 200) {
+//                    onFailure(null, null);
+//                    return;
+//                }
+//                String data = response.body().string();
+//                if (StringUtils.isNotBlank(data)) {
+//                    try {
+//                        JSONObject jbroot = new JSONObject(data.replace("\\", "").replace("\"[", "[").replace("]\"", "]"));
+//                        JSONArray ja = jbroot.getJSONArray("preferences_json");
+//                        DeviceInfo.deletAll();
+//                        for (int i = 0; i < ja.length(); i++) {
+//                            JSONObject jb = ja.optJSONObject(i);
+//                            String a = jb.toString();
+//                            Gson gson = new Gson();
+//                            DeviceInfo deviceInfo = gson.fromJson(a, DeviceInfo.class);
+//                            deviceInfo.isChecked = false;//未对比
+//                            deviceInfo.saveNew();
+//                        }
+//                        generateCateList();
+//
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                if (MyApplication.getInstance().isLoginSuccessed()) {
+//                    String getAllDevComm = "(@devcall " + "\"" + gateWayBean.tid + "\" (uartdata \"" + "48070200100060" + "\") (lambda x x))\n";
+//                    Intent intent = new Intent(DevActivity.this, SocketService.class);
+//                    intent.setPackage(getPackageName());
+//                    intent.setAction(SocketService.WRITE_MESSAGE);
+//                    intent.putExtra("msg", getAllDevComm);
+//                    startService(intent);
+//                    //获取网关下所有设备信息
+//                }
+//            }
+//        });
+//    }
 
     protected void detailData(String data, String gateWay) {
         //TODO 处理列表数据  以下逻辑可能有问题  先不管了

@@ -138,8 +138,8 @@ public class GateWayAct extends BaseActivity
     @Override
     protected void onResume() {
         super.onResume();
-        getKeyFromHerk();
-        getGateList();
+//        getKeyFromHerk();
+//        getGateList();
 //        getGateList2();
     }
 
@@ -154,7 +154,7 @@ public class GateWayAct extends BaseActivity
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getGateList();
+//                getGateList();
             }
         });
     }
@@ -238,104 +238,104 @@ public class GateWayAct extends BaseActivity
         GateWayAct.this.startActivity(i, transitionActivityOptions.toBundle());
     }
 
-    private void getKeyFromHerk() {
-        Map<String, String> map = new HashMap<>();
-        map.put("_csrftoken_", "abcd");
-        map.put("type", "DEVICE");
-        Request request = new Request.Builder().url(RetrofitUtils.BASE_URL + "token/generate.json?" + Utils.hashToGetParam(map)).get().build();
-        MyApplication.getInstance().getOkHttpClient().newCall(request).enqueue(new okhttp3.Callback() {
-            @Override
-            public void onFailure(okhttp3.Call call, IOException e) {
-                MyApplication.getInstance().getEditor().putString("DEVACCESSKEY", "").apply();
-                MyApplication.getInstance().getEditor().putString("uid", "").apply();
-                ToastUtil.showMessage(GateWayAct.this, "请求DEVACCESSKEY失败");
-            }
+//    private void getKeyFromHerk() {
+//        Map<String, String> map = new HashMap<>();
+//        map.put("_csrftoken_", "abcd");
+//        map.put("type", "DEVICE");
+//        Request request = new Request.Builder().url(RetrofitUtils.BASE_URL + "token/generate.json?" + Utils.hashToGetParam(map)).get().build();
+//        MyApplication.getInstance().getOkHttpClient().newCall(request).enqueue(new okhttp3.Callback() {
+//            @Override
+//            public void onFailure(okhttp3.Call call, IOException e) {
+//                MyApplication.getInstance().getEditor().putString("DEVACCESSKEY", "").apply();
+//                MyApplication.getInstance().getEditor().putString("uid", "").apply();
+//                ToastUtil.showMessage(GateWayAct.this, "请求DEVACCESSKEY失败");
+//            }
+//
+//            @Override
+//            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+//                if(response.code() != 200){
+//                    onFailure(null,null);
+//                    return;
+//                }
+//                String data = response.body().string();
+//                if (StringUtils.isNotBlank(data)) {
+//                    DeviceKeyBean deviceKeyBean = new Gson().fromJson(data, DeviceKeyBean.class);
+//                    MyApplication.getInstance().getEditor().putString("DEVACCESSKEY", deviceKeyBean.token).apply();
+//                    MyApplication.getInstance().getEditor().putString("uid", deviceKeyBean.uid).apply();
+//                }
+//            }
+//        });
+//
+//        map.put("type", "USER");
+//        request = new Request.Builder().url(RetrofitUtils.BASE_URL + "token/generate.json?" + Utils.hashToGetParam(map)).get().build();
+//        MyApplication.getInstance().getOkHttpClient().newCall(request).enqueue(new okhttp3.Callback() {
+//            @Override
+//            public void onFailure(okhttp3.Call call, IOException e) {
+//                ToastUtil.showMessage(GateWayAct.this, "请求USERACCESSKEY失败");
+//            }
+//
+//            @Override
+//            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+//                if(response.code() != 200){
+//                    onFailure(null,null);
+//                    return;
+//                }
+//                String data = response.body().string();
+//                if (StringUtils.isNotBlank(data)) {
+//                    try {
+//                        JSONObject jb = new JSONObject(data);
+//                        MyApplication.getInstance().getEditor().putString("USERACCESSKEY", jb.optString("token")).apply();
+//                    } catch (JSONException e) {
+//                        MyApplication.getInstance().getEditor().putString("USERACCESSKEY", "").apply();
+//                        ToastUtil.showMessage(GateWayAct.this, "解析USERACCESSKEY数据异常");
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        });
+//    }
 
-            @Override
-            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
-                if(response.code() != 200){
-                    onFailure(null,null);
-                    return;
-                }
-                String data = response.body().string();
-                if (StringUtils.isNotBlank(data)) {
-                    DeviceKeyBean deviceKeyBean = new Gson().fromJson(data, DeviceKeyBean.class);
-                    MyApplication.getInstance().getEditor().putString("DEVACCESSKEY", deviceKeyBean.token).apply();
-                    MyApplication.getInstance().getEditor().putString("uid", deviceKeyBean.uid).apply();
-                }
-            }
-        });
-
-        map.put("type", "USER");
-        request = new Request.Builder().url(RetrofitUtils.BASE_URL + "token/generate.json?" + Utils.hashToGetParam(map)).get().build();
-        MyApplication.getInstance().getOkHttpClient().newCall(request).enqueue(new okhttp3.Callback() {
-            @Override
-            public void onFailure(okhttp3.Call call, IOException e) {
-                ToastUtil.showMessage(GateWayAct.this, "请求USERACCESSKEY失败");
-            }
-
-            @Override
-            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
-                if(response.code() != 200){
-                    onFailure(null,null);
-                    return;
-                }
-                String data = response.body().string();
-                if (StringUtils.isNotBlank(data)) {
-                    try {
-                        JSONObject jb = new JSONObject(data);
-                        MyApplication.getInstance().getEditor().putString("USERACCESSKEY", jb.optString("token")).apply();
-                    } catch (JSONException e) {
-                        MyApplication.getInstance().getEditor().putString("USERACCESSKEY", "").apply();
-                        ToastUtil.showMessage(GateWayAct.this, "解析USERACCESSKEY数据异常");
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-    }
-
-    private void getGateList() {
-        handler.sendEmptyMessage(1);
-        Map<String, String> map = new HashMap<>();
-        map.put("_csrftoken_", "abcd");
-        Request request = new Request.Builder().url(RetrofitUtils.BASE_URL + "device/list.json?" + Utils.hashToGetParam(map)).get().build();
-        MyApplication.getInstance().getOkHttpClient().newCall(request).enqueue(new okhttp3.Callback() {
-            @Override
-            public void onFailure(okhttp3.Call call, IOException e) {
-                beans.clear();
-                ToastUtil.showMessage(GateWayAct.this, "加载GateWay列表失败");
-                handler.sendEmptyMessage(0);
-            }
-
-            @Override
-            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
-                String data = response.body().string();
-                Gson gson = new Gson();
-                try {
-                    JSONArray ja = new JSONArray(data);
-                    beans.clear();
-                    for (int i = 0; i < ja.length(); i++) {
-                        JSONObject jsonObject = (JSONObject) ja.get(i);
-                        String a = jsonObject.toString();
-                        GateWayBean bean = gson.fromJson(a, GateWayBean.class);
-                        beans.add(bean);
-                    }
-                    handler.sendEmptyMessage(0);
-                } catch (JSONException e) {
-                    ToastUtil.showMessage(GateWayAct.this, "解析数据异常");
-                    beans.clear();
-                    handler.sendEmptyMessage(0);
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
+//    private void getGateList() {
+//        handler.sendEmptyMessage(1);
+//        Map<String, String> map = new HashMap<>();
+//        map.put("_csrftoken_", "abcd");
+//        Request request = new Request.Builder().url(RetrofitUtils.BASE_URL + "device/list.json?" + Utils.hashToGetParam(map)).get().build();
+//        MyApplication.getInstance().getOkHttpClient().newCall(request).enqueue(new okhttp3.Callback() {
+//            @Override
+//            public void onFailure(okhttp3.Call call, IOException e) {
+//                beans.clear();
+//                ToastUtil.showMessage(GateWayAct.this, "加载GateWay列表失败");
+//                handler.sendEmptyMessage(0);
+//            }
+//
+//            @Override
+//            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+//                String data = response.body().string();
+//                Gson gson = new Gson();
+//                try {
+//                    JSONArray ja = new JSONArray(data);
+//                    beans.clear();
+//                    for (int i = 0; i < ja.length(); i++) {
+//                        JSONObject jsonObject = (JSONObject) ja.get(i);
+//                        String a = jsonObject.toString();
+//                        GateWayBean bean = gson.fromJson(a, GateWayBean.class);
+//                        beans.add(bean);
+//                    }
+//                    handler.sendEmptyMessage(0);
+//                } catch (JSONException e) {
+//                    ToastUtil.showMessage(GateWayAct.this, "解析数据异常");
+//                    beans.clear();
+//                    handler.sendEmptyMessage(0);
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//    }
 
     @Override
     protected void doHasNetWork() {
         super.doHasNetWork();
-        getGateList();
+//        getGateList();
     }
 
     @Override

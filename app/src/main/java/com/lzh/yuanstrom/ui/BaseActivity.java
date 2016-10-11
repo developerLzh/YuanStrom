@@ -16,11 +16,16 @@ import com.lzh.yuanstrom.utils.AppManager;
 import com.lzh.yuanstrom.utils.MySettingsHelper;
 import com.lzh.yuanstrom.utils.RetrofitUtils;
 
+import okhttp3.MediaType;
+
 /**
  * Created by Administrator on 2016/6/19.
  */
 public class BaseActivity extends AppCompatActivity {
     BroadcastReceiver connectionReceiver;
+
+    public static final MediaType TYPE_JSON = MediaType.parse("application/json; charset=utf-8");
+    public static final String pid = "00000000000";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

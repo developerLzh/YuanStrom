@@ -28,7 +28,7 @@
     <string name="get_dev_from_cloud_failed">从云端获取数据失败</string>
     <string name="upload_dev_failed">同步数据到云端失败</string>
 
-    <string name="login_account_hint">手机号/邮箱</string>
+    <string name="login_account_hint">手机号</string>
     <string name="login_psw_hint">密码</string>
 
     <string name="phone_no">手机号</string>
@@ -42,5 +42,24 @@
     <string name="weibo_login">微博登录</string>
 
     <string name="get_code">获取验证码</string>
+
+    <string name="response_error">请求无响应，错误编码：</string>
+    <string name="out_time">网络连接超时，请检查网络连接</string>
+    <string name="no_internet">网络连接失败，请检查网络连接</string>
+
+    <string name="parse_error">数据异常，解析失败</string>
+
+    <string name="wait">请稍候..</string>
+
+    <string name="please_phone">请输入手机号</string>
+    <string name="please_legal_phone">请输入合法手机号</string>
+
+    <string name="get_code_success">获取验证码成功</string>
+
+    <string name="yanzheng_code">验证码</string>
+
+    <string name="blank_account_or_psw">请填写手机号或密码</string>
+
+    <string name="blank_account_or_psw_or_code">请填写手机号、密码和验证码</string>
 
 </resources>
