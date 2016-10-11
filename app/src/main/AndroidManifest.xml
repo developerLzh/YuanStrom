@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.lzh.yuanstrom">
+
+    <!-- 这个权限用于进行网络定位-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 这个权限用于进行获取网络状态-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- 这个权限用于进行wifi组播-->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <!-- 这些权限用于进行二维码扫描-->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <!-- 这个权限用于进行配网时阻止屏幕休眠-->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- 这个权限用于获取wifi的获取权限-->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <!-- 用于读取手机当前的状态-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- 写入扩展存储，向扩展卡写入数据，用于写入用户数据-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+
+    <application
+        android:name=".MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".ui.SplashActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.FullScreen"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.DevActivity"
+            android:label="DevActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.GateWayAct"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.LoginWebActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.LampActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.ChazuoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.YaoKong2Activity"
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".ui.LoginActivity"
+            android:screenOrientation="portrait"/>
+
+        <service
+            android:name=".service.SocketService"
+            android:exported="false">
+            <intent-filter>
+
+                <action android:name="com.lzh.yuanstrom.OPEN_SOCKET" />
+                <action android:name="com.lzh.yuanstrom.CLOSE_SOCKET" />
+
+            </intent-filter>
+        </service>
+
+    </application>
+
+</manifest>

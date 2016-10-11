@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">YuanStrom</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_add">add_cate</string>
+
+    <string name="register">注册</string>
+    <string name="login">登录</string>
+
+    <string name="weibo">微博</string>
+
+    <string name="online">在线</string>
+    <string name="offline">离线</string>
+    <string name="conned">已连接</string>
+    <string name="lamp">灯</string>
+    <string name="chazuo">插座</string>
+    <string name="yaokong">遥控</string>
+    <string name="hongwai">红外</string>
+    <string name="menci">门窗感应器</string>
+    <string name="changjing">场景</string>
+    <string name="mianban">面板</string>
+    <string name="yaokong_2">遥控2</string>
+
+    <string name="auth_login">授权登录</string>
+    <string name="running">源极风正在运行中</string>
+    <string name="get_dev_from_cloud_failed">从云端获取数据失败</string>
+    <string name="upload_dev_failed">同步数据到云端失败</string>
+
+    <string name="login_account_hint">手机号/邮箱</string>
+    <string name="login_psw_hint">密码</string>
+
+    <string name="phone_no">手机号</string>
+    <string name="verification_code">验证码</string>
+
+    <string name="forget_psw">忘记密码?</string>
+
+    <string name="or_other_login">或第三方登录</string>
+
+    <string name="qq_login">QQ登录</string>
+    <string name="weibo_login">微博登录</string>
+
+    <string name="get_code">获取验证码</string>
+
+</resources>

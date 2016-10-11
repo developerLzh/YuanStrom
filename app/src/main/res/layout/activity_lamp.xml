@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/bar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+        </android.support.design.widget.AppBarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/bar_layout"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#88000000"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="tips:你可以拖动拖动条来调节灯的颜色哦，三原色比例自由搭配可以配出很多奇奇怪怪的颜色呢(๑•̀ㅂ•́)و✧"/>
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/lamp_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:background="@mipmap/lamp_off" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="18dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:text="red:"
+                    android:textColor="@color/red"
+                    android:textSize="20sp" />
+
+                <net.qiujuer.genius.ui.widget.SeekBar
+                    android:id="@+id/red_seekbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:gAllowTrackClickToDrag="true"
+                    app:gIndicator="auto"
+                    app:gIndicatorBackgroundColor="@color/red_500"
+
+                    app:gIndicatorSeparation="14dp"
+                    app:gIndicatorTextAppearance="@style/Genius.Widget.BalloonMarker.TextAppearance"
+                    app:gIndicatorTextPadding="2dp"
+                    app:gMax="10"
+                    app:gMin="1"
+
+                    app:gMirrorForRtl="true"
+                    app:gRippleColor="@color/red_500"
+                    app:gScrubberColor="@color/red_500"
+                    app:gScrubberStroke="4dp"
+                    app:gThumbColor="@color/red"
+                    app:gThumbSize="10dp"
+                    app:gTickSize="5dp"
+                    app:gTouchSize="12dp"
+                    app:gTrackColor="@color/grey_500"
+
+                    app:gTrackStroke="2dp"
+                    app:gValue="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:text="green:"
+                    android:textColor="@color/green"
+                    android:textSize="20sp" />
+
+                <net.qiujuer.genius.ui.widget.SeekBar
+                    android:id="@+id/green_seekbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:gAllowTrackClickToDrag="true"
+                    app:gIndicator="auto"
+                    app:gIndicatorBackgroundColor="@color/green_500"
+
+                    app:gIndicatorSeparation="14dp"
+                    app:gIndicatorTextAppearance="@style/Genius.Widget.BalloonMarker.TextAppearance"
+                    app:gIndicatorTextPadding="2dp"
+                    app:gMax="10"
+                    app:gMin="1"
+
+                    app:gMirrorForRtl="true"
+                    app:gRippleColor="@color/green_500"
+                    app:gScrubberColor="@color/green_500"
+                    app:gScrubberStroke="4dp"
+                    app:gThumbColor="@color/green"
+                    app:gThumbSize="10dp"
+                    app:gTickSize="5dp"
+                    app:gTouchSize="12dp"
+                    app:gTrackColor="@color/grey_500"
+
+                    app:gTrackStroke="2dp"
+                    app:gValue="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:text="blue:"
+                    android:textColor="@color/blue"
+                    android:textSize="20sp" />
+
+                <net.qiujuer.genius.ui.widget.SeekBar
+                    android:id="@+id/blue_seekbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:gAllowTrackClickToDrag="true"
+                    app:gIndicator="auto"
+                    app:gIndicatorBackgroundColor="@color/blue_500"
+
+                    app:gIndicatorSeparation="14dp"
+                    app:gIndicatorTextAppearance="@style/Genius.Widget.BalloonMarker.TextAppearance"
+                    app:gIndicatorTextPadding="2dp"
+                    app:gMax="10"
+                    app:gMin="1"
+
+                    app:gMirrorForRtl="true"
+                    app:gRippleColor="@color/blue_500"
+                    app:gScrubberColor="@color/blue_500"
+                    app:gScrubberStroke="4dp"
+                    app:gThumbColor="@color/blue"
+                    app:gThumbSize="10dp"
+                    app:gTickSize="5dp"
+                    app:gTouchSize="12dp"
+                    app:gTrackColor="@color/grey_500"
+
+                    app:gTrackStroke="2dp"
+                    app:gValue="1" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="0.0dp"
+                android:layout_weight="1" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+
+                <net.qiujuer.genius.ui.widget.Button
+                    android:id="@+id/turn_on"
+                    android:layout_width="0.0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/g_button_background"
+                    android:text="ON"
+                    android:textColor="@color/white"
+                    app:gTouchColor="@color/black_alpha_224"
+                    app:gTouchCornerRadius="@dimen/lay_12"
+                    app:gTouchCornerRadiusBL="@dimen/lay_16"
+                    app:gTouchCornerRadiusBR="@dimen/lay_16"
+                    app:gTouchCornerRadiusTL="@dimen/lay_16"
+                    app:gTouchCornerRadiusTR="@dimen/lay_16"
+                    app:gTouchDurationRate="0.7"
+                    app:gTouchEffect="auto" />
+
+                <net.qiujuer.genius.ui.widget.Button
+                    android:id="@+id/turn_off"
+                    android:layout_width="0.0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:background="@color/material_blue_grey_800"
+                    android:text="OFF"
+                    android:textColor="@color/white"
+                    app:gTouchColor="@color/black_alpha_224"
+                    app:gTouchCornerRadius="@dimen/lay_12"
+                    app:gTouchCornerRadiusBL="@dimen/lay_16"
+                    app:gTouchCornerRadiusBR="@dimen/lay_16"
+                    app:gTouchCornerRadiusTL="@dimen/lay_16"
+                    app:gTouchCornerRadiusTR="@dimen/lay_16"
+                    app:gTouchDurationRate="0.7"
+                    app:gTouchEffect="auto" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>
