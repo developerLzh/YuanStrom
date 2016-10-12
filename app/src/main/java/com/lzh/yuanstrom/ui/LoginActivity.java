@@ -1,5 +1,6 @@
 package com.lzh.yuanstrom.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -27,6 +28,7 @@ import com.lzh.yuanstrom.httphelper.HttpResultFunc;
 import com.lzh.yuanstrom.httphelper.InternetSubscriber;
 import com.lzh.yuanstrom.httphelper.NormalSubscriber;
 import com.lzh.yuanstrom.httphelper.SubscriberListener;
+import com.lzh.yuanstrom.utils.AppManager;
 import com.lzh.yuanstrom.utils.RetrofitUtils;
 import com.lzh.yuanstrom.utils.StringUtils;
 
@@ -36,6 +38,9 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.hekr.hekrsdk.action.HekrUser;
+import me.hekr.hekrsdk.action.HekrUserAction;
+import me.hekr.hekrsdk.util.HekrCodeUtil;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -69,8 +74,9 @@ public class LoginActivity extends BaseActivity {
 
     @BindView(R.id.login_btn)
     Button loginBtn;
+
     @OnClick(R.id.login_btn)
-    void loginOrRegister(){
+    void loginOrRegister() {
         String phone = editAccount.getText().toString();
         String psw = editPsw.getText().toString();
         String code = editCode.getText().toString();
@@ -78,28 +84,28 @@ public class LoginActivity extends BaseActivity {
             Snackbar.make(home, getString(R.string.please_legal_phone), Snackbar.LENGTH_SHORT).show();
             return;
         }
-        if(type.equals("login")){
-            if(StringUtils.isBlank(phone) || StringUtils.isBlank(psw)){
-                Snackbar.make(home,getString(R.string.blank_account_or_psw),Snackbar.LENGTH_SHORT).show();
+        if (type.equals("login")) {
+            if (StringUtils.isBlank(phone) || StringUtils.isBlank(psw)) {
+                Snackbar.make(home, getString(R.string.blank_account_or_psw), Snackbar.LENGTH_SHORT).show();
                 return;
             }
-            LoginModel model = new LoginModel();
-            model.setPid(pid);
-            model.setPassword(psw);
-            model.setClientType("ANDROID");
-            model.setUsername(phone);
-            login(new Gson().toJson(model));
-        }else{
-            if(StringUtils.isBlank(phone) || StringUtils.isBlank(psw) || StringUtils.isBlank(code)){
-                Snackbar.make(home,getString(R.string.blank_account_or_psw_or_code),Snackbar.LENGTH_SHORT).show();
+            login(phone, psw);
+        } else {
+            if (StringUtils.isBlank(phone) || StringUtils.isBlank(psw) || StringUtils.isBlank(code)) {
+                Snackbar.make(home, getString(R.string.blank_account_or_psw_or_code), Snackbar.LENGTH_SHORT).show();
                 return;
             }
-            checkVerifyCode(phone,code,psw);
+            checkVerifyCode(phone, code, psw);
         }
     }
 
     @BindView(R.id.forget_psw)
     TextView forgetPsw;
+
+    @OnClick(R.id.forget_psw)
+    void forgetPsw() {
+
+    }
 
     @BindView(R.id.login_qq)
     LinearLayout loginQQ;
@@ -130,7 +136,7 @@ public class LoginActivity extends BaseActivity {
             Snackbar.make(home, getString(R.string.please_legal_phone), Snackbar.LENGTH_SHORT).show();
             return;
         }
-        code(phone);
+        herkGetCode(phone);
     }
 
     private void startCountDown() {
@@ -162,6 +168,8 @@ public class LoginActivity extends BaseActivity {
         setContentView(R.layout.activity_login);
 
         ButterKnife.bind(this);
+
+        hekrUserAction = HekrUserAction.getInstance(this);
 
         type = getIntent().getStringExtra("tag");
 
@@ -195,7 +203,6 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.login_menu, menu);
         return true;
     }
@@ -229,93 +236,78 @@ public class LoginActivity extends BaseActivity {
         return true;
     }
 
-    private void login(String jsonStr) {
-        RetrofitUtils.createRxApi(ApiService.class, RetrofitUtils.HEKR_NEW)
-                .login(RequestBody.create(TYPE_JSON, jsonStr))
-                .map(new HttpResultFunc<LoginResult>())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new InternetSubscriber<>(this, true, false, new SubscriberListener<LoginResult>() {
-                    @Override
-                    public void onNext(LoginResult result) {
-                        Log.e("data", result.getAccess_token());
-                    }
-
-                }));
-    }
-
-    private void register(String jsonStr) {
-        RetrofitUtils.createRxApi(ApiService.class, RetrofitUtils.HEKR_NEW)
-                .register(RequestBody.create(TYPE_JSON, jsonStr))
-                .map(new HttpResultFunc<RegisterResult>())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new InternetSubscriber<>(this, true, false, new SubscriberListener<RegisterResult>() {
-                    @Override
-                    public void onNext(RegisterResult result) {
-
-                    }
-
-                }));
-    }
-
-    private void checkVerifyCode(final String phone, String code, final String password) {
-        RetrofitUtils.createRxApi(ApiService.class, RetrofitUtils.HEKR_NEW)
-                .checkVerifyCode(phone, code)
-                .map(new HttpResultFunc<CheckVerifyResult>())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new InternetSubscriber<>(this, true, false, new SubscriberListener<CheckVerifyResult>() {
-                    @Override
-                    public void onNext(CheckVerifyResult result) {
-                        RegisterModel model = new RegisterModel();
-                        model.setPassword(password);
-                        model.setToken(result.token);
-                        model.setPhoneNumber(phone);
-                        model.setPid(pid);
-                        String jsonStr = new Gson().toJson(model);
-                        register(jsonStr);
-                    }
-
-                }));
-    }
-
-    private void code(String phone) {
-//        GetCodeModel model = new GetCodeModel();
-//        model.setPhoneNumber(phone);
-//        model.setPid(pid);
-//        model.setType("register");
-//        RequestBody requestBody = RequestBody.create(TYPE_JSON,new Gson().toJson(model));
-        RetrofitUtils.createRxApi(ApiService.class, RetrofitUtils.HEKR_NEW)
-                .getVerifyCode(phone,pid,"register")
-                .map(new HttpResultFunc<>())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new InternetSubscriber<>(this, true, false, new SubscriberListener<Object>() {
-                    @Override
-                    public void onNext(Object o) {
-                        getCode.setEnabled(false);
-                        Snackbar.make(home, getString(R.string.get_code_success), Snackbar.LENGTH_SHORT).show();
-                        startCountDown();
-                    }
-                }));
-    }
-
-    private void okGetCode(String phone){
-        final Request request = new Request.Builder()
-                .url("http://uaa.openapi.hekr.me/sms/getVerifyCode?phoneNumber="+phone+"&pid=00000000000&type=register")
-                .build();
-        new OkHttpClient().newCall(request).enqueue(new Callback() {
+    private void login(String userName, String password) {
+        showLoading(false);
+        hekrUserAction.login(userName, password, new HekrUser.LoginListener() {
             @Override
-            public void onFailure(Call call, IOException e) {
-
+            public void loginSuccess(String s) {
+                Log.e("login", "login success");
+                hideLoading();
+                Intent intent = new Intent(LoginActivity.this, GateWayAct.class);
+                startActivity(intent);
+                AppManager.getAppManager().finishActivity(SplashActivity.class);
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                Log.e("response",response.code()+"");
-                Log.e("response",response.body().string()+"");
+            public void loginFail(int i) {
+                hideLoading();
+                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(i), Snackbar.LENGTH_SHORT).show();
             }
         });
     }
+
+    private void checkVerifyCode(final String phone, final String code, final String password) {
+        showLoading(false);
+        hekrUserAction.checkVerifyCode(phone, code, new HekrUser.CheckVerifyCodeListener() {
+            @Override
+            public void checkVerifyCodeSuccess(String s, String s1, String s2, String s3) {
+                String token = s2;
+                String phone = s;
+                register(phone, password, token);
+            }
+
+            @Override
+            public void checkVerifyCodeFail(int i) {
+                hideLoading();
+                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(i), Snackbar.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void register(final String phone, final String psw, String token) {
+        hekrUserAction.registerByPhone(phone, psw, token, new HekrUser.RegisterListener() {
+            @Override
+            public void registerSuccess(String s) {
+                hideLoading();
+                login(phone, psw);
+                Log.e("register", "register success");
+            }
+
+            @Override
+            public void registerFail(int i) {
+                hideLoading();
+                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(i), Snackbar.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void herkGetCode(String phone) {
+        showLoading(false);
+        hekrUserAction.getVerifyCode(phone, 1, new HekrUser.GetVerifyCodeListener() {
+            @Override
+            public void getVerifyCodeSuccess() {
+                hideLoading();
+                getCode.setEnabled(false);
+                Snackbar.make(home, getString(R.string.get_code_success), Snackbar.LENGTH_SHORT).show();
+                startCountDown();
+            }
+
+            @Override
+            public void getVerifyCodeFail(int i) {
+                hideLoading();
+                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(i), Snackbar.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }

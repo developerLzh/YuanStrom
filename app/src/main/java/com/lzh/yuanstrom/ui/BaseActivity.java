@@ -2,6 +2,7 @@ package com.lzh.yuanstrom.ui;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
@@ -12,10 +13,13 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import com.lzh.yuanstrom.R;
 import com.lzh.yuanstrom.utils.AppManager;
 import com.lzh.yuanstrom.utils.MySettingsHelper;
 import com.lzh.yuanstrom.utils.RetrofitUtils;
+import com.lzh.yuanstrom.widget.ProgressHUD;
 
+import me.hekr.hekrsdk.action.HekrUserAction;
 import okhttp3.MediaType;
 
 /**
@@ -27,9 +31,14 @@ public class BaseActivity extends AppCompatActivity {
     public static final MediaType TYPE_JSON = MediaType.parse("application/json; charset=utf-8");
     public static final String pid = "00000000000";
 
+    protected ProgressHUD progressHUD;
+
+    protected HekrUserAction hekrUserAction;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        hekrUserAction = HekrUserAction.getInstance(this);
         AppManager.getAppManager().addActivity(this);
     }
 
@@ -49,6 +58,23 @@ public class BaseActivity extends AppCompatActivity {
     public void finish() {
         AppManager.getAppManager().finishActivity(this);
         super.finish();
+    }
+
+    protected void showLoading(boolean cancelable){
+        progressHUD = new ProgressHUD.Builder(this)
+                .setTitle("")
+                .setMessage(this.getString(R.string.wait))
+                .setCancelable(cancelable)
+                .create();
+        if (!progressHUD.isShowing()) {
+            progressHUD.show();
+        }
+    }
+
+    protected void hideLoading(){
+        if(null != progressHUD && progressHUD.isShowing()){
+            progressHUD.dismiss();
+        }
     }
 
     private void createReceiver() {
