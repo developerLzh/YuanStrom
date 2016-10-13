@@ -23,7 +23,7 @@ import me.hekr.hekrsdk.action.HekrUserAction;
 import okhttp3.MediaType;
 
 /**
- * Created by Administrator on 2016/6/19.
+ * Created by Vicent on 2016/6/19.
  */
 public class BaseActivity extends AppCompatActivity {
     BroadcastReceiver connectionReceiver;

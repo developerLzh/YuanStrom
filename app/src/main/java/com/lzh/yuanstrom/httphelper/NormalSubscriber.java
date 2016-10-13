@@ -5,7 +5,7 @@ import rx.Subscriber;
 import android.util.Log;
 
 /**
- * Created by Administrator on 2016/10/11.
+ * Created by Vicent on 2016/10/11.
  */
 
 public class NormalSubscriber<T> extends Subscriber<T> implements SubscriberListener<T> {

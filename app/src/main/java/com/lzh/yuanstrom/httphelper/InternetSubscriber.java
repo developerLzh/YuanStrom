@@ -17,7 +17,7 @@ import retrofit2.adapter.rxjava.HttpException;
 import rx.Subscriber;
 
 /**
- * Created by Administrator on 2016/9/26.
+ * Created by Vicent on 2016/9/26.
  */
 
 public class InternetSubscriber<T> extends Subscriber<T> implements ProgressDismissListener {

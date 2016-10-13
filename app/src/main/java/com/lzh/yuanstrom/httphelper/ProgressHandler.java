@@ -9,7 +9,7 @@ import com.lzh.yuanstrom.R;
 import com.lzh.yuanstrom.widget.ProgressHUD;
 
 /**
- * Created by Administrator on 2016/9/26.
+ * Created by Vicent on 2016/9/26.
  */
 
 public class ProgressHandler extends Handler {

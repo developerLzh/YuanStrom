@@ -1,7 +1,7 @@
 package com.lzh.yuanstrom.httphelper;
 
 /**
- * Created by Administrator on 2016/1/24.
+ * Created by Vicent on 2016/1/24.
  */
 public class Config {
 

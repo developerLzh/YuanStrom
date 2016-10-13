@@ -18,7 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by Administrator on 2016/5/9.
+ * Created by Vicent on 2016/5/9.
  */
 public class DevAdapter extends RecyclerView.Adapter<DevViewHolder> {
     private List<CardBean> beans;

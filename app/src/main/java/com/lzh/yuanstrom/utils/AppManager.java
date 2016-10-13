@@ -1,7 +1,7 @@
 package com.lzh.yuanstrom.utils;
 
 /**
- * Created by Administrator on 2016/8/20.
+ * Created by Vicent on 2016/8/20.
  */
 
 import android.app.Activity;

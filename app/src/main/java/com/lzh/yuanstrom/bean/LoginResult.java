@@ -1,7 +1,7 @@
 package com.lzh.yuanstrom.bean;
 
 /**
- * Created by Administrator on 2016/10/11.
+ * Created by Vicent on 2016/10/11.
  */
 
 public class LoginResult {

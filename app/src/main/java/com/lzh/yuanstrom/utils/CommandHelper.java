@@ -3,7 +3,7 @@ package com.lzh.yuanstrom.utils;
 import android.util.Log;
 
 /**
- * Created by Administrator on 2016/8/18.
+ * Created by Vicent on 2016/8/18.
  */
 public class CommandHelper {
     public String frameHeader;//帧头

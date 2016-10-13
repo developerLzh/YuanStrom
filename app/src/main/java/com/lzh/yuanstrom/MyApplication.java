@@ -10,7 +10,7 @@ import me.hekr.hekrsdk.util.HekrSDK;
 import okhttp3.OkHttpClient;
 
 /**
- * Created by Administrator on 2016/7/15.
+ * Created by Vicent on 2016/7/15.
  */
 public class MyApplication extends Application {
 

@@ -18,7 +18,7 @@ import com.lzh.yuanstrom.ui.GateWayAct;
 
 
 /**
- * Created by Administrator on 2016/5/9.
+ * Created by Vicent on 2016/5/9.
  */
 public class GateWayAdapter extends RecyclerView.Adapter<GateWayHolder> {
     private List<GateWayBean> beans;

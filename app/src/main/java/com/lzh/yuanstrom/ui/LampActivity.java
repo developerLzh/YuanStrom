@@ -21,7 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by Administrator on 2016/8/17.
+ * Created by Vicent on 2016/8/17.
  */
 public class LampActivity extends BaseDevActivity implements View.OnClickListener {
 

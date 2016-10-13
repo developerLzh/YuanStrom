@@ -38,6 +38,7 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.hekr.hekrsdk.HekrOAuthLoginActivity;
 import me.hekr.hekrsdk.action.HekrUser;
 import me.hekr.hekrsdk.action.HekrUserAction;
 import me.hekr.hekrsdk.util.HekrCodeUtil;
@@ -52,7 +53,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by Administrator on 2016/10/10.
+ * Created by Vicent on 2016/10/10.
  */
 
 public class LoginActivity extends BaseActivity {
@@ -110,8 +111,20 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.login_qq)
     LinearLayout loginQQ;
 
+    @OnClick(R.id.login_qq)
+    void loginQQ() {
+        Intent intent = new Intent(LoginActivity.this, HekrOAuthLoginActivity.class);
+        intent.putExtra(HekrOAuthLoginActivity.OAUTH_TYPE, HekrUserAction.OAUTH_QQ);
+        startActivityForResult(intent, HekrUserAction.OAUTH_QQ);
+    }
+
     @BindView(R.id.login_weibo)
     LinearLayout loginWeibo;
+    void loginWeibo(){
+        Intent intent3 = new Intent(LoginActivity.this, HekrOAuthLoginActivity.class);
+        intent3.putExtra(HekrOAuthLoginActivity.OAUTH_TYPE, HekrUserAction.OAUTH_SINA);
+        startActivityForResult(intent3, HekrUserAction.OAUTH_SINA);
+    }
 
     @BindView(R.id.get_code)
     Button getCode;

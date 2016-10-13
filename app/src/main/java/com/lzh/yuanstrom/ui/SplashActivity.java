@@ -17,7 +17,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Created by Administrator on 2016/6/19.
+ * Created by Vicent on 2016/6/19.
  */
 public class SplashActivity extends BaseActivity {
 
@@ -74,6 +74,7 @@ public class SplashActivity extends BaseActivity {
 
         setAnimation();
 
+        startActivity(new Intent(this,MainActivity.class));
     }
 
     private void setAnimation() {

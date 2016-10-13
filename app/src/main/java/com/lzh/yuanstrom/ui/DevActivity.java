@@ -50,7 +50,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 /**
- * Created by Administrator on 2016/5/9.
+ * Created by Vicent on 2016/5/9.
  */
 public class DevActivity extends BaseDevActivity {
 

@@ -26,7 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by Administrator on 2016/8/20.
+ * Created by Vicent on 2016/8/20.
  */
 public class LoginWebActivity extends BaseActivity {
 

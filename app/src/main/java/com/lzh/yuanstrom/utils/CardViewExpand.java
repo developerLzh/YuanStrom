@@ -12,7 +12,7 @@ import com.lzh.yuanstrom.adapter.DevAdapter2;
 import java.lang.reflect.Method;
 
 /**
- * Created by Administrator on 2016/6/17.
+ * Created by Vicent on 2016/6/17.
  */
 public class CardViewExpand {
     public static void expand(final View v, final DevAdapter2 adapter2) {

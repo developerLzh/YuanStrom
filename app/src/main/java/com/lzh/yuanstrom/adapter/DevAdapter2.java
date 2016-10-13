@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Administrator on 2016/6/19.
+ * Created by Vicent on 2016/6/19.
  */
 public class DevAdapter2 extends RecyclerView.Adapter {
 

@@ -32,7 +32,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Created by Administrator on 2016/8/23.
+ * Created by Vicent on 2016/8/23.
  */
 public class SocketService extends Service {
 

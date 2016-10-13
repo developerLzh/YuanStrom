@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -54,7 +55,7 @@ import me.hekr.hekrsdk.bean.DeviceBean;
 import okhttp3.Request;
 
 public class GateWayAct extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, AppBarLayout.OnOffsetChangedListener {
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
@@ -74,14 +75,14 @@ public class GateWayAct extends BaseActivity
     @BindView(R.id.swipe_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
-    @BindView(R.id.progressBar)
-    ProgressBar progressBar;
+//    @BindView(R.id.progressBar)
+//    ProgressBar progressBar;
 
     @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
 
-    @BindView(R.id.container)
-    RelativeLayout container;
+//    @BindView(R.id.bar_layout)
+//    AppBarLayout barLayout;
 
     private Handler handler;
 
@@ -123,7 +124,7 @@ public class GateWayAct extends BaseActivity
                     case 0:
                         mSwipeRefreshLayout.setRefreshing(false);
                         mRecyclerView.setVisibility(View.VISIBLE);
-                        progressBar.setVisibility(View.GONE);
+//                        progressBar.setVisibility(View.GONE);
                         adapter.setBeans(beans);
                         break;
                     case 1:
@@ -140,6 +141,7 @@ public class GateWayAct extends BaseActivity
     @Override
     protected void onResume() {
         super.onResume();
+//        barLayout.addOnOffsetChangedListener(this);
         hekrUserAction.getDevices(new HekrUser.GetDevicesListener() {
             @Override
             public void getDevicesSuccess(List<DeviceBean> list) {
@@ -153,18 +155,24 @@ public class GateWayAct extends BaseActivity
         });
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+//        barLayout.removeOnOffsetChangedListener(this);
+    }
+
     private void initRecyler() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setItemAnimator(new CustomItemAnimator());
         adapter = new GateWayAdapter(GateWayAct.this, R.layout.gateway_item, GateWayAct.this);
         mRecyclerView.setAdapter(adapter);
 
-        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.barColor));
+        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
         mSwipeRefreshLayout.setRefreshing(true);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-//                getGateList();
+                ToastUtil.showMessage(GateWayAct.this,"swipe_layout is refreshing");
             }
         });
     }
@@ -264,5 +272,10 @@ public class GateWayAct extends BaseActivity
                 startActivity(wifiSettingsIntent);
             }
         }).show();
+    }
+
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+        mSwipeRefreshLayout.setEnabled(verticalOffset == 0);
     }
 }

@@ -5,7 +5,7 @@ import android.content.res.TypedArray;
 import android.support.v7.widget.RecyclerView;
 
 /**
- * Created by Administrator on 2016/5/9.
+ * Created by Vicent on 2016/5/9.
  */
 public abstract class MyScrollListener extends RecyclerView.OnScrollListener {
 

@@ -15,7 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by Administrator on 2016/10/5.
+ * Created by Vicent on 2016/10/5.
  */
 
 public class YaoKong2Activity extends BaseDevActivity implements View.OnClickListener {

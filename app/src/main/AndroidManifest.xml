@@ -63,8 +63,14 @@
         <activity
             android:name=".ui.YaoKong2Activity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.MainActivity"
+            android:screenOrientation="portrait" />
 
         <activity android:name=".ui.LoginActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.HomeActivity"
             android:screenOrientation="portrait"/>
 
         <service

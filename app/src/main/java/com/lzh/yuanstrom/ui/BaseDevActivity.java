@@ -24,7 +24,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 /**
- * Created by Administrator on 2016/3/4.
+ * Created by Vicent on 2016/3/4.
  */
 public class BaseDevActivity extends AppCompatActivity {
 

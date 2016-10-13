@@ -21,7 +21,7 @@ import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
 /**
- * Created by Administrator on 2016/8/17.
+ * Created by Vicent on 2016/8/17.
  */
 public class ChazuoActivity extends BaseDevActivity {
 
