@@ -62,4 +62,9 @@
 
     <string name="blank_account_or_psw_or_code">请填写手机号、密码和验证码</string>
 
+    <string name="peiwang_suc">配网成功!</string>
+    <string name="peizhi_dev_suc">成功配置设备!</string>
+    <string name="peiwang_fal">配网失败!</string>
+
+    <string name="dev_no">设备数:</string>
 </resources>
