@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="tab_array">
+        <item>设备列表</item>
+        <item>按种类分组</item>
+        <item>情景模式</item>
+    </array>
+
+</resources>
