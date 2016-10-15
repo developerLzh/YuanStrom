@@ -114,7 +114,7 @@ public class LoginWebActivity extends BaseActivity {
                             db.execSQL("INSERT INTO settings VALUES('user_credential','" + cookieMap.get("u") + "');");
                         }
 
-                        Intent webToMain = new Intent(LoginWebActivity.this, GateWayAct.class);
+                        Intent webToMain = new Intent(LoginWebActivity.this, MainActivity.class);
                         startActivity(webToMain);
                         AppManager.getAppManager().finishActivity(SplashActivity.class);
                         LoginWebActivity.this.finish();

@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,24 +16,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.lzh.yuanstrom.R;
-import com.lzh.yuanstrom.bean.CheckVerifyResult;
-import com.lzh.yuanstrom.bean.GetCodeModel;
-import com.lzh.yuanstrom.bean.LoginModel;
-import com.lzh.yuanstrom.bean.LoginResult;
-import com.lzh.yuanstrom.bean.RegisterModel;
-import com.lzh.yuanstrom.bean.RegisterResult;
-import com.lzh.yuanstrom.httphelper.ApiService;
-import com.lzh.yuanstrom.httphelper.HttpResultFunc;
-import com.lzh.yuanstrom.httphelper.InternetSubscriber;
 import com.lzh.yuanstrom.httphelper.NormalSubscriber;
 import com.lzh.yuanstrom.httphelper.SubscriberListener;
 import com.lzh.yuanstrom.utils.AppManager;
-import com.lzh.yuanstrom.utils.RetrofitUtils;
 import com.lzh.yuanstrom.utils.StringUtils;
+import com.lzh.yuanstrom.utils.ToastUtil;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -41,13 +31,9 @@ import butterknife.OnClick;
 import me.hekr.hekrsdk.HekrOAuthLoginActivity;
 import me.hekr.hekrsdk.action.HekrUser;
 import me.hekr.hekrsdk.action.HekrUserAction;
+import me.hekr.hekrsdk.bean.JWTBean;
+import me.hekr.hekrsdk.bean.MOAuthBean;
 import me.hekr.hekrsdk.util.HekrCodeUtil;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -105,7 +91,7 @@ public class LoginActivity extends BaseActivity {
 
     @OnClick(R.id.forget_psw)
     void forgetPsw() {
-
+        startActivity(new Intent(LoginActivity.this, ResetActivity.class));
     }
 
     @BindView(R.id.login_qq)
@@ -120,7 +106,9 @@ public class LoginActivity extends BaseActivity {
 
     @BindView(R.id.login_weibo)
     LinearLayout loginWeibo;
-    void loginWeibo(){
+
+    @OnClick(R.id.login_weibo)
+    void loginWeibo() {
         Intent intent3 = new Intent(LoginActivity.this, HekrOAuthLoginActivity.class);
         intent3.putExtra(HekrOAuthLoginActivity.OAUTH_TYPE, HekrUserAction.OAUTH_SINA);
         startActivityForResult(intent3, HekrUserAction.OAUTH_SINA);
@@ -188,6 +176,13 @@ public class LoginActivity extends BaseActivity {
 
         changeUiBytype(type);
 
+        String phone = getIntent().getStringExtra("phone");
+        String password = getIntent().getStringExtra("password");
+        if (StringUtils.isNotBlank(phone) && StringUtils.isNotBlank(password)) {
+            editAccount.setText(phone);
+            editPsw.setText(password);
+            login(phone, password);
+        }
     }
 
     private void changeUiBytype(String type) {
@@ -256,7 +251,7 @@ public class LoginActivity extends BaseActivity {
             public void loginSuccess(String s) {
                 Log.e("login", "login success");
                 hideLoading();
-                Intent intent = new Intent(LoginActivity.this, GateWayAct.class);
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
                 AppManager.getAppManager().finishActivity(SplashActivity.class);
             }
@@ -319,6 +314,62 @@ public class LoginActivity extends BaseActivity {
             public void getVerifyCodeFail(int i) {
                 hideLoading();
                 Snackbar.make(home, HekrCodeUtil.errorCode2Msg(i), Snackbar.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null) {
+            String certificate = data.getStringExtra(HekrOAuthLoginActivity.OAUTH_CODE);
+            if (!TextUtils.isEmpty(certificate)) {
+                loginOAuth(resultCode, certificate);
+            }
+        }
+    }
+
+    //移动端OAuth接口
+    private void loginOAuth(final int type, String certificate) {
+        //通过上一步拿到的certificate进行第三方登录
+        hekrUserAction.OAuthLogin(type, certificate, new HekrUser.MOAuthListener() {
+            @Override
+            public void mOAuthSuccess(MOAuthBean moAuthBean) {
+                //该OAuth账号还未和主账号绑定
+                createUserAndBind(type, moAuthBean.getBindToken());
+            }
+
+            @Override
+            public void mOAuthSuccess(JWTBean jwtBean) {
+                //该OAuth账号已经和主账号绑定
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
+            }
+
+            @Override
+            public void mOAuthFail(int errorCode) {
+                //失败
+                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(errorCode), Snackbar.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    //创建匿名帐号并且绑定
+    private void createUserAndBind(final int type, final String bindToken) {
+        showLoading(false);
+        hekrUserAction.createUserAndBind(type, bindToken, new HekrUser.CreateUserAndBindListener() {
+            @Override
+            public void createSuccess(String str) {
+                hideLoading();
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
+            }
+
+            @Override
+            public void createFail(int errorCode) {
+                //失败
+                hideLoading();
+                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(errorCode), Snackbar.LENGTH_SHORT).show();
             }
         });
     }
