@@ -20,6 +20,7 @@ import com.lzh.yuanstrom.utils.RetrofitUtils;
 import com.lzh.yuanstrom.widget.ProgressHUD;
 
 import me.hekr.hekrsdk.action.HekrUserAction;
+import me.hekr.hekrsdk.util.SpCache;
 import okhttp3.MediaType;
 
 /**
@@ -29,7 +30,7 @@ public class BaseActivity extends AppCompatActivity {
     BroadcastReceiver connectionReceiver;
 
     public static final MediaType TYPE_JSON = MediaType.parse("application/json; charset=utf-8");
-    public static final String pid = "00000000000";
+    public static final String pid = SpCache.getString("HEKR_PID", "");
 
     protected ProgressHUD progressHUD;
 

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by Vicent on 2016/8/11.
@@ -28,6 +29,17 @@ public class Utils {
         }
         paramStr = paramStr.substring(0, paramStr.length() - 1);
         return paramStr;
+    }
+
+    public static String random17() {
+        int min = 0;
+        int max = 9;
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 17; i++) {
+            sb.append(String.valueOf(random.nextInt(max) % (max - min + 1) + min));
+        }
+        return sb.toString();
     }
 
 }

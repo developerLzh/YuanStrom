@@ -95,4 +95,6 @@
 
     <string name="please_edit_phone">请输入你注册时填写的手机号</string>
 
+    <string name="please_img_code">请输入图形验证码</string>
+
 </resources>

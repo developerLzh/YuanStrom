@@ -1,39 +1,50 @@
 package com.lzh.yuanstrom.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.lzh.yuanstrom.R;
 import com.lzh.yuanstrom.httphelper.NormalSubscriber;
 import com.lzh.yuanstrom.httphelper.SubscriberListener;
 import com.lzh.yuanstrom.utils.AppManager;
 import com.lzh.yuanstrom.utils.StringUtils;
 import com.lzh.yuanstrom.utils.ToastUtil;
+import com.lzh.yuanstrom.utils.Utils;
 
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cz.msebera.android.httpclient.Header;
 import me.hekr.hekrsdk.HekrOAuthLoginActivity;
 import me.hekr.hekrsdk.action.HekrUser;
 import me.hekr.hekrsdk.action.HekrUserAction;
 import me.hekr.hekrsdk.bean.JWTBean;
 import me.hekr.hekrsdk.bean.MOAuthBean;
+import me.hekr.hekrsdk.util.BaseHttpUtil;
+import me.hekr.hekrsdk.util.ConstantsUtil;
 import me.hekr.hekrsdk.util.HekrCodeUtil;
+import me.hekr.hekrsdk.util.SpCache;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -299,9 +310,112 @@ public class LoginActivity extends BaseActivity {
         });
     }
 
-    private void herkGetCode(String phone) {
+    private void herkGetCode(final String phone) {
         showLoading(false);
-        hekrUserAction.getVerifyCode(phone, 1, new HekrUser.GetVerifyCodeListener() {
+
+       hekrUserAction.getVerifyCode(phone, 1, new HekrUser.GetVerifyCodeListener() {
+            @Override
+            public void getVerifyCodeSuccess() {
+                hideLoading();
+                getCode.setEnabled(false);
+                Snackbar.make(home, getString(R.string.get_code_success), Snackbar.LENGTH_SHORT).show();
+                startCountDown();
+            }
+
+            @Override
+            public void getVerifyCodeFail(int i) {
+                hideLoading();
+                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(i), Snackbar.LENGTH_SHORT).show();
+            }
+        });
+
+//        final String rid = Utils.random17();
+//        hekrUserAction.getImgCaptcha(rid, new HekrUser.GetImgCaptchaListener() {
+//            @Override
+//            public void getImgCaptchaSuccess(Bitmap bitmap) {
+//                hideLoading();
+//                showImgDialog(rid, phone, bitmap);
+//            }
+//
+//            @Override
+//            public void getImgCaptchaFail(int i) {
+//                hideLoading();
+//                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(i), Snackbar.LENGTH_SHORT).show();
+//            }
+//        });
+    }
+
+    public void getVerifyCode(String phoneNumber, int type, final HekrUser.GetVerifyCodeListener getVerifyCodeListener) {
+        String registerType;
+        switch(type) {
+            case 1:
+                registerType = "register";
+                break;
+            case 2:
+                registerType = "resetPassword";
+                break;
+            case 3:
+                registerType = "changePhone";
+                break;
+            default:
+                registerType = "register";
+        }
+
+        String url = TextUtils.concat(new CharSequence[]{ConstantsUtil.UrlUtil.BASE_UAA_URL, "sms/getVerifyCode?phoneNumber=", phoneNumber, "&pid=", pid, "&type=", registerType}).toString();
+
+        BaseHttpUtil.getData(LoginActivity.this, url, new AsyncHttpResponseHandler() {
+            public void onSuccess(int i, Header[] headers, byte[] bytes) {
+                getVerifyCodeListener.getVerifyCodeSuccess();
+            }
+
+            public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+                getVerifyCodeListener.getVerifyCodeFail(HekrCodeUtil.getErrorCode(i, bytes));
+            }
+        });
+    }
+
+    private void showImgDialog(final String rid, final String phone, Bitmap bitmap) {
+        View v = LayoutInflater.from(LoginActivity.this).inflate(R.layout.img_code_layout, null);
+        final EditText editText = (EditText) v.findViewById(R.id.edit_img_code);
+        ImageView imgCode = (ImageView) v.findViewById(R.id.code_img);
+        imgCode.setImageBitmap(bitmap);
+        AlertDialog dialog = new AlertDialog.Builder(LoginActivity.this)
+                .setTitle(getString(R.string.please_img_code))
+                .setView(v)
+                .setPositiveButton(getString(R.string.ensure), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, int which) {
+                        String code = editText.getText().toString();
+                        if (StringUtils.isBlank(code)) {
+                            ToastUtil.showMessage(LoginActivity.this, getString(R.string.please_img_code));
+                        } else {
+                            hekrUserAction.checkCaptcha(code, rid, new HekrUser.CheckCaptcha() {
+                                @Override
+                                public void checkCaptchaSuccess(String s) {
+                                    dialog.dismiss();
+                                    getMessageCode(phone, s);
+                                }
+
+                                @Override
+                                public void checkCaptchaFail(int i) {
+                                    Snackbar.make(home, HekrCodeUtil.errorCode2Msg(i), Snackbar.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    }
+                })
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create();
+        dialog.show();
+    }
+
+    private void getMessageCode(String phone, String s) {
+        showLoading(false);
+        hekrUserAction.getVerifyCode(phone, 1, s, new HekrUser.GetVerifyCodeListener() {
             @Override
             public void getVerifyCodeSuccess() {
                 hideLoading();
