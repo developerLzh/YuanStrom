@@ -90,6 +90,7 @@
 
     <string name="edit_all">请填写完整！</string>
     <string name="psw_not_same">确认密码与新密码不一致！</string>
+    <string name="psw_max_than_6">密码至少为6位数</string>
 
     <string name="change_psw_suc">修改密码成功</string>
 
@@ -97,4 +98,7 @@
 
     <string name="please_img_code">请输入图形验证码</string>
 
+    <string name="navi_hint">在这里可以打开侧滑栏，里面有很多神奇的东西哦(｡◕ˇ∀ˇ◕）</string>
+
+    <string name="fab_hint">点击这里，如果是在设备列表下可以添加设备，种类分组列表下可以添加分组，情景模式列表下可以添加情景模式(♥◠‿◠)ﾉ</string>
 </resources>

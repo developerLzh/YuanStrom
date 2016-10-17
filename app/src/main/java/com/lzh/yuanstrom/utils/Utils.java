@@ -1,6 +1,11 @@
 package com.lzh.yuanstrom.utils;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.design.widget.Snackbar;
+
+import com.lzh.yuanstrom.ui.LoginActivity;
+import com.lzh.yuanstrom.ui.SplashActivity;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -40,6 +45,13 @@ public class Utils {
             sb.append(String.valueOf(random.nextInt(max) % (max - min + 1) + min));
         }
         return sb.toString();
+    }
+
+    public static void handErrorCode(int i, Context context) {
+        if (i == 1) {
+            context.startActivity(new Intent(context, SplashActivity.class));
+            AppManager.getAppManager().finishAllActivity();
+        }
     }
 
 }

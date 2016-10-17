@@ -265,6 +265,7 @@ public class LoginActivity extends BaseActivity {
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
                 AppManager.getAppManager().finishActivity(SplashActivity.class);
+                finish();
             }
 
             @Override
@@ -313,63 +314,19 @@ public class LoginActivity extends BaseActivity {
     private void herkGetCode(final String phone) {
         showLoading(false);
 
-       hekrUserAction.getVerifyCode(phone, 1, new HekrUser.GetVerifyCodeListener() {
+
+        final String rid = Utils.random17();
+        hekrUserAction.getImgCaptcha(rid, new HekrUser.GetImgCaptchaListener() {
             @Override
-            public void getVerifyCodeSuccess() {
+            public void getImgCaptchaSuccess(Bitmap bitmap) {
                 hideLoading();
-                getCode.setEnabled(false);
-                Snackbar.make(home, getString(R.string.get_code_success), Snackbar.LENGTH_SHORT).show();
-                startCountDown();
+                showImgDialog(rid, phone, bitmap);
             }
 
             @Override
-            public void getVerifyCodeFail(int i) {
+            public void getImgCaptchaFail(int i) {
                 hideLoading();
                 Snackbar.make(home, HekrCodeUtil.errorCode2Msg(i), Snackbar.LENGTH_SHORT).show();
-            }
-        });
-
-//        final String rid = Utils.random17();
-//        hekrUserAction.getImgCaptcha(rid, new HekrUser.GetImgCaptchaListener() {
-//            @Override
-//            public void getImgCaptchaSuccess(Bitmap bitmap) {
-//                hideLoading();
-//                showImgDialog(rid, phone, bitmap);
-//            }
-//
-//            @Override
-//            public void getImgCaptchaFail(int i) {
-//                hideLoading();
-//                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(i), Snackbar.LENGTH_SHORT).show();
-//            }
-//        });
-    }
-
-    public void getVerifyCode(String phoneNumber, int type, final HekrUser.GetVerifyCodeListener getVerifyCodeListener) {
-        String registerType;
-        switch(type) {
-            case 1:
-                registerType = "register";
-                break;
-            case 2:
-                registerType = "resetPassword";
-                break;
-            case 3:
-                registerType = "changePhone";
-                break;
-            default:
-                registerType = "register";
-        }
-
-        String url = TextUtils.concat(new CharSequence[]{ConstantsUtil.UrlUtil.BASE_UAA_URL, "sms/getVerifyCode?phoneNumber=", phoneNumber, "&pid=", pid, "&type=", registerType}).toString();
-
-        BaseHttpUtil.getData(LoginActivity.this, url, new AsyncHttpResponseHandler() {
-            public void onSuccess(int i, Header[] headers, byte[] bytes) {
-                getVerifyCodeListener.getVerifyCodeSuccess();
-            }
-
-            public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
-                getVerifyCodeListener.getVerifyCodeFail(HekrCodeUtil.getErrorCode(i, bytes));
             }
         });
     }

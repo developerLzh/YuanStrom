@@ -2,7 +2,6 @@ package com.lzh.yuanstrom.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
@@ -11,10 +10,12 @@ import android.view.animation.Animation;
 import android.widget.LinearLayout;
 
 import com.lzh.yuanstrom.R;
+import com.lzh.yuanstrom.utils.StringUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.hekr.hekrsdk.util.SpCache;
 
 /**
  * Created by Vicent on 2016/6/19.
@@ -28,42 +29,24 @@ public class SplashActivity extends BaseActivity {
     LinearLayout btnCon;
 
     @OnClick(R.id.register)
-    void register(){
-        Intent intent = new Intent(SplashActivity.this,LoginActivity.class);
-        intent.putExtra("tag","register");
+    void register() {
+        Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+        intent.putExtra("tag", "register");
         startActivity(intent);
     }
 
     @OnClick(R.id.login)
-    void login(){
-        Intent intent = new Intent(SplashActivity.this,LoginActivity.class);
-        intent.putExtra("tag","login");
+    void login() {
+        Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+        intent.putExtra("tag", "login");
         startActivity(intent);
     }
-
-//    @OnClick(R.id.to_qq)
-//    void toQQ() {
-//        startLoginWeb("http://login.hekr.me/oauth.htm?type=qq");
-//    }
-//
-//    @OnClick(R.id.to_weibo)
-//    void toWeibo() {
-//        startLoginWeb("http://login.hekr.me/oauth.htm?type=weibo");
-//    }
-//
-//    @OnClick(R.id.to_twitter)
-//    void toTwitter() {
-//        startLoginWeb("http://login.smartmatrix.mx/oauth.htm?type=tw");
-//    }
-//
-//    @OnClick(R.id.to_google)
-//    void toGoogle() {
-//        startLoginWeb("http://login.smartmatrix.mx/oauth.htm?type=g");
-//    }
 
     private AlphaAnimation alphaAnimation;
 
     private AlphaAnimation btnAnimation;
+
+    private String refresheToken;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,14 +54,15 @@ public class SplashActivity extends BaseActivity {
         setContentView(R.layout.activity_splash);
 
         ButterKnife.bind(this);
-
+        refresheToken = SpCache.getString("refresh_TOKEN", "");
+        if (StringUtils.isNotBlank(refresheToken)) {
+            hekrUserAction.refresh_token();
+        }
         setAnimation();
-
-        startActivity(new Intent(this,MainActivity.class));
     }
 
     private void setAnimation() {
-        alphaAnimation = new AlphaAnimation(0.0f,1.0f);
+        alphaAnimation = new AlphaAnimation(0.0f, 1.0f);
         alphaAnimation.setDuration(2000);
         alphaAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -88,9 +72,14 @@ public class SplashActivity extends BaseActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                Log.e("tag","animation finish");
-                btnCon.setVisibility(View.VISIBLE);
-                btnCon.setAnimation(btnAnimation);
+                Log.e("tag", "animation finish");
+                refresheToken = SpCache.getString("refresh_TOKEN", "");
+                if (StringUtils.isBlank(refresheToken)) {
+                    btnCon.setVisibility(View.VISIBLE);
+                    btnCon.setAnimation(btnAnimation);
+                } else {
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                }
             }
 
             @Override
@@ -100,44 +89,8 @@ public class SplashActivity extends BaseActivity {
         });
         homeBg.setAnimation(alphaAnimation);
 
-        btnAnimation = new AlphaAnimation(0.0f,1.0f);
+        btnAnimation = new AlphaAnimation(0.0f, 1.0f);
         btnAnimation.setDuration(1000);
     }
-
-//    private void startLoginWeb(String url) {
-//        Intent intoLoginWeb = new Intent();
-//        intoLoginWeb.putExtra("url",url);
-//        intoLoginWeb.setClass(SplashActivity.this, LoginWebActivity.class);
-//        startActivity(intoLoginWeb);
-//    }
-//
-//    private void initData(){
-//
-//        AssetsDatabaseManager.initManager(getApplication());
-//        AssetsDatabaseManager mg = AssetsDatabaseManager.getManager();
-//        SQLiteDatabase db = mg.getDatabase("db");
-//
-//        Cursor cursor = null;
-//        try {
-//            cursor = db.rawQuery("select setting_value from settings where setting_key=?",
-//                    new String[]{"user_credential"});
-//
-//            if (cursor.moveToNext())
-//            {
-//                Intent intoMain = new Intent(SplashActivity.this,GateWayAct.class);
-//                startActivity(intoMain);
-//                SplashActivity.this.finish();
-//            }
-//            else{
-//                Log.i("TAG","游标移动失败！");
-//            }
-//        }catch (Exception keye){
-//            Log.d(SplashActivity.class.getSimpleName(),"Login从数据库查询key异常："+keye.getMessage());
-//        }finally {
-//            if(cursor!=null) {
-//                cursor.close();
-//            }
-//        }
-//    }
 
 }

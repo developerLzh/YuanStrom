@@ -22,21 +22,28 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.lzh.yuanstrom.R;
-import com.lzh.yuanstrom.adapter.FirstPageAdapter;
 import com.lzh.yuanstrom.adapter.TabPagerAdapter;
 import com.lzh.yuanstrom.utils.StringUtils;
 import com.lzh.yuanstrom.utils.ToastUtil;
+import com.lzh.yuanstrom.utils.Utils;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import co.mobiwise.materialintro.animation.MaterialIntroListener;
+import co.mobiwise.materialintro.shape.Focus;
+import co.mobiwise.materialintro.shape.FocusGravity;
+import co.mobiwise.materialintro.view.MaterialIntroView;
 import me.hekr.hekrsdk.action.HekrUser;
 import me.hekr.hekrsdk.bean.DeviceBean;
 import me.hekr.hekrsdk.util.HekrCodeUtil;
 import me.hekr.hekrsdk.util.SpCache;
+
+import java.util.ArrayList;
 
 /**
  * Created by Vicent on 2016/10/12.
@@ -88,6 +95,38 @@ public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetC
                 startActivity(new Intent(MainActivity.this, ConfigActivity.class));
             }
         });
+
+        ImageButton imgBtn = null;
+        for (int i = 0; i < toolbar.getChildCount(); i++) {
+            View v = toolbar.getChildAt(i);
+            if (v instanceof ImageButton) {
+                imgBtn = (ImageButton) v;
+                break;
+            }
+        }
+        showGuide(imgBtn, getString(R.string.navi_hint), new MaterialIntroListener() {
+            @Override
+            public void onUserClicked(String s) {
+                showGuide(fab, getString(R.string.fab_hint), null, "fab_btn");
+            }
+        }, "nav_btn");
+    }
+
+    private void showGuide(View v, String guideStr, MaterialIntroListener listener, String useageId) {
+        new MaterialIntroView.Builder(this)
+                .enableDotAnimation(true)
+                .enableIcon(false)
+                .setFocusGravity(FocusGravity.CENTER)
+                .setFocusType(Focus.MINIMUM)
+                .setDelayMillis(500)
+                .enableFadeAnimation(true)
+                .performClick(false)
+                .setInfoText(guideStr)
+                .setTarget(v)
+                .dismissOnTouch(true)
+                .setListener(listener)
+                .setUsageId(useageId) //THIS SHOULD BE UNIQUE ID
+                .show();
     }
 
     private void initViewPager() {
@@ -161,7 +200,7 @@ public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetC
 
             @Override
             public void getDevicesFail(int i) {
-
+                Utils.handErrorCode(i,context);
             }
         });
     }
@@ -225,7 +264,6 @@ public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetC
                         mDrawerLayout.closeDrawers();
                         if (menuItem.getItemId() == R.id.change_psw) {
                             showPswDialog();
-                            Snackbar.make(coordinatorLayout, "change_psw", Snackbar.LENGTH_SHORT).show();
                         }
                         return true;
                     }
@@ -254,10 +292,16 @@ public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetC
                                 ToastUtil.showMessage(MainActivity.this, getString(R.string.psw_not_same));
                                 return;
                             } else {
+                                if (newStr.length() < 6) {
+                                    ToastUtil.showMessage(MainActivity.this, getString(R.string.psw_max_than_6));
+                                    return;
+                                }
                                 dialog.dismiss();
+                                showLoading(false);
                                 hekrUserAction.changePassword(newStr, oldStr, new HekrUser.ChangePwdListener() {
                                     @Override
                                     public void changeSuccess() {
+                                        hideLoading();
                                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                                         intent.putExtra("tag", "login");
                                         intent.putExtra("phone", SpCache.getString("HEKR_USER_NAME", ""));
@@ -269,6 +313,8 @@ public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetC
 
                                     @Override
                                     public void changeFail(int i) {
+                                        hideLoading();
+                                        Utils.handErrorCode(i,context);
                                         Snackbar.make(coordinatorLayout, HekrCodeUtil.errorCode2Msg(i), Snackbar.LENGTH_SHORT).show();
                                     }
                                 });
