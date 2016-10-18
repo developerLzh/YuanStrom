@@ -156,6 +156,12 @@ public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getDevices();
+    }
+
     private void initToolbar() {
         if (toolbar != null) {
             toolbar.setTitle(getString(R.string.app_name));
@@ -195,7 +201,7 @@ public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         hekrUserAction.getDevices(new HekrUser.GetDevicesListener() {
             @Override
             public void getDevicesSuccess(List<DeviceBean> list) {
-
+                
             }
 
             @Override

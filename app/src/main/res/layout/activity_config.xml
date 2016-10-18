@@ -99,4 +99,10 @@
         android:textColor="#ffffff"
         android:text="提交" />
 
+    <TextView
+        android:id="@+id/device_info"
+        android:textSize="12sp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </LinearLayout>

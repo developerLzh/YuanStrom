@@ -42,6 +42,9 @@ public class ConfigActivity extends AppCompatActivity implements View.OnClickLis
     @BindView(R.id.device_connect_btn)
     Button connect;
 
+    @BindView(R.id.device_info)
+    TextView deviceInfoTxt;
+
     private BroadcastReceiver connectionReceiver;
     private SmartConfig smartConfig;
     private ProgressDialog progressDialog;
@@ -96,6 +99,7 @@ public class ConfigActivity extends AppCompatActivity implements View.OnClickLis
             //只有newDeviceBean中属性bindResultCode值为0才算真正将该设备绑定到了自己账号下
             @Override
             public void getNewDevice(NewDeviceBean newDeviceBean) {
+                deviceInfoTxt.setText(newDeviceBean.toString());
                 if (newDeviceBean.getBindResultCode() == 0) {
                     //绑定成功的设备信息
                     isSuccess.set(true);
