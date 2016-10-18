@@ -9,12 +9,13 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.lzh.yuanstrom.R;
-import com.lzh.yuanstrom.bean.GroupBean;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
 import java.util.List;
 import java.util.ArrayList;
+
+import me.hekr.hekrsdk.bean.GroupBean;
 
 /**
  * Created by Administrator on 2016/10/13.
@@ -46,9 +47,9 @@ public class SecondPageAdapter extends RecyclerView.Adapter<SecondPageAdapter.Vi
     public void onBindViewHolder(final ViewHolder holder, int position) {
         if (groups.size() != 0) {
             GroupBean groupBean = groups.get(position);
-            holder.title.setText(groupBean.groupName);
-            holder.subTitle.setText(context.getString(R.string.dev_no) + groupBean.devices.size());
-            holder.gridView.setAdapter(new GridAdapter(context, groupBean.devices));
+            holder.title.setText(groupBean.getGroupName());
+            holder.subTitle.setText(context.getString(R.string.dev_no) + groupBean.getDeviceList().size());
+            holder.gridView.setAdapter(new GridAdapter(context, groupBean.getDeviceList()));
             holder.rootView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -12,6 +12,7 @@ import com.lzh.yuanstrom.R;
 import java.util.List;
 
 import me.hekr.hekrsdk.bean.DeviceBean;
+import me.hekr.hekrsdk.bean.GroupBean;
 
 /**
  * Created by Administrator on 2016/10/13.
@@ -21,9 +22,9 @@ public class GridAdapter extends BaseAdapter{
 
     private Context context;
 
-    private List<DeviceBean> devices;
+    private List<GroupBean.DeviceLis> devices;
 
-    public GridAdapter(Context context, List<DeviceBean> devices) {
+    public GridAdapter(Context context, List<GroupBean.DeviceLis> devices) {
         this.context = context;
         this.devices = devices;
     }
@@ -57,8 +58,8 @@ public class GridAdapter extends BaseAdapter{
         }else{
             holder = (ViewHolder) convertView.getTag();
         }
-        DeviceBean bean = devices.get(position);
-        holder.title.setText(bean.getDeviceName());
+        GroupBean.DeviceLis bean = devices.get(position);
+        holder.title.setText(bean.getDevTid());
 //        if(bean.isOnline()){
 //            holder.subTitle.setText(context.getString(R.string.online));
 //        }else{

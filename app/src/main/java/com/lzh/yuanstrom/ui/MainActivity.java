@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.litesuits.android.log.Log;
 import com.lzh.yuanstrom.R;
 import com.lzh.yuanstrom.adapter.TabPagerAdapter;
 import com.lzh.yuanstrom.utils.StringUtils;
@@ -48,7 +49,7 @@ import java.util.ArrayList;
 /**
  * Created by Vicent on 2016/10/12.
  */
-public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetChangedListener {
+public class MainActivity extends BaseActivity {
 
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
@@ -142,16 +143,19 @@ public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetC
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 mViewPager.setCurrentItem(tab.getPosition());
+                PageFragment pageFragment = mAdapter.getFragment(tab.getPosition());
+                pageFragment.onRefresh();
+                Log.e("Tab","onTabSelected");
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
+                Log.e("Tab","onTabUnselected");
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
+                Log.e("Tab","onTabReselected");
             }
         });
     }
@@ -159,7 +163,11 @@ public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetC
     @Override
     protected void onResume() {
         super.onResume();
-        getDevices();
+        PageFragment pageFragment = mAdapter.getFragment(tabLayout.getSelectedTabPosition());
+        if(pageFragment != null){
+            Log.e("pageNo","--->"+pageFragment.mPage);
+            pageFragment.onRefresh();
+        }
     }
 
     private void initToolbar() {
@@ -180,12 +188,10 @@ public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetC
     @Override
     public void onStart() {
         super.onStart();
-        appBarLayout.addOnOffsetChangedListener(this);
     }
 
     @Override
     protected void onStop() {
-        appBarLayout.removeOnOffsetChangedListener(this);
         super.onStop();
     }
 
@@ -193,51 +199,6 @@ public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetC
     protected void onDestroy() {
         mAdapter.destroy();
         super.onDestroy();
-    }
-
-    int index = 0;
-
-    private void getDevices() {
-        hekrUserAction.getDevices(new HekrUser.GetDevicesListener() {
-            @Override
-            public void getDevicesSuccess(List<DeviceBean> list) {
-                
-            }
-
-            @Override
-            public void getDevicesFail(int i) {
-                Utils.handErrorCode(i,context);
-            }
-        });
-    }
-
-    /**
-     * @param appBarLayout
-     * @param i            barLayout偏移量
-     */
-    @Override
-    public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
-        index = i;
-    }
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        final int action = MotionEventCompat.getActionMasked(ev);
-        switch (action) {
-            case MotionEvent.ACTION_DOWN:
-            case MotionEvent.ACTION_UP:
-            case MotionEvent.ACTION_CANCEL:
-                PageFragment pageFragment = mAdapter.getFragment(mViewPager.getCurrentItem());
-                if (pageFragment != null) {
-                    if (index == 0) {
-                        pageFragment.setSwipeToRefreshEnabled(true);
-                    } else {
-                        pageFragment.setSwipeToRefreshEnabled(false);
-                    }
-                }
-                break;
-        }
-        return super.dispatchTouchEvent(ev);
     }
 
     @Override
@@ -303,7 +264,7 @@ public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetC
                                     return;
                                 }
                                 dialog.dismiss();
-                                showLoading(false);
+                                showLoading(true);
                                 hekrUserAction.changePassword(newStr, oldStr, new HekrUser.ChangePwdListener() {
                                     @Override
                                     public void changeSuccess() {

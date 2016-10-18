@@ -256,7 +256,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void login(String userName, String password) {
-        showLoading(false);
+        showLoading(true);
         hekrUserAction.login(userName, password, new HekrUser.LoginListener() {
             @Override
             public void loginSuccess(String s) {
@@ -277,7 +277,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void checkVerifyCode(final String phone, final String code, final String password) {
-        showLoading(false);
+        showLoading(true);
         hekrUserAction.checkVerifyCode(phone, code, new HekrUser.CheckVerifyCodeListener() {
             @Override
             public void checkVerifyCodeSuccess(String s, String s1, String s2, String s3) {
@@ -312,7 +312,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void herkGetCode(final String phone) {
-        showLoading(false);
+        showLoading(true);
 
 
         final String rid = Utils.random17();
@@ -371,7 +371,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void getMessageCode(String phone, String s) {
-        showLoading(false);
+        showLoading(true);
         hekrUserAction.getVerifyCode(phone, 1, s, new HekrUser.GetVerifyCodeListener() {
             @Override
             public void getVerifyCodeSuccess() {
@@ -427,7 +427,7 @@ public class LoginActivity extends BaseActivity {
 
     //创建匿名帐号并且绑定
     private void createUserAndBind(final int type, final String bindToken) {
-        showLoading(false);
+        showLoading(true);
         hekrUserAction.createUserAndBind(type, bindToken, new HekrUser.CreateUserAndBindListener() {
             @Override
             public void createSuccess(String str) {

@@ -35,7 +35,7 @@ public class ProgressHandler extends Handler {
         progressHUD = new ProgressHUD.Builder(context)
                 .setTitle("")
                 .setMessage(context.getString(R.string.wait))
-                .setCancelable(cancelable)
+                .setTouchOnOutSide(cancelable)
                 .setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {

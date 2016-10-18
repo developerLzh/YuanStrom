@@ -66,7 +66,7 @@ public class ResetActivity extends BaseActivity {
     }
 
     private void herkGetCode(String phone) {
-        showLoading(false);
+        showLoading(true);
         hekrUserAction.getVerifyCode(phone, 2, new HekrUser.GetVerifyCodeListener() {
             @Override
             public void getVerifyCodeSuccess() {
@@ -104,7 +104,7 @@ public class ResetActivity extends BaseActivity {
     }
 
     private void resetPsw(final String phone, String code, final String psw) {
-        showLoading(false);
+        showLoading(true);
         hekrUserAction.resetPwd(phone, code, psw, new HekrUser.ResetPwdListener() {
             @Override
             public void resetSuccess() {

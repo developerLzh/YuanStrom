@@ -86,7 +86,7 @@ public class ProgressHUD extends Dialog {
             return this;
         }
 
-        public Builder setCancelable(boolean cancelable) {
+        public Builder setTouchOnOutSide(boolean cancelable) {
             this.cancelable = cancelable;
             return this;
         }
@@ -103,7 +103,7 @@ public class ProgressHUD extends Dialog {
                 TextView txt = (TextView) dialog.findViewById(R.id.message);
                 txt.setText(message);
             }
-            dialog.setCancelable(cancelable);
+            dialog.setCanceledOnTouchOutside(cancelable);
             dialog.setOnDismissListener(dismissListener);
             dialog.getWindow().getAttributes().gravity = Gravity.CENTER;
             WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();

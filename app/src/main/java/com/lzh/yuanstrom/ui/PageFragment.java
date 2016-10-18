@@ -1,7 +1,6 @@
 package com.lzh.yuanstrom.ui;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,24 +9,52 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.lzh.yuanstrom.R;
 import com.lzh.yuanstrom.adapter.FirstPageAdapter;
 import com.lzh.yuanstrom.adapter.SecondPageAdapter;
-import com.lzh.yuanstrom.bean.GroupBean;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import me.hekr.hekrsdk.action.HekrUser;
+import me.hekr.hekrsdk.action.HekrUserAction;
 import me.hekr.hekrsdk.bean.DeviceBean;
+import me.hekr.hekrsdk.bean.GroupBean;
+import me.hekr.hekrsdk.util.HekrCodeUtil;
 
 /**
  * Created by chris.black on 6/11/15.
  */
-public class PageFragment extends Fragment {
+public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     public static final String ARG_PAGE = "ARG_PAGE";
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-    private int mPage;
+
+     int mPage;
+
+    FirstPageAdapter firstPageAdapter;
+    SecondPageAdapter secondPageAdapter;
+
+    HekrUserAction hekrUserAction;
+
+    @BindView(R.id.contentView)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+
+    @BindView(R.id.empty_con)
+    LinearLayout emptyCon;
+
+    @BindView(R.id.hint_txt)
+    TextView hintTxt;
+
+    @BindView(R.id.reload)
+    Button reload;
+
+    @BindView(R.id.recycler)
+    RecyclerView recyclerView;
 
     public static PageFragment create(int page) {
         Bundle args = new Bundle();
@@ -40,6 +67,7 @@ public class PageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        hekrUserAction = HekrUserAction.getInstance(getActivity());
         mPage = getArguments().getInt(ARG_PAGE);
     }
 
@@ -48,66 +76,35 @@ public class PageFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_page, container, false);
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler);
-
-        List<GroupBean> groups = new ArrayList<>();
-        List<DeviceBean> devices = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            DeviceBean device = new DeviceBean();
-            device.setDeviceName("设备" + i);
-            if (i % 2 == 0) {
-                device.setOnline(true);
-            } else {
-                device.setOnline(false);
-            }
-            device.setCid("cid" + i);
-            devices.add(device);
-        }
-
-        for (int i = 1; i <= 4; i++) {
-            GroupBean group = new GroupBean();
-            group.groupName = "种类" + i;
-            group.devices = new ArrayList<>();
-            for (int i1 = 1; i1 <= 5; i1++) {
-                int index = i*i1;
-                if(index == 20){
-                    index = 0;
-                }
-                group.devices.add(devices.get(index));
-            }
-            groups.add(group);
-        }
+        ButterKnife.bind(this, view);
 
         if (mPage == 1) {
-            GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2,LinearLayoutManager.VERTICAL,false);
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false);
             recyclerView.setLayoutManager(gridLayoutManager);
-            FirstPageAdapter adapter = new FirstPageAdapter(mPage, getActivity());
-            recyclerView.setAdapter(adapter);
-
-            adapter.setDevices(devices);
+            firstPageAdapter = new FirstPageAdapter(mPage, getActivity());
+            recyclerView.setAdapter(firstPageAdapter);
         } else if (mPage == 2) {
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-            SecondPageAdapter adapter = new SecondPageAdapter(getActivity());
-            recyclerView.setAdapter(adapter);
-
-            adapter.setGroups(groups);
+            secondPageAdapter = new SecondPageAdapter(getActivity());
+            recyclerView.setAdapter(secondPageAdapter);
         }
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.contentView);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+
+        reload.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onRefresh() {
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mSwipeRefreshLayout.setRefreshing(false);
-                    }
-                }, 1000);
+            public void onClick(View v) {
+                emptyCon.setVisibility(View.GONE);
+                mSwipeRefreshLayout.setVisibility(View.VISIBLE);
+                onRefresh();
             }
         });
-        mSwipeRefreshLayout.setEnabled(false);
+
+        if(mPage == 1){
+            onRefresh();
+        }
+
         return view;
     }
 
@@ -116,14 +113,9 @@ public class PageFragment extends Fragment {
         super.onPause();
         if (mSwipeRefreshLayout != null) {
             mSwipeRefreshLayout.setRefreshing(false);
-            mSwipeRefreshLayout.setEnabled(false);
             mSwipeRefreshLayout.destroyDrawingCache();
             mSwipeRefreshLayout.clearAnimation();
         }
-    }
-
-    public void setSwipeToRefreshEnabled(boolean enabled) {
-        mSwipeRefreshLayout.setEnabled(enabled);
     }
 
     /**
@@ -132,5 +124,76 @@ public class PageFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onRefresh() {
+        mSwipeRefreshLayout.setRefreshing(true);
+        if (mPage == 1) {
+            getDevices();
+        } else if (mPage == 2) {
+            getGroup();
+        }
+    }
+
+    public void getDevices() {
+        hekrUserAction.getDevices(new HekrUser.GetDevicesListener() {
+            @Override
+            public void getDevicesSuccess(List<DeviceBean> list) {
+                mSwipeRefreshLayout.setRefreshing(false);
+                if (null != list && list.size() > 0) {
+                    mSwipeRefreshLayout.setVisibility(View.VISIBLE);
+                    emptyCon.setVisibility(View.GONE);
+                    firstPageAdapter.setDevices(list);
+                } else {
+                    mSwipeRefreshLayout.setVisibility(View.GONE);
+                    emptyCon.setVisibility(View.VISIBLE);
+                    hintTxt.setText(getString(R.string.no_device));
+                    firstPageAdapter.setDevices(new ArrayList<DeviceBean>());
+                }
+            }
+
+            @Override
+            public void getDevicesFail(int i) {
+                mSwipeRefreshLayout.setRefreshing(false);
+                mSwipeRefreshLayout.setVisibility(View.GONE);
+                emptyCon.setVisibility(View.VISIBLE);
+                hintTxt.setText(getString(R.string.load_failed) + HekrCodeUtil.errorCode2Msg(i));
+                firstPageAdapter.setDevices(new ArrayList<DeviceBean>());
+            }
+        });
+    }
+
+    public void getGroup() {
+        hekrUserAction.getGroup(new HekrUser.GetGroupListener() {
+            @Override
+            public void getGroupSuccess(List<GroupBean> list) {
+                mSwipeRefreshLayout.setRefreshing(false);
+                if (null != list && list.size() > 0) {
+                    mSwipeRefreshLayout.setVisibility(View.VISIBLE);
+                    emptyCon.setVisibility(View.GONE);
+                    secondPageAdapter.setGroups(list);
+                } else {
+                    mSwipeRefreshLayout.setVisibility(View.GONE);
+                    emptyCon.setVisibility(View.VISIBLE);
+                    hintTxt.setText(getString(R.string.no_group));
+                    secondPageAdapter.setGroups(new ArrayList<GroupBean>());
+                }
+            }
+
+            @Override
+            public void getGroupFail(int i) {
+                mSwipeRefreshLayout.setRefreshing(false);
+                mSwipeRefreshLayout.setVisibility(View.GONE);
+                emptyCon.setVisibility(View.VISIBLE);
+                hintTxt.setText(getString(R.string.load_failed) + HekrCodeUtil.errorCode2Msg(i));
+                secondPageAdapter.setGroups(new ArrayList<GroupBean>());
+            }
+        });
     }
 }

@@ -38,7 +38,7 @@ public class FirstPageAdapter extends RecyclerView.Adapter<FirstPageAdapter.View
 
     @Override
     public int getItemCount() {
-        return 20;
+        return devices.size();
     }
 
     @Override

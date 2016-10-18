@@ -79,6 +79,7 @@ public class SplashActivity extends BaseActivity {
                     btnCon.setAnimation(btnAnimation);
                 } else {
                     startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                    finish();
                 }
             }
 

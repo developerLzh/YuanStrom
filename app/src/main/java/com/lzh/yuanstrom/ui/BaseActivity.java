@@ -49,7 +49,7 @@ public class BaseActivity extends AppCompatActivity {
         progressHUD = new ProgressHUD.Builder(this)
                 .setTitle("")
                 .setMessage(this.getString(R.string.wait))
-                .setCancelable(true)//全部设置成可取消
+                .setTouchOnOutSide(cancelable)//全部设置成可取消
                 .create();
         if (!progressHUD.isShowing()) {
             progressHUD.show();

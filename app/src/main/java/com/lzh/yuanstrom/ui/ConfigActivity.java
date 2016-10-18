@@ -1,6 +1,5 @@
 package com.lzh.yuanstrom.ui;
 
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,8 +10,9 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -30,7 +30,7 @@ import butterknife.ButterKnife;
 import me.hekr.hekrsdk.bean.NewDeviceBean;
 import me.hekr.hekrsdk.util.SmartConfig;
 
-public class ConfigActivity extends AppCompatActivity implements View.OnClickListener {
+public class ConfigActivity extends BaseActivity implements View.OnClickListener {
 
     //private static final String TAG = "ConfigActivity";
     @BindView(R.id.ssid)
@@ -45,9 +45,11 @@ public class ConfigActivity extends AppCompatActivity implements View.OnClickLis
     @BindView(R.id.device_info)
     TextView deviceInfoTxt;
 
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
     private BroadcastReceiver connectionReceiver;
     private SmartConfig smartConfig;
-    private ProgressDialog progressDialog;
     //示例demo逻辑跳转处理flag可自行根据逻辑修改
     private AtomicBoolean isSuccess = new AtomicBoolean(false);
 
@@ -56,18 +58,24 @@ public class ConfigActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_config);
         ButterKnife.bind(this);
+        initBar();
         initView();
         initData();
     }
 
+    private void initBar() {
+        toolbar.setTitle(getString(R.string.add_device));
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConfigActivity.this.onBackPressed();
+            }
+        });
+    }
+
     private void initView() {
-        ssid = (TextView) findViewById(R.id.ssid);
-        pwd_input = (EditText) findViewById(R.id.pwd_input);
-
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("正在配网...");
-        progressDialog.setCanceledOnTouchOutside(false);
-
         if (connect != null) {
             connect.setOnClickListener(this);
         }
@@ -130,9 +138,7 @@ public class ConfigActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void cancelProgressDialog() {
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
+        hideLoading();
     }
 
     /**
@@ -193,7 +199,7 @@ public class ConfigActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.device_connect_btn:
                 if (!TextUtils.isEmpty(pwd_input.getText().toString().trim())) {
                     if (!isFinishing()) {
-                        progressDialog.show();
+                        showLoading(false);
                         config();
                     }
                 } else {
@@ -205,7 +211,7 @@ public class ConfigActivity extends AppCompatActivity implements View.OnClickLis
                         public void onClick(DialogInterface dialog, int which) {
                             if (netWorkCheck()) {
                                 if (!isFinishing()) {
-                                    progressDialog.show();
+                                    showLoading(false);
                                     config();
                                 }
                             } else {
