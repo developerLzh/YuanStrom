@@ -79,7 +79,7 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         ButterKnife.bind(this, view);
 
         if (mPage == 1) {
-            GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false);
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3, LinearLayoutManager.VERTICAL, false);
             recyclerView.setLayoutManager(gridLayoutManager);
             firstPageAdapter = new FirstPageAdapter(mPage, getActivity());
             recyclerView.setAdapter(firstPageAdapter);

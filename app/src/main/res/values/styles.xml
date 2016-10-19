@@ -93,5 +93,7 @@
     </style>
 
 
+    <style name="commonListItemStyle">
+    </style>
 
 </resources>

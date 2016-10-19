@@ -115,4 +115,11 @@
     <string name="reload">重新加载</string>
 
     <string name="load_failed">加载失败，</string>
+
+    <string name="start_create_group">创建群组</string>
+
+    <string name="inout_group_name">输入群组名</string>
+
+    <string name="not_added_list">待选设备：</string>
+    <string name="added_list">已选设备：</string>
 </resources>

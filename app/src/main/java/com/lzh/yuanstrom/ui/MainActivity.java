@@ -27,6 +27,7 @@ import android.widget.ImageButton;
 import com.litesuits.android.log.Log;
 import com.lzh.yuanstrom.R;
 import com.lzh.yuanstrom.adapter.TabPagerAdapter;
+import com.lzh.yuanstrom.common.ExampleDataProvider;
 import com.lzh.yuanstrom.utils.StringUtils;
 import com.lzh.yuanstrom.utils.ToastUtil;
 import com.lzh.yuanstrom.utils.Utils;
@@ -41,8 +42,11 @@ import co.mobiwise.materialintro.shape.FocusGravity;
 import co.mobiwise.materialintro.view.MaterialIntroView;
 import me.hekr.hekrsdk.action.HekrUser;
 import me.hekr.hekrsdk.bean.DeviceBean;
+import me.hekr.hekrsdk.bean.TranslateBean;
 import me.hekr.hekrsdk.util.HekrCodeUtil;
 import me.hekr.hekrsdk.util.SpCache;
+
+import java.util.LinkedList;
 
 import java.util.ArrayList;
 
@@ -90,13 +94,6 @@ public class MainActivity extends BaseActivity {
 
         setupDrawerContent(navigationView);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, ConfigActivity.class));
-            }
-        });
-
         ImageButton imgBtn = null;
         for (int i = 0; i < toolbar.getChildCount(); i++) {
             View v = toolbar.getChildAt(i);
@@ -111,6 +108,34 @@ public class MainActivity extends BaseActivity {
                 showGuide(fab, getString(R.string.fab_hint), null, "fab_btn");
             }
         }, "nav_btn");
+
+        fabClick();
+    }
+
+    private void fabClick() {
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (tabLayout.getSelectedTabPosition() == 0 || tabLayout.getSelectedTabPosition() == -1) {
+                    startActivity(new Intent(context, ConfigActivity.class));
+                } else if (tabLayout.getSelectedTabPosition() == 1) {
+                    List<DeviceBean> beans = new LinkedList<>();
+                    for (int i = 0; i < 20; i++) {
+                        DeviceBean bean = new DeviceBean();
+                        TranslateBean translate = new TranslateBean();
+                        translate.setZh_CN("种类" + i);
+                        bean.setCategoryName(translate);
+                        bean.setDevTid("asdjaoidjaiod+" + i);
+                        bean.setLogo("logo" + i);
+                        bean.setDeviceName("名字" + i);
+                        beans.add(bean);
+                    }
+                    Intent intent = new Intent(context, CreateGroupActivity.class);
+                    intent.putExtra("provider", new ExampleDataProvider(beans));
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
     private void showGuide(View v, String guideStr, MaterialIntroListener listener, String useageId) {
@@ -145,17 +170,17 @@ public class MainActivity extends BaseActivity {
                 mViewPager.setCurrentItem(tab.getPosition());
                 PageFragment pageFragment = mAdapter.getFragment(tab.getPosition());
                 pageFragment.onRefresh();
-                Log.e("Tab","onTabSelected");
+                Log.e("Tab", "onTabSelected");
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                Log.e("Tab","onTabUnselected");
+                Log.e("Tab", "onTabUnselected");
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                Log.e("Tab","onTabReselected");
+                Log.e("Tab", "onTabReselected");
             }
         });
     }
@@ -164,8 +189,8 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         PageFragment pageFragment = mAdapter.getFragment(tabLayout.getSelectedTabPosition());
-        if(pageFragment != null){
-            Log.e("pageNo","--->"+pageFragment.mPage);
+        if (pageFragment != null) {
+            Log.e("pageNo", "--->" + pageFragment.mPage);
             pageFragment.onRefresh();
         }
     }
@@ -281,7 +306,7 @@ public class MainActivity extends BaseActivity {
                                     @Override
                                     public void changeFail(int i) {
                                         hideLoading();
-                                        Utils.handErrorCode(i,context);
+                                        Utils.handErrorCode(i, context);
                                         Snackbar.make(coordinatorLayout, HekrCodeUtil.errorCode2Msg(i), Snackbar.LENGTH_SHORT).show();
                                     }
                                 });
