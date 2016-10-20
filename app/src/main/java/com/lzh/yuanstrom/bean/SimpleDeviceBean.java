@@ -20,6 +20,8 @@ public class SimpleDeviceBean extends AbstractDataProvider.Data implements Seria
 
     public String devName;
 
+    public String ctrlKey;
+
     private boolean pinned;
 
     private int viewType;

@@ -52,6 +52,7 @@ public class ExampleDataProvider extends AbstractDataProvider{
             simpleDeviceBean.devCate = bean.getCategoryName().getZh_CN();
             simpleDeviceBean.devTid = bean.getDevTid();
             simpleDeviceBean.devName = bean.getDeviceName();
+            simpleDeviceBean.ctrlKey = bean.getCtrlKey();
             simpleDeviceBean.setViewType(0);
             simpleDeviceBean.setPinned(false);
             mData.add(simpleDeviceBean);

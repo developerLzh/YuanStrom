@@ -7,15 +7,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class SqliteHelper extends SQLiteOpenHelper {
 
-	public static final String BLANK = " ";
-
-	public static final String COMMA = ",";
-
-	public static final String DB_DIR = "databases";
-
 	public static final String DB_NAME = "data.db";
 
-	private static final int VERSION = 1;
+	private static final int VERSION = 2;
 
 	private StringBuffer sqlBuf;
 
@@ -61,30 +55,27 @@ public class SqliteHelper extends SQLiteOpenHelper {
 	}
 
 	public void onCreate(SQLiteDatabase db) {
-		createDevInfoTable(db);
+		createProfileInfoTable(db);
+		createCmdInfoTable(db);
 	}
 
-	private void createDevInfoTable(SQLiteDatabase db) {
-		sqlBuf.append("CREATE TABLE ").append("t_devinfo").append(" (")
-				.append("key_id").append(" INTEGER PRIMARY KEY AUTOINCREMENT, ")
-				.append("devCategory").append(" ").append("TEXT").append(",")
-				.append("devName").append(" ").append("TEXT").append(",")
-				.append("gateWaySerialNumber").append(" ").append("TEXT").append(",")
-				.append("devShortAddr").append(" ").append("TEXT").append(",")
-				.append("state").append(" ").append("INTEGER").append(",")
-				.append("isChecked").append(" ").append("INTEGER").append(",")
-				.append("hongWaiShortAddr").append(" ").append("TEXT").append(",")
-				.append("menciShortAddr").append(" ").append("TEXT").append(",")
-				.append("hongwaiEffect").append(" ").append("INTEGER").append(",")
+	private void createProfileInfoTable(SQLiteDatabase db) {
+		sqlBuf.append("CREATE TABLE ").append("t_profile_info").append(" (")
+				.append("profileId").append(" INTEGER PRIMARY KEY AUTOINCREMENT, ")
+//				.append("profileName").append(" ").append("TEXT").append(",")
 
-				.append("anjianShortAddr").append(" ").append("TEXT").append(",")
-				.append("isAddLeft").append(" ").append("INTEGER").append(",")
-				.append("isAddRight").append(" ").append("INTEGER").append(",")
-				.append("anjianLeftEffect").append(" ").append("INTEGER").append(",")
-				.append("anjianRightEffect").append(" ").append("INTEGER").append(",")
-
-				.append("menciEffect").append(" ").append("INTEGER")
+				.append("profileName").append(" ").append("TEXT")
 				.append(");");
+		execCreateTableSQL(db);
+	}
+
+	private void createCmdInfoTable(SQLiteDatabase db){
+		sqlBuf.append("CREATE TABLE ").append("t_cmd_info").append(" (")
+				.append("cmdId").append(" INTEGER PRIMARY KEY AUTOINCREMENT, ")
+				.append("devTid").append(" ").append("TEXT").append(",")
+				.append("ctrlKey").append(" ").append("TEXT").append(",")
+				.append("cmdContent").append(" ").append("TEXT").append(",")
+				.append("profileId").append(" ").append("INTEGER").append(");");
 		execCreateTableSQL(db);
 	}
 
@@ -97,18 +88,14 @@ public class SqliteHelper extends SQLiteOpenHelper {
 
 		int current = oldVersion;
 
-//		if (current == 1) {
-//
-//			db.execSQL("DROP TABLE IF EXISTS t_callPhoneInfo");
-//			createCallPhoneInfoTable(db);
-//
-//			db.execSQL("DROP TABLE IF EXISTS t_noticeInfo");
-//			createNoticeInfoTable(db);
-//
-//			db.execSQL("DROP TABLE IF EXISTS t_orderinfo");
-//			createOrderInfoTable(db);
-//
-//			current += 1;
-//		}
+		if (current == 1) {
+
+			db.execSQL("DROP TABLE IF EXISTS t_devinfo");
+
+			createProfileInfoTable(db);
+			createCmdInfoTable(db);
+
+			current += 1;
+		}
 	}
 }

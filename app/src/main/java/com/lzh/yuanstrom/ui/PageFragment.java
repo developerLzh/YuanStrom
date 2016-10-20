@@ -1,5 +1,7 @@
 package com.lzh.yuanstrom.ui;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -34,7 +36,7 @@ import me.hekr.hekrsdk.util.HekrCodeUtil;
 public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     public static final String ARG_PAGE = "ARG_PAGE";
 
-     int mPage;
+    int mPage;
 
     FirstPageAdapter firstPageAdapter;
     SecondPageAdapter secondPageAdapter;
@@ -55,6 +57,8 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @BindView(R.id.recycler)
     RecyclerView recyclerView;
+
+    private GetDevicesListener getDevicesListener;
 
     public static PageFragment create(int page) {
         Bundle args = new Bundle();
@@ -83,6 +87,9 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             recyclerView.setLayoutManager(gridLayoutManager);
             firstPageAdapter = new FirstPageAdapter(mPage, getActivity());
             recyclerView.setAdapter(firstPageAdapter);
+
+            getDevicesListener = (MainActivity)getActivity();
+
         } else if (mPage == 2) {
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
             secondPageAdapter = new SecondPageAdapter(getActivity());
@@ -101,7 +108,7 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             }
         });
 
-        if(mPage == 1){
+        if (mPage == 1) {
             onRefresh();
         }
 
@@ -133,10 +140,11 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onRefresh() {
-        mSwipeRefreshLayout.setRefreshing(true);
         if (mPage == 1) {
+            mSwipeRefreshLayout.setRefreshing(true);
             getDevices();
         } else if (mPage == 2) {
+            mSwipeRefreshLayout.setRefreshing(true);
             getGroup();
         }
     }
@@ -156,6 +164,7 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     hintTxt.setText(getString(R.string.no_device));
                     firstPageAdapter.setDevices(new ArrayList<DeviceBean>());
                 }
+                getDevicesListener.getDevicesSuc(list);
             }
 
             @Override
@@ -165,6 +174,7 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 emptyCon.setVisibility(View.VISIBLE);
                 hintTxt.setText(getString(R.string.load_failed) + HekrCodeUtil.errorCode2Msg(i));
                 firstPageAdapter.setDevices(new ArrayList<DeviceBean>());
+                getDevicesListener.getDeviceFailed();
             }
         });
     }
@@ -195,5 +205,12 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 secondPageAdapter.setGroups(new ArrayList<GroupBean>());
             }
         });
+    }
+
+    public interface GetDevicesListener {
+
+        void getDevicesSuc(List<DeviceBean> list);
+
+        void getDeviceFailed();
     }
 }

@@ -53,7 +53,7 @@ import java.util.ArrayList;
 /**
  * Created by Vicent on 2016/10/12.
  */
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements PageFragment.GetDevicesListener {
 
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
@@ -81,12 +81,16 @@ public class MainActivity extends BaseActivity {
 
     private TabPagerAdapter mAdapter;
 
+    private List<DeviceBean> cloundDevices;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
+
+        cloundDevices = new LinkedList<>();
 
         initToolbar();
         initTab();
@@ -119,19 +123,19 @@ public class MainActivity extends BaseActivity {
                 if (tabLayout.getSelectedTabPosition() == 0 || tabLayout.getSelectedTabPosition() == -1) {
                     startActivity(new Intent(context, ConfigActivity.class));
                 } else if (tabLayout.getSelectedTabPosition() == 1) {
-                    List<DeviceBean> beans = new LinkedList<>();
-                    for (int i = 0; i < 20; i++) {
-                        DeviceBean bean = new DeviceBean();
-                        TranslateBean translate = new TranslateBean();
-                        translate.setZh_CN("种类" + i);
-                        bean.setCategoryName(translate);
-                        bean.setDevTid("asdjaoidjaiod+" + i);
-                        bean.setLogo("logo" + i);
-                        bean.setDeviceName("名字" + i);
-                        beans.add(bean);
-                    }
+//                    List<DeviceBean> beans = new LinkedList<>();
+//                    for (int i = 0; i < 20; i++) {
+//                        DeviceBean bean = new DeviceBean();
+//                        TranslateBean translate = new TranslateBean();
+//                        translate.setZh_CN("种类" + i);
+//                        bean.setCategoryName(translate);
+//                        bean.setDevTid("asdjaoidjaiod+" + i);
+//                        bean.setLogo("logo" + i);
+//                        bean.setDeviceName("名字" + i);
+//                        beans.add(bean);
+//                    }
                     Intent intent = new Intent(context, CreateGroupActivity.class);
-                    intent.putExtra("provider", new ExampleDataProvider(beans));
+                    intent.putExtra("provider", new ExampleDataProvider(cloundDevices));
                     startActivity(intent);
                 }
             }
@@ -321,5 +325,17 @@ public class MainActivity extends BaseActivity {
                     }
                 }).create();
         pswDialog.show();
+    }
+
+    @Override
+    public void getDevicesSuc(List<DeviceBean> list) {
+        if(null != list){
+            this.cloundDevices = list;
+        }
+    }
+
+    @Override
+    public void getDeviceFailed() {
+        cloundDevices = new LinkedList<>();
     }
 }

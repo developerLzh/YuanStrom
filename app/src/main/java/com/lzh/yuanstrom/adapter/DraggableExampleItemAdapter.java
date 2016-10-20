@@ -17,6 +17,7 @@
 package com.lzh.yuanstrom.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -27,6 +28,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.Volley;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemConstants;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.ItemDraggableRange;
@@ -34,6 +39,7 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemView
 import com.lzh.yuanstrom.R;
 import com.lzh.yuanstrom.bean.SimpleDeviceBean;
 import com.lzh.yuanstrom.common.ExampleDataProvider;
+import com.lzh.yuanstrom.utils.BitmapCache;
 import com.lzh.yuanstrom.utils.DrawableUtils;
 import com.lzh.yuanstrom.utils.ViewUtils;
 
@@ -53,6 +59,8 @@ public class DraggableExampleItemAdapter
     }
 
     public Context context;
+
+    private ImageLoader imageLoader;
 
     public static class MyViewHolder extends AbstractDraggableItemViewHolder {
         public FrameLayout mContainer;
@@ -76,6 +84,8 @@ public class DraggableExampleItemAdapter
 
     public DraggableExampleItemAdapter(ExampleDataProvider dataProvider,Context context) {
         mProvider = dataProvider;
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        this.imageLoader = new ImageLoader(requestQueue, new BitmapCache());
         this.context = context;
         setHasStableIds(true);
     }
@@ -98,7 +108,7 @@ public class DraggableExampleItemAdapter
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
         final SimpleDeviceBean item = mProvider.getData(position);
 
         if(item.getId() == 0){
@@ -108,7 +118,22 @@ public class DraggableExampleItemAdapter
         }else{
             holder.devCate.setText(item.devCate);
             holder.devName.setText(item.devName);
-            holder.devIcon.setImageResource(R.mipmap.ic_launcher);
+            imageLoader.get(item.logo, new ImageLoader.ImageListener() {
+                @Override
+                public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b) {
+                    Bitmap bitmap = imageContainer.getBitmap();
+                    if(null != bitmap){
+                        holder.devIcon.setImageBitmap(bitmap);
+                    }else{
+                        holder.devIcon.setImageBitmap(null);
+                    }
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    holder.devIcon.setImageBitmap(null);
+                }
+            },160,160);
         }
 
         // set background resource (target view ID: container)

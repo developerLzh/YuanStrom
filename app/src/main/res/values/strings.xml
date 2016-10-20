@@ -122,4 +122,9 @@
 
     <string name="not_added_list">待选设备：</string>
     <string name="added_list">已选设备：</string>
+
+    <string name="at_least_one">至少要选择一个设备哦</string>
+
+    <string name="group_desc">群组描述(非必填)</string>
+
 </resources>
