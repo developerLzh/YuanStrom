@@ -1,6 +1,7 @@
 package com.lzh.yuanstrom.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +61,12 @@ public class GridAdapter extends BaseAdapter{
         }
         GroupBean.DeviceLis bean = devices.get(position);
         holder.title.setText(bean.getDevTid());
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+            }
+        });
 //        if(bean.isOnline()){
 //            holder.subTitle.setText(context.getString(R.string.online));
 //        }else{

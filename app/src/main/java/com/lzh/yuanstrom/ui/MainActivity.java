@@ -123,17 +123,6 @@ public class MainActivity extends BaseActivity implements PageFragment.GetDevice
                 if (tabLayout.getSelectedTabPosition() == 0 || tabLayout.getSelectedTabPosition() == -1) {
                     startActivity(new Intent(context, ConfigActivity.class));
                 } else if (tabLayout.getSelectedTabPosition() == 1) {
-//                    List<DeviceBean> beans = new LinkedList<>();
-//                    for (int i = 0; i < 20; i++) {
-//                        DeviceBean bean = new DeviceBean();
-//                        TranslateBean translate = new TranslateBean();
-//                        translate.setZh_CN("种类" + i);
-//                        bean.setCategoryName(translate);
-//                        bean.setDevTid("asdjaoidjaiod+" + i);
-//                        bean.setLogo("logo" + i);
-//                        bean.setDeviceName("名字" + i);
-//                        beans.add(bean);
-//                    }
                     Intent intent = new Intent(context, CreateGroupActivity.class);
                     intent.putExtra("provider", new ExampleDataProvider(cloundDevices));
                     startActivity(intent);

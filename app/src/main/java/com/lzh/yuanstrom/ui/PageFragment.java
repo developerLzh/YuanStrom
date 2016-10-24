@@ -1,7 +1,5 @@
 package com.lzh.yuanstrom.ui;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -164,6 +162,7 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     hintTxt.setText(getString(R.string.no_device));
                     firstPageAdapter.setDevices(new ArrayList<DeviceBean>());
                 }
+
                 getDevicesListener.getDevicesSuc(list);
             }
 
