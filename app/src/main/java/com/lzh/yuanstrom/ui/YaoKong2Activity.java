@@ -130,6 +130,6 @@ public class YaoKong2Activity extends BaseDevActivity implements View.OnClickLis
                 command = new CommandHelper.CommandBuilder().setFrameCommand("").setAction("").setShortAddr(deviceInfo.devShortAddr).build();
                 break;
         }
-        writeMessage(command);
+//        writeMessage(command);
     }
 }

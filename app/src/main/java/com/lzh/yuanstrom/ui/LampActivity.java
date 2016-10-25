@@ -81,7 +81,7 @@ public class LampActivity extends BaseDevActivity implements View.OnClickListene
 
     private void getLampDetail() {
         String command = new CommandHelper.CommandBuilder().setFrameCommand("0009").setShortAddr(deviceInfo.devShortAddr).build();
-        writeMessage(command);
+//        writeMessage(command);
         Log.e("command", command);
     }
 
@@ -99,12 +99,12 @@ public class LampActivity extends BaseDevActivity implements View.OnClickListene
         if (v.getId() == R.id.turn_on) {
             ToastUtil.showMessage(LampActivity.this, "open lamp");
             String command = new CommandHelper.CommandBuilder().setFrameCommand("02").setAction("0201").setShortAddr(deviceInfo.devShortAddr).build();
-            writeMessage(command);
+            //writeMessage(command);
             Log.e("command", command);
         } else if (v.getId() == R.id.turn_off) {
             String command = new CommandHelper.CommandBuilder().setFrameCommand("02").setAction("0200").setShortAddr(deviceInfo.devShortAddr).build();
             Log.e("command", command);
-            writeMessage(command);
+            //writeMessage(command);
         }
     }
 
@@ -159,13 +159,13 @@ public class LampActivity extends BaseDevActivity implements View.OnClickListene
             String action = "FFFFFFFF" + rStr + gStr + bStr;
             String command = new CommandHelper.CommandBuilder().setFrameCommand("07").setAction(action).setShortAddr(deviceInfo.devShortAddr).build();
             Log.e("command", command);
-            writeMessage(command);
+            //writeMessage(command);
         }
     }
 
     @Override
-    protected void detailData(String data, String gateWay) {
-        super.detailData(data, gateWay);
+    protected void detailData(String data) {
+        super.detailData(data);
         if (data.length() <= 8) {
             return;
         }

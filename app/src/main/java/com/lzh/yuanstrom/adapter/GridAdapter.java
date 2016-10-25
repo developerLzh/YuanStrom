@@ -6,9 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lzh.yuanstrom.R;
+import com.lzh.yuanstrom.bean.LocalDeviceBean;
 
 import java.util.List;
 
@@ -59,12 +61,13 @@ public class GridAdapter extends BaseAdapter{
         }else{
             holder = (ViewHolder) convertView.getTag();
         }
-        GroupBean.DeviceLis bean = devices.get(position);
+        final GroupBean.DeviceLis bean = devices.get(position);
         holder.title.setText(bean.getDevTid());
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
+                LocalDeviceBean local = LocalDeviceBean.findByTid(bean.getDevTid());
+                FirstPageAdapter.toWhatActivityByCateName(context,local.categoryName,local.devTid);
             }
         });
 //        if(bean.isOnline()){

@@ -7,18 +7,25 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Switch;
 
 import com.lzh.yuanstrom.R;
 import com.lzh.yuanstrom.bean.DeviceInfo;
 import com.lzh.yuanstrom.utils.CommandHelper;
+import com.lzh.yuanstrom.utils.FullCommandHelper;
 import com.lzh.yuanstrom.utils.ToastUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
+import me.hekr.hekrsdk.listener.DataReceiverListener;
+import me.hekr.hekrsdk.util.MsgUtil;
 
 /**
  * Created by Vicent on 2016/8/17.
@@ -43,18 +50,25 @@ public class ChazuoActivity extends BaseDevActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    private DeviceInfo deviceInfo;
-
     @OnCheckedChanged(R.id.switch1)
     void switch1Check() {
-        String switchState = "";
-        if (switch1.isChecked()) {
-            switchState = "01";
-        } else {
-            switchState = "02";
+        FullCommandHelper fullCommandHelper = new FullCommandHelper(devTid, local.ctrlKey, "4809080706050403");
+        Log.e("commandHelper", fullCommandHelper.toString());
+        try {
+            MsgUtil.sendMsg(ChazuoActivity.this, devTid, new JSONObject(fullCommandHelper.toString()), new DataReceiverListener() {
+                @Override
+                public void onReceiveSuccess(String s) {
+                    Log.e("onReceiveSuccess", s);
+                }
+
+                @Override
+                public void onReceiveTimeout() {
+
+                }
+            }, false);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        String command = new CommandHelper.CommandBuilder().setFrameCommand("0002").setShortAddr(deviceInfo.devShortAddr).setAction("01" + switchState).build();
-        writeMessage(command);
     }
 
     @OnCheckedChanged(R.id.switch2)
@@ -65,8 +79,6 @@ public class ChazuoActivity extends BaseDevActivity {
         } else {
             switchState = "02";
         }
-        String command = new CommandHelper.CommandBuilder().setFrameCommand("0002").setShortAddr(deviceInfo.devShortAddr).setAction("02" + switchState).build();
-        writeMessage(command);
     }
 
     @OnCheckedChanged(R.id.switch3)
@@ -77,8 +89,6 @@ public class ChazuoActivity extends BaseDevActivity {
         } else {
             switchState = "02";
         }
-        String command = new CommandHelper.CommandBuilder().setFrameCommand("0002").setShortAddr(deviceInfo.devShortAddr).setAction("04" + switchState).build();
-        writeMessage(command);
     }
 
     @OnClick(R.id.fab)
@@ -93,7 +103,6 @@ public class ChazuoActivity extends BaseDevActivity {
 
         ButterKnife.bind(this);
 
-        deviceInfo =  getIntent().getParcelableExtra("deviceInfo");
         getSwitchState();
 
         toolbar.setTitle("");
@@ -101,13 +110,11 @@ public class ChazuoActivity extends BaseDevActivity {
     }
 
     private void getSwitchState() {
-        String command = new CommandHelper.CommandBuilder().setFrameCommand("0010").setShortAddr(deviceInfo.devShortAddr).build();
-        writeMessage(command);
     }
 
     @Override
-    protected void detailData(String data, String gateWay) {
-        super.detailData(data, gateWay);
+    protected void detailData(String data) {
+        super.detailData(data);
         if (data.length() <= 8) {
             return;
         }

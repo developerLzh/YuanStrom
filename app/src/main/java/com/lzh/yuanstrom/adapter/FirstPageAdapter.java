@@ -1,12 +1,15 @@
 package com.lzh.yuanstrom.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -17,6 +20,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.lzh.yuanstrom.R;
+import com.lzh.yuanstrom.ui.ChazuoActivity;
+import com.lzh.yuanstrom.ui.LampActivity;
+import com.lzh.yuanstrom.ui.YaoKong2Activity;
 import com.lzh.yuanstrom.utils.BitmapCache;
 import com.mikepenz.materialdrawer.util.DrawerImageLoader;
 
@@ -61,7 +67,7 @@ public class FirstPageAdapter extends RecyclerView.Adapter<FirstPageAdapter.View
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         if (devices.size() != 0) {
-            DeviceBean deviceBean = devices.get(position);
+            final DeviceBean deviceBean = devices.get(position);
             holder.title.setText(deviceBean.getDeviceName());
             if (deviceBean.isOnline()) {
                 holder.subTitle.setText(context.getString(R.string.online));
@@ -85,6 +91,12 @@ public class FirstPageAdapter extends RecyclerView.Adapter<FirstPageAdapter.View
                     holder.icon.setImageBitmap(null);
                 }
             },160,160);
+            holder.root.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toWhatActivityByCateName(context,deviceBean.getCategoryName().getZh_CN(),deviceBean.getDevTid());
+                }
+            });
         }
     }
 
@@ -92,6 +104,7 @@ public class FirstPageAdapter extends RecyclerView.Adapter<FirstPageAdapter.View
         public TextView title;
         public TextView subTitle;
         public ImageView icon;
+        public RelativeLayout root;
 //        public TextView description;
 
         public ViewHolder(View itemView) {
@@ -99,7 +112,30 @@ public class FirstPageAdapter extends RecyclerView.Adapter<FirstPageAdapter.View
             title = (TextView) itemView.findViewById(R.id.title);
             subTitle = (TextView) itemView.findViewById(R.id.subtitle);
             icon = (ImageView) itemView.findViewById(R.id.image);
+            root = (RelativeLayout) itemView.findViewById(R.id.root_view);
 //            description = (TextView) itemView.findViewById(R.id.content);
         }
     }
+
+    public static void toWhatActivityByCateName(Context context,String cateName,String devTid){
+        Intent intent = new Intent();
+        if(cateName.equals(context.getString(R.string.lamp))){
+            intent.setClass(context, LampActivity.class);
+        }else if(cateName.equals(context.getString(R.string.chazuo))){
+            intent.setClass(context, ChazuoActivity.class);
+        }else if(cateName.equals(context.getString(R.string.yaokong))){
+//            intent.setClass(context.YaoKongActivity.class);
+        }else if(cateName.equals(context.getString(R.string.hongwai))){
+
+        }else if(cateName.equals(context.getString(R.string.menci))){
+
+        } else if(cateName.equals(context.getString(R.string.mianban))){
+
+        }else if(cateName.equals(context.getString(R.string.yaokong_2))){
+            intent.setClass(context,YaoKong2Activity.class);
+        }
+        intent.putExtra("devTid",devTid);
+        context.startActivity(intent);
+    }
+
 }

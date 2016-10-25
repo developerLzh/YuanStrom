@@ -85,10 +85,36 @@ public class SqliteHelper extends SQLiteOpenHelper {
                 .append("devId").append(" INTEGER PRIMARY KEY AUTOINCREMENT, ")
                 .append("devTid").append(" ").append("TEXT").append(",")
 
+                .append("ctrlKey").append(" ").append("TEXT").append(",")
+                .append("bindKey").append(" ").append("TEXT").append(",")
+                .append("cid").append(" ").append("TEXT").append(",")
+                .append("workModeType").append(" ").append("TEXT").append(",")
+                .append("tokenType").append(" ").append("INTEGER").append(",")
+                .append("binVersion").append(" ").append("TEXT").append(",")
+                .append("sdkVer").append(" ").append("TEXT").append(",")
+                .append("binType").append(" ").append("TEXT").append(",")
+                .append("servicePort").append(" ").append("INTEGER").append(",")
+                .append("ssid").append(" ").append("TEXT").append(",")
+                .append("mac").append(" ").append("TEXT").append(",")
+                .append("finger").append(" ").append("TEXT").append(",")
+                .append("ownerUid").append(" ").append("TEXT").append(",")
+                .append("devShareNum").append(" ").append("Integer").append(",")
                 .append("deviceName").append(" ").append("TEXT").append(",")
+                .append("desc").append(" ").append("TEXT").append(",")
+                .append("folderId").append(" ").append("TEXT").append(",")
+                .append("productPublicKey").append(" ").append("TEXT").append(",")
                 .append("logo").append(" ").append("TEXT").append(",")
-
-                .append("productName").append(" ").append("TEXT").append(";");
+                .append("granted").append(" ").append("INTEGER").append(",")
+                .append("setSchedulerTask").append(" ").append("INTEGER").append(",")
+                .append("online").append(" ").append("INTEGER").append(",")
+                .append("model").append(" ").append("TEXT").append(",")
+                .append("cidName").append(" ").append("TEXT").append(",")
+                .append("folderName").append(" ").append("TEXT").append(",")
+                .append("categoryName").append(" ").append("TEXT").append(",")
+                .append("productName").append(" ").append("TEXT").append(",")
+                .append("forceBind").append(" ").append("TEXT").append(",")
+                .append("maxDevShareNum").append(" ").append("TEXT")
+                .append(");");
         execCreateTableSQL(db);
     }
 

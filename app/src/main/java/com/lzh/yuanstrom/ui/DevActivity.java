@@ -271,7 +271,7 @@ public class DevActivity extends BaseDevActivity {
         }
         String command = data.substring(6, 10);
         if (command.equals("0010")) {
-            DeviceInfo info = DeviceInfo.findByShortAddrTid(data.substring(10, 14), tid);
+            DeviceInfo info = null;
             if (info == null) {//不存在  说明是新设备
                 info = new DeviceInfo();
                 info.devShortAddr = data.substring(10, 14);

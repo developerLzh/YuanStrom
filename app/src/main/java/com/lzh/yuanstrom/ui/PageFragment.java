@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.lzh.yuanstrom.R;
 import com.lzh.yuanstrom.adapter.FirstPageAdapter;
 import com.lzh.yuanstrom.adapter.SecondPageAdapter;
+import com.lzh.yuanstrom.bean.LocalDeviceBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,9 +29,6 @@ import me.hekr.hekrsdk.bean.DeviceBean;
 import me.hekr.hekrsdk.bean.GroupBean;
 import me.hekr.hekrsdk.util.HekrCodeUtil;
 
-/**
- * Created by chris.black on 6/11/15.
- */
 public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     public static final String ARG_PAGE = "ARG_PAGE";
 
@@ -162,8 +160,11 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     hintTxt.setText(getString(R.string.no_device));
                     firstPageAdapter.setDevices(new ArrayList<DeviceBean>());
                 }
-
                 getDevicesListener.getDevicesSuc(list);
+                for (DeviceBean deviceBean : list) {
+                    LocalDeviceBean local = LocalDeviceBean.dev2Local(deviceBean);
+                    local.saveNew();
+                }
             }
 
             @Override
