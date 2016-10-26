@@ -127,4 +127,26 @@
 
     <string name="group_desc">群组描述(非必填)</string>
 
+    <string name="choice_method">选择功能</string>
+
+    <string name="set">设置</string>
+    <string name="delete">删除</string>
+
+    <string name="hint">温馨提示</string>
+    <string name="sure_delete">你确定要删除该这杯吗？</string>
+
+    <string name="dev_cate">设备品类</string>
+    <string name="share_auth">共享授权</string>
+    <string name="dev_hardware">设备固件信息</string>
+    <string name="dev_share_msg">设备共享信息</string>
+    <string name="current_wifi">当前路由器</string>
+    <string name="dev_name">设备名</string>
+    <string name="to_control">进入控制页面</string>
+
+    <string name="delete_dev">删除设备</string>
+
+    <string name="dev_not_exist">设备不存在</string>
+
+    <string name="change_dev">修改设备名</string>
+
 </resources>

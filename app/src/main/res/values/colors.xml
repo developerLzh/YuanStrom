@@ -38,4 +38,5 @@
     <color name="bg_item_swiping_state">#ffddddff</color>
     <color name="bg_item_swiping_active_state">#ff9999ff</color>
 
+    <color name="text_default_color">#727272</color>
 </resources>

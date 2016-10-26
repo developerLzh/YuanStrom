@@ -1,8 +1,10 @@
 package com.lzh.yuanstrom.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +23,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.lzh.yuanstrom.R;
 import com.lzh.yuanstrom.ui.ChazuoActivity;
+import com.lzh.yuanstrom.ui.DevControlActivity;
 import com.lzh.yuanstrom.ui.LampActivity;
 import com.lzh.yuanstrom.ui.YaoKong2Activity;
 import com.lzh.yuanstrom.utils.BitmapCache;
@@ -39,6 +42,8 @@ public class FirstPageAdapter extends RecyclerView.Adapter<FirstPageAdapter.View
 
     private ImageLoader imageLoader;
 
+    private CharSequence[] items;
+
     public FirstPageAdapter(int pageNum, Context context) {
         super();
         this.mPage = pageNum;
@@ -46,6 +51,8 @@ public class FirstPageAdapter extends RecyclerView.Adapter<FirstPageAdapter.View
         this.context = context;
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         this.imageLoader = new ImageLoader(requestQueue, new BitmapCache());
+
+        items = new CharSequence[]{context.getString(R.string.set),context.getString(R.string.delete),context.getString(R.string.cancel)};
     }
 
     public void setDevices(List<DeviceBean> devices) {
@@ -68,7 +75,7 @@ public class FirstPageAdapter extends RecyclerView.Adapter<FirstPageAdapter.View
     public void onBindViewHolder(final ViewHolder holder, int position) {
         if (devices.size() != 0) {
             final DeviceBean deviceBean = devices.get(position);
-            holder.title.setText(deviceBean.getDeviceName());
+            holder.title.setText(deviceBean.getCategoryName().getZh_CN());
             if (deviceBean.isOnline()) {
                 holder.subTitle.setText(context.getString(R.string.online));
             } else {
@@ -97,7 +104,57 @@ public class FirstPageAdapter extends RecyclerView.Adapter<FirstPageAdapter.View
                     toWhatActivityByCateName(context,deviceBean.getCategoryName().getZh_CN(),deviceBean.getDevTid());
                 }
             });
+            holder.root.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    showDialog(context,deviceBean.getDevTid());
+                    return false;
+                }
+            });
         }
+    }
+
+    private void showDialog(final Context context, final String devTid) {
+        AlertDialog dialog = new AlertDialog.Builder(context)
+                .setTitle(context.getString(R.string.choice_method))
+                .setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        if(items[i].equals(context.getString(R.string.cancel))){
+                            dialog.dismiss();
+                        }else if(items[i].equals(context.getString(R.string.delete))){
+                            dialog.dismiss();
+                            showSureDialog();
+                        }else if(items[i].equals(context.getString(R.string.set))){
+                            //TODO to setting
+                            Intent intent = new Intent(context, DevControlActivity.class);
+                            intent.putExtra("devTid",devTid);
+                            context.startActivity(intent);
+                        }
+                    }
+                })
+                .create();
+        dialog.show();
+    }
+
+    private void showSureDialog() {
+        AlertDialog dialog = new AlertDialog.Builder(context)
+                .setTitle(context.getString(R.string.hint))
+                .setMessage(context.getString(R.string.sure_delete))
+                .setPositiveButton(context.getString(R.string.ensure), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //TODO delete device
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create();
+        dialog.show();
     }
 
     protected static class ViewHolder extends RecyclerView.ViewHolder {

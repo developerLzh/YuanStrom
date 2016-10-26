@@ -78,6 +78,9 @@
         <activity
             android:name=".ui.CreateGroupActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.DevControlActivity"
+            android:screenOrientation="portrait" />
 
         <service
             android:name=".service.SocketService"
