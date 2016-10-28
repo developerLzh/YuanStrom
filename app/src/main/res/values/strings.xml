@@ -148,5 +148,10 @@
     <string name="dev_not_exist">设备不存在</string>
 
     <string name="change_dev">修改设备名</string>
+    <string name="change_dev_suc">修改设备名成功</string>
 
+    <string name="send_suc">发送成功</string>
+    <string name="send_failed">发送失败</string>
+
+    <string name="delete_dev_suc">删除设备成功</string>
 </resources>

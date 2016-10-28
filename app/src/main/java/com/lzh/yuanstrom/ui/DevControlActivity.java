@@ -1,31 +1,43 @@
 package com.lzh.yuanstrom.ui;
 
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.Volley;
 import com.lzh.yuanstrom.R;
 import com.lzh.yuanstrom.adapter.FirstPageAdapter;
 import com.lzh.yuanstrom.bean.LocalDeviceBean;
+import com.lzh.yuanstrom.utils.BitmapCache;
 import com.lzh.yuanstrom.utils.StringUtils;
 import com.lzh.yuanstrom.utils.ToastUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import me.hekr.hekrsdk.action.HekrUser;
+import me.hekr.hekrsdk.util.HekrCodeUtil;
 
 /**
  * Created by Administrator on 2016/10/25.
  */
 
 public class DevControlActivity extends BaseActivity {
+
+    @BindView(R.id.root_view)
+    LinearLayout rootView;
 
     @BindView(R.id.dev_cate)
     TextView devCate;
@@ -45,20 +57,42 @@ public class DevControlActivity extends BaseActivity {
     @BindView(R.id.dev_name)
     TextView devName;
 
+    @BindView(R.id.dev_img)
+    ImageView devImg;
+
     private String devTid;
 
     private LocalDeviceBean local;
+
+    private ImageLoader imageLoader;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_set);
         ButterKnife.bind(this);
-
-        initBar();
-
         devTid = getIntent().getStringExtra("devTid");
         local = LocalDeviceBean.findByTid(devTid);
+        initBar();
+
+        imageLoader = new ImageLoader(Volley.newRequestQueue(this),new BitmapCache());
+        imageLoader.get(local.logo, new ImageLoader.ImageListener() {
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean b) {
+                Bitmap bitmap = response.getBitmap();
+                if(null != bitmap){
+                    devImg.setImageBitmap(bitmap);
+                }else{
+                    devImg.setImageBitmap(null);
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                devImg.setImageBitmap(null);
+            }
+        });
+
         if(StringUtils.isBlank(local.devTid)){
             ToastUtil.showMessage(this,context.getString(R.string.dev_not_exist));
             finish();
@@ -109,8 +143,20 @@ public class DevControlActivity extends BaseActivity {
                 .setMessage(context.getString(R.string.sure_delete))
                 .setPositiveButton(context.getString(R.string.ensure), new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(final DialogInterface dialog, int which) {
                         //TODO delete device
+                        hekrUserAction.deleteDevice(devTid, local.bindKey, new HekrUser.DeleteDeviceListener() {
+                            @Override
+                            public void deleteDeviceSuccess() {
+                                Snackbar.make(rootView,getString(R.string.delete_dev_suc),Snackbar.LENGTH_SHORT).show();
+                                finish();
+                            }
+
+                            @Override
+                            public void deleteDeviceFail(int i) {
+                                Snackbar.make(rootView, HekrCodeUtil.errorCode2Msg(i),Snackbar.LENGTH_SHORT).show();
+                            }
+                        });
                         dialog.dismiss();
                     }
                 })
@@ -122,19 +168,31 @@ public class DevControlActivity extends BaseActivity {
                 }).create();
         dialog.show();
     }
-    private void showChangeNameDialog(String devName){
+    private void showChangeNameDialog(final String name){
         final EditText edit = new EditText(this);
-        edit.setText(devName);
+        edit.setText(name);
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.change_dev))
                 .setView(edit)
                 .setPositiveButton(getString(R.string.ensure), new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String s = edit.getText().toString();
+                    public void onClick(final DialogInterface dialog, int which) {
+                        final String s = edit.getText().toString();
                         if(StringUtils.isNotBlank(s)){
-                            //TODO change devName
-                            dialog.dismiss();
+                            hekrUserAction.renameDevice(devTid, local.ctrlKey, s, local.desc, new HekrUser.RenameDeviceListener() {
+                                        @Override
+                                        public void renameDeviceSuccess() {
+                                            dialog.dismiss();
+                                            Snackbar.make(rootView,getString(R.string.change_dev_suc),Snackbar.LENGTH_SHORT).show();
+                                            devName.setText(s);
+                                        }
+
+                                        @Override
+                                        public void renameDeviceFail(int i) {
+                                            Snackbar.make(rootView, HekrCodeUtil.errorCode2Msg(i),Snackbar.LENGTH_SHORT).show();
+                                        }
+                                    });
+
                         }
                     }
                 })

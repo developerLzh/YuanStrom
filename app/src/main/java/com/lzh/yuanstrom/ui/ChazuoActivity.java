@@ -41,6 +41,9 @@ public class ChazuoActivity extends BaseDevActivity {
     @BindView(R.id.switch3)
     Switch switch3;
 
+    @BindView(R.id.switch4)
+    Switch switch4;
+
     @BindView(R.id.chazuo_img)
     ImageView chazuoImg;
 
@@ -50,24 +53,20 @@ public class ChazuoActivity extends BaseDevActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    private boolean needSendMsg = true;
+
     @OnCheckedChanged(R.id.switch1)
     void switch1Check() {
-        FullCommandHelper fullCommandHelper = new FullCommandHelper(devTid, local.ctrlKey, "4809080706050403");
-        Log.e("commandHelper", fullCommandHelper.toString());
-        try {
-            MsgUtil.sendMsg(ChazuoActivity.this, devTid, new JSONObject(fullCommandHelper.toString()), new DataReceiverListener() {
-                @Override
-                public void onReceiveSuccess(String s) {
-                    Log.e("onReceiveSuccess", s);
-                }
-
-                @Override
-                public void onReceiveTimeout() {
-
-                }
-            }, false);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        String switchState = "";
+        if (switch1.isChecked()) {
+            switchState = "01";
+        } else {
+            switchState = "02";
+        }
+        if (needSendMsg) {
+            sendData(CommandHelper.SWITCH_COMMAND, "01", switchState);//发送命令
+        } else {
+            needSendMsg = true;
         }
     }
 
@@ -79,6 +78,11 @@ public class ChazuoActivity extends BaseDevActivity {
         } else {
             switchState = "02";
         }
+        if (needSendMsg) {
+            sendData(CommandHelper.SWITCH_COMMAND, "02", switchState);//发送命令
+        } else {
+            needSendMsg = true;
+        }
     }
 
     @OnCheckedChanged(R.id.switch3)
@@ -88,6 +92,26 @@ public class ChazuoActivity extends BaseDevActivity {
             switchState = "01";
         } else {
             switchState = "02";
+        }
+        if (needSendMsg) {
+            sendData(CommandHelper.SWITCH_COMMAND, "03", switchState);//发送命令
+        } else {
+            needSendMsg = true;
+        }
+    }
+
+    @OnCheckedChanged(R.id.switch4)
+    void switch4Check() {
+        String switchState = "";
+        if (switch4.isChecked()) {
+            switchState = "01";
+        } else {
+            switchState = "02";
+        }
+        if (needSendMsg) {
+            sendData(CommandHelper.SWITCH_COMMAND, "04", switchState);//发送命令
+        } else {
+            needSendMsg = true;
         }
     }
 
@@ -103,108 +127,57 @@ public class ChazuoActivity extends BaseDevActivity {
 
         ButterKnife.bind(this);
 
-        getSwitchState();
-
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
     }
 
-    private void getSwitchState() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sendData(CommandHelper.RETURN_COMMAND, "00", "00");//获取开关状态
     }
 
     @Override
-    protected void detailData(String data) {
-        super.detailData(data);
-        if (data.length() <= 8) {
+    protected void detailData(String useful) {
+        super.detailData(useful);
+        if (useful.length() < 10) {
             return;
         }
-        String command = data.substring(6, 10);
-        if (command.equals("0010")) {
-            String stateStr = data.substring(14, 16);
-            int chazuoState = Integer.parseInt(stateStr);
-            handler.sendEmptyMessage(chazuoState);
-        } else if (command.equals("0002")) {
-            int position = Integer.parseInt(data.substring(14, 16));
-            int switchState = Integer.parseInt(data.substring(16, 18));
-            Message message = new Message();
-            message.what = 8;
-            message.arg1 = position;
-            message.arg2 = switchState;
-            handler.sendMessage(message);
+        String firstCommand = useful.substring(0, 2);
+        String secondCommand = useful.substring(2, 4);
+        String thirdCommand = useful.substring(4, 6);
+        if (firstCommand.equals(CommandHelper.RETURN_COMMAND)) {
+            needSendMsg = false;
+            int a = Integer.parseInt(secondCommand, 16);
+            changeSwitchState(a);
         }
     }
 
-    Handler handler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message msg) {
-            switch (msg.what) {
-                case 0:
-                    switch1.setChecked(true);
-                    switch2.setChecked(true);
-                    switch3.setChecked(true);
-                    break;
-                case 1:
-                    switch1.setChecked(false);
-                    switch2.setChecked(true);
-                    switch3.setChecked(true);
-                    break;
-                case 2:
-                    switch1.setChecked(true);
-                    switch2.setChecked(false);
-                    switch3.setChecked(true);
-                    break;
-                case 3:
-                    switch1.setChecked(false);
-                    switch2.setChecked(false);
-                    switch3.setChecked(true);
-                    break;
-                case 4:
-                    switch1.setChecked(true);
-                    switch2.setChecked(true);
-                    switch3.setChecked(false);
-                    break;
-                case 5:
-                    switch1.setChecked(false);
-                    switch2.setChecked(true);
-                    switch3.setChecked(false);
-                    break;
-                case 6:
-                    switch1.setChecked(true);
-                    switch2.setChecked(false);
-                    switch3.setChecked(false);
-                    break;
-                case 7:
-                    switch1.setChecked(false);
-                    switch2.setChecked(false);
-                    switch3.setChecked(false);
-                    break;
-                case 8:
-                    int pos = msg.arg1;
-                    int sws = msg.arg2;
-                    if (pos == 1) {
-                        if (sws == 1) {
-                            switch1.setChecked(false);
-                        } else if (sws == 2) {
-                            switch1.setChecked(true);
-                        }
-                    }
-                    if (pos == 2) {
-                        if (sws == 1) {
-                            switch2.setChecked(false);
-                        } else if (sws == 2) {
-                            switch2.setChecked(true);
-                        }
-                    }
-                    if (pos == 4) {
-                        if (sws == 1) {
-                            switch3.setChecked(false);
-                        } else if (sws == 2) {
-                            switch3.setChecked(true);
-                        }
-                    }
-                    break;
-            }
-            return false;
+    private void changeSwitchState(int x) {
+        if ((x & 1) == 1) {
+            switch1.setChecked(true);
+        } else {
+            switch1.setChecked(false);
         }
-    });
+        if ((x & 2) == 2) {
+            switch2.setChecked(true);
+        } else {
+            switch2.setChecked(false);
+        }
+        if ((x & 4) == 4) {
+            switch3.setChecked(true);
+        } else {
+            switch3.setChecked(false);
+        }
+        if ((x & 8) == 8) {
+            switch4.setChecked(true);
+        } else {
+            switch4.setChecked(false);
+        }
+    }
+
+    @Override
+    protected void detailSendFailed() {
+        super.detailSendFailed();
+    }
 }

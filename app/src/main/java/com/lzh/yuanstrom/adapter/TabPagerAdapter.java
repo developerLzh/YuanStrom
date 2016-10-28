@@ -52,6 +52,9 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
 
     public PageFragment getFragment(int key) {
         //Log.d(TAG, "GET: " + key);
+        if(key == -1){
+            key = 0;
+        }
         return mPageReferenceMap.get(key);
     }
 }

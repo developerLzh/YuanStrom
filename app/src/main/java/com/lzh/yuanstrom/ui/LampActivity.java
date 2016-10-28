@@ -80,9 +80,9 @@ public class LampActivity extends BaseDevActivity implements View.OnClickListene
     }
 
     private void getLampDetail() {
-        String command = new CommandHelper.CommandBuilder().setFrameCommand("0009").setShortAddr(deviceInfo.devShortAddr).build();
-//        writeMessage(command);
-        Log.e("command", command);
+//        String command = new CommandHelper.CommandBuilder().setFrameCommand("0009").setShortAddr(deviceInfo.devShortAddr).build();
+////        writeMessage(command);
+//        Log.e("command", command);
     }
 
     private void setListener() {
@@ -97,13 +97,13 @@ public class LampActivity extends BaseDevActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.turn_on) {
-            ToastUtil.showMessage(LampActivity.this, "open lamp");
-            String command = new CommandHelper.CommandBuilder().setFrameCommand("02").setAction("0201").setShortAddr(deviceInfo.devShortAddr).build();
-            //writeMessage(command);
-            Log.e("command", command);
+//            ToastUtil.showMessage(LampActivity.this, "open lamp");
+//            String command = new CommandHelper.CommandBuilder().setFrameCommand("02").setAction("0201").setShortAddr(deviceInfo.devShortAddr).build();
+//            //writeMessage(command);
+//            Log.e("command", command);
         } else if (v.getId() == R.id.turn_off) {
-            String command = new CommandHelper.CommandBuilder().setFrameCommand("02").setAction("0200").setShortAddr(deviceInfo.devShortAddr).build();
-            Log.e("command", command);
+//            String command = new CommandHelper.CommandBuilder().setFrameCommand("02").setAction("0200").setShortAddr(deviceInfo.devShortAddr).build();
+//            Log.e("command", command);
             //writeMessage(command);
         }
     }
@@ -157,8 +157,8 @@ public class LampActivity extends BaseDevActivity implements View.OnClickListene
                 bStr = "0" + deviceInfo.bValue;
             }
             String action = "FFFFFFFF" + rStr + gStr + bStr;
-            String command = new CommandHelper.CommandBuilder().setFrameCommand("07").setAction(action).setShortAddr(deviceInfo.devShortAddr).build();
-            Log.e("command", command);
+//            String command = new CommandHelper.CommandBuilder().setFrameCommand("07").setAction(action).setShortAddr(deviceInfo.devShortAddr).build();
+//            Log.e("command", command);
             //writeMessage(command);
         }
     }

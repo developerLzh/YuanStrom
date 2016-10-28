@@ -5,25 +5,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.lzh.yuanstrom.MyApplication;
+import com.google.gson.Gson;
 import com.lzh.yuanstrom.R;
-import com.lzh.yuanstrom.bean.DeviceInfo;
+import com.lzh.yuanstrom.bean.DeviceResult;
 import com.lzh.yuanstrom.bean.LocalDeviceBean;
-import com.lzh.yuanstrom.service.SocketService;
+import com.lzh.yuanstrom.utils.CommandHelper;
+import com.lzh.yuanstrom.utils.FullCommandHelper;
 import com.lzh.yuanstrom.utils.StringUtils;
 import com.lzh.yuanstrom.utils.ToastUtil;
 
-import java.io.IOException;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import me.hekr.hekrsdk.listener.DataReceiverListener;
 import me.hekr.hekrsdk.util.ConstantsUtil;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.FormBody;
-import okhttp3.Request;
-import okhttp3.Response;
+import me.hekr.hekrsdk.util.MsgUtil;
 
 /**
  * Created by Vicent on 2016/3/4.
@@ -58,18 +56,54 @@ public class BaseDevActivity extends BaseActivity {
         super.onStop();
     }
 
+    public void sendData(String firstCommand,String secondCommand,String thirdCommand){
+        CommandHelper commandHelper = new CommandHelper.CommandBuilder().setFirstCommand(firstCommand).setSecondCommand(secondCommand).setThirdCommand(thirdCommand).build();
+        FullCommandHelper fullCommandHelper = new FullCommandHelper(devTid, local.ctrlKey, commandHelper.toString());
+        Log.e("commandHelper", fullCommandHelper.toString());
+        showLoading(true);
+        try {
+            MsgUtil.sendMsg(BaseDevActivity.this, devTid, new JSONObject(fullCommandHelper.toString()), new DataReceiverListener() {
+                @Override
+                public void onReceiveSuccess(String s) {
+                    Log.e("onReceiveSuccess", s);
+                    hideLoading();
+                    ToastUtil.showMessage(BaseDevActivity.this,getString(R.string.send_suc));
+                }
+
+                @Override
+                public void onReceiveTimeout() {
+                    hideLoading();
+                    detailSendFailed();
+                    ToastUtil.showMessage(BaseDevActivity.this,getString(R.string.send_failed));
+                }
+            }, false);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     class DataBroadcastReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
             if (null != intent && StringUtils.isNotBlank(intent.getAction())) {
                 String backData=intent.getStringExtra(ConstantsUtil.HEKR_WS_PAYLOAD);
+                DeviceResult result = new Gson().fromJson(backData,DeviceResult.class);
+                if(result != null && result.params != null && result.params.data != null) {
+                    String data = result.params.data.raw;
+                    String useful = data.substring(8,data.length() - 2);
+                    detailData(useful);
+                }
                 Log.e("backData",backData);
             }
         }
     }
 
-    protected void detailData(String data) {
-        //TODO
+    protected void detailData(String useful) {
+        Log.e("usefudata",useful);
+    }
+
+    protected void detailSendFailed(){
+
     }
 }

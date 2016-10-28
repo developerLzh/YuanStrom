@@ -107,27 +107,27 @@ public class YaoKong2Activity extends BaseDevActivity implements View.OnClickLis
         switch (v.getId()) {
             case R.id.red_btn:
                 //TODO 设置command,action
-                command = new CommandHelper.CommandBuilder().setFrameCommand("").setAction("").setShortAddr(deviceInfo.devShortAddr).build();
+//                command = new CommandHelper.CommandBuilder().setFrameCommand("").setAction("").setShortAddr(deviceInfo.devShortAddr).build();
                 break;
             case R.id.blue_btn:
                 //TODO 设置command,action
-                command = new CommandHelper.CommandBuilder().setFrameCommand("").setAction("").setShortAddr(deviceInfo.devShortAddr).build();
+//                command = new CommandHelper.CommandBuilder().setFrameCommand("").setAction("").setShortAddr(deviceInfo.devShortAddr).build();
                 break;
             case R.id.yellow_btn:
                 //TODO 设置command,action
-                command = new CommandHelper.CommandBuilder().setFrameCommand("").setAction("").setShortAddr(deviceInfo.devShortAddr).build();
+//                command = new CommandHelper.CommandBuilder().setFrameCommand("").setAction("").setShortAddr(deviceInfo.devShortAddr).build();
                 break;
             case R.id.pur_btn:
                 //TODO 设置command,action
-                command = new CommandHelper.CommandBuilder().setFrameCommand("").setAction("").setShortAddr(deviceInfo.devShortAddr).build();
+//                command = new CommandHelper.CommandBuilder().setFrameCommand("").setAction("").setShortAddr(deviceInfo.devShortAddr).build();
                 break;
             case R.id.green_btn:
                 //TODO 设置command,action
-                command = new CommandHelper.CommandBuilder().setFrameCommand("").setAction("").setShortAddr(deviceInfo.devShortAddr).build();
+//                command = new CommandHelper.CommandBuilder().setFrameCommand("").setAction("").setShortAddr(deviceInfo.devShortAddr).build();
                 break;
             case R.id.pink_btn:
                 //TODO 设置command,action
-                command = new CommandHelper.CommandBuilder().setFrameCommand("").setAction("").setShortAddr(deviceInfo.devShortAddr).build();
+//                command = new CommandHelper.CommandBuilder().setFrameCommand("").setAction("").setShortAddr(deviceInfo.devShortAddr).build();
                 break;
         }
 //        writeMessage(command);
