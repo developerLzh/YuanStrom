@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.lzh.yuanstrom.MyApplication;
 import com.lzh.yuanstrom.R;
 import com.lzh.yuanstrom.adapter.FirstPageAdapter;
 import com.lzh.yuanstrom.bean.LocalDeviceBean;
@@ -64,8 +65,6 @@ public class DevControlActivity extends BaseActivity {
 
     private LocalDeviceBean local;
 
-    private ImageLoader imageLoader;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,8 +74,7 @@ public class DevControlActivity extends BaseActivity {
         local = LocalDeviceBean.findByTid(devTid);
         initBar();
 
-        imageLoader = new ImageLoader(Volley.newRequestQueue(this),new BitmapCache());
-        imageLoader.get(local.logo, new ImageLoader.ImageListener() {
+        MyApplication.getInstance().getImageLoader().get(local.logo, new ImageLoader.ImageListener() {
             @Override
             public void onResponse(ImageLoader.ImageContainer response, boolean b) {
                 Bitmap bitmap = response.getBitmap();

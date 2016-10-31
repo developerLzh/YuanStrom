@@ -3,7 +3,10 @@ package com.lzh.yuanstrom;
 import android.app.Application;
 import android.content.SharedPreferences;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.Volley;
 import com.lzh.yuanstrom.sql.SqliteHelper;
+import com.lzh.yuanstrom.utils.BitmapCache;
 import com.lzh.yuanstrom.utils.RetrofitUtils;
 
 import me.hekr.hekrsdk.util.HekrSDK;
@@ -19,6 +22,8 @@ public class MyApplication extends Application {
     public static SharedPreferences.Editor editor;
 
     public static boolean loginSuccessed = false;
+
+    public static ImageLoader imageLoader;
 
     @Override
     public void onCreate() {
@@ -53,5 +58,12 @@ public class MyApplication extends Application {
     }
     public void setLoginSuc(boolean a){
         loginSuccessed = a;
+    }
+
+    public ImageLoader getImageLoader(){
+        if(null == imageLoader){
+            imageLoader = new ImageLoader(Volley.newRequestQueue(this),new BitmapCache()) ;
+        }
+        return imageLoader;
     }
 }

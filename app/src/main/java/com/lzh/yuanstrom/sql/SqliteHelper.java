@@ -55,17 +55,43 @@ public class SqliteHelper extends SQLiteOpenHelper {
     }
 
     public void onCreate(SQLiteDatabase db) {
-        createProfileInfoTable(db);
         createCmdInfoTable(db);
         createDevInfoTable(db);
+        createCustomerTable(db);
+        createProfileInfoTable(db);
+        createProfileCmdTable(db);
     }
 
     private void createProfileInfoTable(SQLiteDatabase db) {
         sqlBuf.append("CREATE TABLE ").append("t_profile_info").append(" (")
                 .append("profileId").append(" INTEGER PRIMARY KEY AUTOINCREMENT, ")
-//				.append("profileName").append(" ").append("TEXT").append(",")
-
+                .append("createTime").append(" ").append("LONG").append(",")
+                .append("updateTime").append(" ").append("LONG").append(",")
                 .append("profileName").append(" ").append("TEXT")
+                .append(");");
+        execCreateTableSQL(db);
+    }
+    private void createCustomerTable(SQLiteDatabase db) {
+        sqlBuf.append("CREATE TABLE ").append("t_customer_info").append(" (")
+                .append("id").append(" INTEGER PRIMARY KEY AUTOINCREMENT, ")
+                .append("birthday").append(" ").append("LONG").append(",")
+                .append("firstName").append(" ").append("TEXT").append(",")
+                .append("lastName").append(" ").append("TEXT").append(",")
+                .append("phoneNumber").append(" ").append("TEXT").append(",")
+                .append("gender").append(" ").append("TEXT").append(",")
+                .append("description").append(" ").append("TEXT").append(",")
+                .append("email").append(" ").append("TEXT").append(",")
+                .append("photo").append(" ").append("TEXT").append(",")
+                .append("age").append(" ").append("TEXT")
+                .append(");");
+        execCreateTableSQL(db);
+    }
+
+    private void createProfileCmdTable(SQLiteDatabase db) {
+        sqlBuf.append("CREATE TABLE ").append("t_profile_cmd_info").append(" (")
+                .append("id").append(" INTEGER PRIMARY KEY AUTOINCREMENT, ")
+                .append("profileId").append(" ").append("INTEGER").append(",")
+                .append("command").append(" ").append("TEXT")
                 .append(");");
         execCreateTableSQL(db);
     }

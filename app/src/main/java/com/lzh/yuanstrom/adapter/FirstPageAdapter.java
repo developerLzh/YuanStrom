@@ -21,6 +21,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.lzh.yuanstrom.MyApplication;
 import com.lzh.yuanstrom.R;
 import com.lzh.yuanstrom.ui.ChazuoActivity;
 import com.lzh.yuanstrom.ui.DevControlActivity;
@@ -40,8 +41,6 @@ public class FirstPageAdapter extends RecyclerView.Adapter<FirstPageAdapter.View
     private List<DeviceBean> devices;
     private Context context;
 
-    private ImageLoader imageLoader;
-
     private CharSequence[] items;
 
     public FirstPageAdapter(int pageNum, Context context) {
@@ -49,8 +48,6 @@ public class FirstPageAdapter extends RecyclerView.Adapter<FirstPageAdapter.View
         this.mPage = pageNum;
         devices = new ArrayList<>();
         this.context = context;
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        this.imageLoader = new ImageLoader(requestQueue, new BitmapCache());
 
         items = new CharSequence[]{context.getString(R.string.set),context.getString(R.string.delete),context.getString(R.string.cancel)};
     }
@@ -82,7 +79,7 @@ public class FirstPageAdapter extends RecyclerView.Adapter<FirstPageAdapter.View
                 holder.subTitle.setText(context.getString(R.string.offline));
             }
 //            holder.description.setText(deviceBean.getCid());
-            imageLoader.get(deviceBean.getLogo(), new ImageLoader.ImageListener() {
+            MyApplication.getInstance().getImageLoader().get(deviceBean.getLogo(), new ImageLoader.ImageListener() {
                 @Override
                 public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b) {
                     Bitmap bitmap = imageContainer.getBitmap();

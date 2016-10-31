@@ -16,10 +16,19 @@ public class StringUtils {
         return str.trim();
     }
 
+    /**
+     * equals null也表示为空
+     * @param str
+     * @return
+     */
     public  static  boolean isBlank(String str){
 
         if (null == str){
             return  true;
+        }
+
+        if(str.equals("null")){
+            return true;
         }
 
         for (int i = 0 ; i < str.length() ; i++){

@@ -154,4 +154,29 @@
     <string name="send_failed">发送失败</string>
 
     <string name="delete_dev_suc">删除设备成功</string>
+
+    <string name="from_gallery">从相册中选择</string>
+
+    <string name="from_camera">拍摄照片</string>
+
+    <string name="no_sdcard">未找到SD卡，不能使用照片</string>
+
+    <string name="choice_photo">选择头像</string>
+
+    <string name="set_name">修改姓名</string>
+    <string name="set_age">设置年龄</string>
+    <string name="set_gender">设置性别</string>
+
+    <string name="boy">男</string>
+    <string name="girl">女</string>
+
+    <string name="please_name">请输入姓名</string>
+
+    <string name="no_user">无法获取到用户信息，请稍后再试</string>
+
+    <string name="set_suc">操作成功</string>
+    <string name="set_failed">操作失败</string>
+
+    <string name="please_gender">请选择性别</string>
+
 </resources>
