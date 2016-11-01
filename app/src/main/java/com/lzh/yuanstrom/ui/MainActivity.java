@@ -49,6 +49,8 @@ import com.lzh.yuanstrom.MyApplication;
 import com.lzh.yuanstrom.R;
 import com.lzh.yuanstrom.adapter.TabPagerAdapter;
 import com.lzh.yuanstrom.bean.CustomerBean;
+import com.lzh.yuanstrom.bean.ExtraProperties;
+import com.lzh.yuanstrom.bean.ProfileData;
 import com.lzh.yuanstrom.common.ExampleDataProvider;
 import com.lzh.yuanstrom.common.GetCustomerListener;
 import com.lzh.yuanstrom.utils.PhotoHelper;
@@ -71,6 +73,7 @@ import co.mobiwise.materialintro.view.MaterialIntroView;
 import me.hekr.hekrsdk.action.HekrUser;
 import me.hekr.hekrsdk.action.HekrUserAction;
 import me.hekr.hekrsdk.bean.DeviceBean;
+import me.hekr.hekrsdk.bean.FileBean;
 import me.hekr.hekrsdk.bean.ProfileBean;
 import me.hekr.hekrsdk.bean.TranslateBean;
 import me.hekr.hekrsdk.util.ConstantsUtil;
@@ -182,8 +185,8 @@ public class MainActivity extends BaseActivity implements PageFragment.GetDevice
                 } else {
                     cusName.setText(getString(R.string.set_name));
                 }
-                if (StringUtils.isNotBlank(bean.getAge())) {
-                    cusAge.setText("  " + bean.getAge());
+                if ( 0 != customerBean.getAge()) {
+                    cusAge.setText("  " + customerBean.getAge() + getString(R.string.years_old));
                 } else {
                     cusAge.setText(getString(R.string.set_age));
                 }
@@ -204,7 +207,7 @@ public class MainActivity extends BaseActivity implements PageFragment.GetDevice
                         public void onResponse(ImageLoader.ImageContainer response, boolean b) {
                             Bitmap bitmap = response.getBitmap();
                             if (null != bitmap) {
-                                cusPhoto.setImageBitmap(bitmap);
+                                cusPhoto.setImageBitmap(Utils.toRoundBitmap(bitmap));
                             } else {
                                 cusPhoto.setImageResource(R.mipmap.personal_center);
                             }
@@ -355,8 +358,8 @@ public class MainActivity extends BaseActivity implements PageFragment.GetDevice
         final NumberPicker numberPicker = new NumberPicker(MainActivity.this);
         numberPicker.setMinValue(1);
         numberPicker.setMaxValue(100);
-        if (StringUtils.isNotBlank(customerBean.getAge())) {
-            numberPicker.setValue(Integer.parseInt(customerBean.getAge()));
+        if (0 != customerBean.getAge()) {
+            numberPicker.setValue(customerBean.getAge());
         } else {
             numberPicker.setValue(23);
         }
@@ -368,7 +371,9 @@ public class MainActivity extends BaseActivity implements PageFragment.GetDevice
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
                         int pickNo = numberPicker.getValue();
-                        customerBean.setAge(String.valueOf(pickNo));
+                        ExtraProperties extraProperties = new ExtraProperties();
+                        extraProperties.age = pickNo;
+                        customerBean.setExtraProperties(extraProperties);
                         uploadCustomer();
                     }
                 })
@@ -654,22 +659,10 @@ public class MainActivity extends BaseActivity implements PageFragment.GetDevice
             if (data == null) {
                 return;
             }
-
-            Bundle extras = data.getExtras();
-            Bitmap bitmap = null;
-            if (extras != null) {
-                bitmap = extras.getParcelable("data");
-            } else {
-                try {
-                    bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(data.getData()));
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (null != bitmap) {
-                cusPhoto.setImageBitmap(Utils.toRoundBitmap(bitmap));
-                photoHelper.deleteTemp(photoHelper.getTempPath());
-                photoHelper.deleteTemp(photoHelper.getCameraPath());
+            if (StringUtils.isNotBlank(photoHelper.getFileUri().toString())) {
+                uploadPhoto(photoHelper.getTempPath());
+            } else if (StringUtils.isNotBlank(photoHelper.getCameraPath())) {
+                uploadPhoto(photoHelper.getCameraPath());
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -683,14 +676,49 @@ public class MainActivity extends BaseActivity implements PageFragment.GetDevice
             @Override
             public void setProfileSuccess() {
                 hideLoading();
+                photoHelper.deleteTemp(photoHelper.getTempPath());
+                photoHelper.deleteTemp(photoHelper.getCameraPath());
+                photoHelper.setCameraPath("");
+                photoHelper.setTempPath("");
+                getCustomerInfo();
                 ToastUtil.showMessage(context, getString(R.string.set_suc));
             }
 
             @Override
             public void setProfileFail(int i) {
                 hideLoading();
+                photoHelper.deleteTemp(photoHelper.getTempPath());
+                photoHelper.deleteTemp(photoHelper.getCameraPath());
+                photoHelper.setCameraPath("");
+                photoHelper.setTempPath("");
                 ToastUtil.showMessage(context, getString(R.string.set_failed) + "：" + HekrCodeUtil.errorCode2Msg(i));
             }
         });
+    }
+
+    public void uploadPhoto(String uri) {
+        try {
+            hekrUserAction.uploadFile(uri, new HekrUser.UploadFileListener() {
+                @Override
+                public void uploadFileSuccess(FileBean fileBean) {
+                    ProfileBean.AvatarUrl avatarUrl = new ProfileBean.AvatarUrl();
+                    avatarUrl.setSmall(fileBean.getFileSourceUrl());
+                    customerBean.setAvatarUrl(avatarUrl);
+                    uploadCustomer();
+                }
+
+                @Override
+                public void uploadFileFail(int i) {
+
+                }
+
+                @Override
+                public void uploadProgress(int i) {
+
+                }
+            });
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }
