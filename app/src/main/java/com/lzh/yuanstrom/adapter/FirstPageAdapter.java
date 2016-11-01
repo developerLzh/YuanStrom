@@ -23,6 +23,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.lzh.yuanstrom.MyApplication;
 import com.lzh.yuanstrom.R;
+import com.lzh.yuanstrom.bean.LocalDeviceBean;
 import com.lzh.yuanstrom.ui.ChazuoActivity;
 import com.lzh.yuanstrom.ui.DevControlActivity;
 import com.lzh.yuanstrom.ui.LampActivity;
@@ -37,22 +38,30 @@ import me.hekr.hekrsdk.bean.DeviceBean;
  */
 public class FirstPageAdapter extends RecyclerView.Adapter<FirstPageAdapter.ViewHolder> {
 
-    private int mPage;
-    private List<DeviceBean> devices;
+    private List<LocalDeviceBean> devices;
     private Context context;
-
     private CharSequence[] items;
 
-    public FirstPageAdapter(int pageNum, Context context) {
+    private OnItemClickListener clickListener;
+    private OnItemLongClickListener longClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener clickListener) {
+        this.clickListener = clickListener;
+    }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener longClickListener) {
+        this.longClickListener = longClickListener;
+    }
+
+    public FirstPageAdapter(Context context) {
         super();
-        this.mPage = pageNum;
         devices = new ArrayList<>();
         this.context = context;
 
-        items = new CharSequence[]{context.getString(R.string.set),context.getString(R.string.delete),context.getString(R.string.cancel)};
+        items = new CharSequence[]{context.getString(R.string.set), context.getString(R.string.delete), context.getString(R.string.cancel)};
     }
 
-    public void setDevices(List<DeviceBean> devices) {
+    public void setDevices(List<LocalDeviceBean> devices) {
         this.devices = devices;
         notifyDataSetChanged();
     }
@@ -71,21 +80,21 @@ public class FirstPageAdapter extends RecyclerView.Adapter<FirstPageAdapter.View
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         if (devices.size() != 0) {
-            final DeviceBean deviceBean = devices.get(position);
-            holder.title.setText(deviceBean.getCategoryName().getZh_CN());
-            if (deviceBean.isOnline()) {
+            final LocalDeviceBean deviceBean = devices.get(position);
+            holder.title.setText(deviceBean.categoryName);
+            if (deviceBean.online) {
                 holder.subTitle.setText(context.getString(R.string.online));
             } else {
                 holder.subTitle.setText(context.getString(R.string.offline));
             }
 //            holder.description.setText(deviceBean.getCid());
-            MyApplication.getInstance().getImageLoader().get(deviceBean.getLogo(), new ImageLoader.ImageListener() {
+            MyApplication.getInstance().getImageLoader().get(deviceBean.logo, new ImageLoader.ImageListener() {
                 @Override
                 public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b) {
                     Bitmap bitmap = imageContainer.getBitmap();
-                    if(null != bitmap){
+                    if (null != bitmap) {
                         holder.icon.setImageBitmap(bitmap);
-                    }else{
+                    } else {
                         holder.icon.setImageBitmap(null);
                     }
                 }
@@ -94,38 +103,48 @@ public class FirstPageAdapter extends RecyclerView.Adapter<FirstPageAdapter.View
                 public void onErrorResponse(VolleyError volleyError) {
                     holder.icon.setImageBitmap(null);
                 }
-            },160,160);
+            }, 160, 160);
             holder.root.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    toWhatActivityByCateName(context,deviceBean.getCategoryName().getZh_CN(),deviceBean.getDevTid());
+                    if (null != clickListener) {
+                        if(deviceBean.isClicked){
+                            deviceBean.isClicked = false;
+                        }else{
+                            deviceBean.isClicked = true;
+                        }
+                        clickListener.onItemClick(deviceBean,v);
+                    }
                 }
             });
             holder.root.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    showDialog(context,deviceBean.getDevTid());
+
+                    if(null != longClickListener){
+                       return longClickListener.onItemLongClick(deviceBean);
+                    }
                     return false;
                 }
             });
         }
     }
 
-    private void showDialog(final Context context, final String devTid) {
+    public void showDialog(final Context context, final String devTid) {
         AlertDialog dialog = new AlertDialog.Builder(context)
                 .setTitle(context.getString(R.string.choice_method))
                 .setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int i) {
-                        if(items[i].equals(context.getString(R.string.cancel))){
+                        if (items[i].equals(context.getString(R.string.cancel))) {
                             dialog.dismiss();
-                        }else if(items[i].equals(context.getString(R.string.delete))){
+                        } else if (items[i].equals(context.getString(R.string.delete))) {
                             dialog.dismiss();
                             showSureDialog();
-                        }else if(items[i].equals(context.getString(R.string.set))){
+                        } else if (items[i].equals(context.getString(R.string.set))) {
                             //TODO to setting
                             Intent intent = new Intent(context, DevControlActivity.class);
-                            intent.putExtra("devTid",devTid);
+                            intent.putExtra("devTid", devTid);
                             context.startActivity(intent);
                         }
                     }
@@ -171,25 +190,33 @@ public class FirstPageAdapter extends RecyclerView.Adapter<FirstPageAdapter.View
         }
     }
 
-    public static void toWhatActivityByCateName(Context context,String cateName,String devTid){
+    public static void toWhatActivityByCateName(Context context, String cateName, String devTid) {
         Intent intent = new Intent();
-        if(cateName.equals(context.getString(R.string.lamp))){
+        if (cateName.equals(context.getString(R.string.lamp))) {
             intent.setClass(context, LampActivity.class);
-        }else if(cateName.equals(context.getString(R.string.chazuo))){
+        } else if (cateName.equals(context.getString(R.string.chazuo))) {
             intent.setClass(context, ChazuoActivity.class);
-        }else if(cateName.equals(context.getString(R.string.yaokong))){
+        } else if (cateName.equals(context.getString(R.string.yaokong))) {
 //            intent.setClass(context.YaoKongActivity.class);
-        }else if(cateName.equals(context.getString(R.string.hongwai))){
+        } else if (cateName.equals(context.getString(R.string.hongwai))) {
 
-        }else if(cateName.equals(context.getString(R.string.menci))){
+        } else if (cateName.equals(context.getString(R.string.menci))) {
 
-        } else if(cateName.equals(context.getString(R.string.mianban))){
+        } else if (cateName.equals(context.getString(R.string.mianban))) {
 
-        }else if(cateName.equals(context.getString(R.string.yaokong_2))){
-            intent.setClass(context,YaoKong2Activity.class);
+        } else if (cateName.equals(context.getString(R.string.yaokong_2))) {
+            intent.setClass(context, YaoKong2Activity.class);
         }
-        intent.putExtra("devTid",devTid);
+        intent.putExtra("devTid", devTid);
         context.startActivity(intent);
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(LocalDeviceBean bean,View v);
+    }
+
+    public interface OnItemLongClickListener {
+        boolean onItemLongClick(LocalDeviceBean bean);
     }
 
 }

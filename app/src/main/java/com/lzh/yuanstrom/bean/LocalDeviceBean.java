@@ -77,13 +77,9 @@ public class LocalDeviceBean {
 
     public int maxDevShareNum;
 
+    public boolean isClicked = false;
+
     public boolean saveNew() {
-        List<LocalDeviceBean> devs = LocalDeviceBean.findALll();
-        for (LocalDeviceBean dev : devs) {
-            if (dev.devTid.equals(devTid)) {
-                return update();//tid相同就代表是同一设备
-            }
-        }
         SqliteHelper helper = SqliteHelper.getInstance();
         SQLiteDatabase db = helper.openSqliteDatabase();
         ContentValues values = new ContentValues();

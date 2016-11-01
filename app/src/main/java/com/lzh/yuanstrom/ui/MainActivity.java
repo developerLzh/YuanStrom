@@ -50,6 +50,7 @@ import com.lzh.yuanstrom.R;
 import com.lzh.yuanstrom.adapter.TabPagerAdapter;
 import com.lzh.yuanstrom.bean.CustomerBean;
 import com.lzh.yuanstrom.bean.ExtraProperties;
+import com.lzh.yuanstrom.bean.LocalDeviceBean;
 import com.lzh.yuanstrom.bean.ProfileData;
 import com.lzh.yuanstrom.common.ExampleDataProvider;
 import com.lzh.yuanstrom.common.GetCustomerListener;
@@ -87,7 +88,7 @@ import java.util.ArrayList;
 /**
  * Created by Vicent on 2016/10/12.
  */
-public class MainActivity extends BaseActivity implements PageFragment.GetDevicesListener {
+public class MainActivity extends BaseActivity  {
 
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
@@ -123,8 +124,6 @@ public class MainActivity extends BaseActivity implements PageFragment.GetDevice
 
     private TabPagerAdapter mAdapter;
 
-    private List<DeviceBean> cloundDevices;
-
     private PhotoHelper photoHelper;
 
     private static final int CAMERA = 0x01;
@@ -145,8 +144,6 @@ public class MainActivity extends BaseActivity implements PageFragment.GetDevice
         cusAge = (TextView) drawer.findViewById(R.id.age);
         cusGender = (TextView) drawer.findViewById(R.id.gender);
         cusPhoto = (ImageView) drawer.findViewById(R.id.photo);
-
-        cloundDevices = new LinkedList<>();
 
         initToolbar();
         initTab();
@@ -402,7 +399,7 @@ public class MainActivity extends BaseActivity implements PageFragment.GetDevice
                     startActivity(new Intent(context, ConfigActivity.class));
                 } else if (tabLayout.getSelectedTabPosition() == 1) {
                     Intent intent = new Intent(context, CreateGroupActivity.class);
-                    intent.putExtra("provider", new ExampleDataProvider(cloundDevices));
+                    intent.putExtra("provider", new ExampleDataProvider(LocalDeviceBean.findALll()));
                     startActivity(intent);
                 }
             }
@@ -592,18 +589,6 @@ public class MainActivity extends BaseActivity implements PageFragment.GetDevice
                     }
                 }).create();
         pswDialog.show();
-    }
-
-    @Override
-    public void getDevicesSuc(List<DeviceBean> list) {
-        if (null != list) {
-            this.cloundDevices = list;
-        }
-    }
-
-    @Override
-    public void getDeviceFailed() {
-        cloundDevices = new LinkedList<>();
     }
 
     public void getCustomerInfo(final GetCustomerListener listener) {

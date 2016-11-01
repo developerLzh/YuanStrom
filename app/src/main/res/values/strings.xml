@@ -180,5 +180,10 @@
     <string name="please_gender">请选择性别</string>
 
     <string name="years_old">岁</string>
+    <string name="candidate_list">备选列表：</string>
+
+    <string name="profile_tips">（您可以选择多个设备和多个操作方式）</string>
+
+    <string name="input_profile_name">情景模式名</string>
 
 </resources>

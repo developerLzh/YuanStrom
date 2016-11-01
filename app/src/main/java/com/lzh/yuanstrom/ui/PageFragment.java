@@ -54,8 +54,6 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @BindView(R.id.recycler)
     RecyclerView recyclerView;
 
-    private GetDevicesListener getDevicesListener;
-
     public static PageFragment create(int page) {
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
@@ -81,10 +79,21 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         if (mPage == 1) {
             GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3, LinearLayoutManager.VERTICAL, false);
             recyclerView.setLayoutManager(gridLayoutManager);
-            firstPageAdapter = new FirstPageAdapter(mPage, getActivity());
+            firstPageAdapter = new FirstPageAdapter(getActivity());
+            firstPageAdapter.setOnItemClickListener(new FirstPageAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(LocalDeviceBean bean,View v) {
+                    FirstPageAdapter.toWhatActivityByCateName(getActivity(), bean.categoryName, bean.devTid);
+                }
+            });
+            firstPageAdapter.setOnItemLongClickListener(new FirstPageAdapter.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(LocalDeviceBean bean) {
+                    firstPageAdapter.showDialog(getActivity(), bean.devTid);
+                    return true;
+                }
+            });
             recyclerView.setAdapter(firstPageAdapter);
-
-            getDevicesListener = (MainActivity)getActivity();
 
         } else if (mPage == 2) {
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
@@ -150,20 +159,20 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void getDevicesSuccess(List<DeviceBean> list) {
                 mSwipeRefreshLayout.setRefreshing(false);
+                LocalDeviceBean.deletAll();
+                for (DeviceBean deviceBean : list) {
+                    LocalDeviceBean local = LocalDeviceBean.dev2Local(deviceBean);
+                    local.saveNew();
+                }
                 if (null != list && list.size() > 0) {
                     mSwipeRefreshLayout.setVisibility(View.VISIBLE);
                     emptyCon.setVisibility(View.GONE);
-                    firstPageAdapter.setDevices(list);
+                    firstPageAdapter.setDevices(LocalDeviceBean.findALll());
                 } else {
                     mSwipeRefreshLayout.setVisibility(View.GONE);
                     emptyCon.setVisibility(View.VISIBLE);
                     hintTxt.setText(getString(R.string.no_device));
-                    firstPageAdapter.setDevices(new ArrayList<DeviceBean>());
-                }
-                getDevicesListener.getDevicesSuc(list);
-                for (DeviceBean deviceBean : list) {
-                    LocalDeviceBean local = LocalDeviceBean.dev2Local(deviceBean);
-                    local.saveNew();
+                    firstPageAdapter.setDevices(new ArrayList<LocalDeviceBean>());
                 }
             }
 
@@ -173,8 +182,7 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 mSwipeRefreshLayout.setVisibility(View.GONE);
                 emptyCon.setVisibility(View.VISIBLE);
                 hintTxt.setText(getString(R.string.load_failed) + HekrCodeUtil.errorCode2Msg(i));
-                firstPageAdapter.setDevices(new ArrayList<DeviceBean>());
-                getDevicesListener.getDeviceFailed();
+                firstPageAdapter.setDevices(new ArrayList<LocalDeviceBean>());
             }
         });
     }
@@ -205,12 +213,5 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 secondPageAdapter.setGroups(new ArrayList<GroupBean>());
             }
         });
-    }
-
-    public interface GetDevicesListener {
-
-        void getDevicesSuc(List<DeviceBean> list);
-
-        void getDeviceFailed();
     }
 }

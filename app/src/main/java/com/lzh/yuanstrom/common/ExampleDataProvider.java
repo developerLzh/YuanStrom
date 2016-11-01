@@ -16,6 +16,7 @@
 
 package com.lzh.yuanstrom.common;
 
+import com.lzh.yuanstrom.bean.LocalDeviceBean;
 import com.lzh.yuanstrom.bean.SimpleDeviceBean;
 
 import java.util.Collections;
@@ -33,7 +34,7 @@ public class ExampleDataProvider extends AbstractDataProvider{
         return mData;
     }
 
-    public ExampleDataProvider(List<DeviceBean> deviceBeans) {
+    public ExampleDataProvider(List<LocalDeviceBean> deviceBeans) {
         int id = 0;
 
         mData = new LinkedList<>();
@@ -44,15 +45,15 @@ public class ExampleDataProvider extends AbstractDataProvider{
         notAdded.setPinned(true);//设置  压住的
         mData.add(notAdded);
 
-        for (DeviceBean bean : deviceBeans) {
+        for (LocalDeviceBean bean : deviceBeans) {
             id++;
             SimpleDeviceBean simpleDeviceBean = new SimpleDeviceBean();
             simpleDeviceBean.id = id;
-            simpleDeviceBean.logo = bean.getLogo();
-            simpleDeviceBean.devCate = bean.getCategoryName().getZh_CN();
-            simpleDeviceBean.devTid = bean.getDevTid();
-            simpleDeviceBean.devName = bean.getDeviceName();
-            simpleDeviceBean.ctrlKey = bean.getCtrlKey();
+            simpleDeviceBean.logo = bean.logo;
+            simpleDeviceBean.devCate = bean.categoryName;
+            simpleDeviceBean.devTid = bean.devTid;
+            simpleDeviceBean.devName = bean.deviceName;
+            simpleDeviceBean.ctrlKey = bean.ctrlKey;
             simpleDeviceBean.setViewType(0);
             simpleDeviceBean.setPinned(false);
             mData.add(simpleDeviceBean);
