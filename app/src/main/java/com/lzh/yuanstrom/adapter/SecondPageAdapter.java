@@ -1,14 +1,20 @@
 package com.lzh.yuanstrom.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.RotateAnimation;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lzh.yuanstrom.R;
+import com.lzh.yuanstrom.ui.DevControlActivity;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
@@ -30,6 +36,7 @@ public class SecondPageAdapter extends RecyclerView.Adapter<SecondPageAdapter.Vi
     public SecondPageAdapter(Context context) {
         this.context = context;
         groups = new ArrayList<>();
+
     }
 
     public void setGroups(List<GroupBean> groups) {
@@ -50,14 +57,24 @@ public class SecondPageAdapter extends RecyclerView.Adapter<SecondPageAdapter.Vi
             holder.title.setText(groupBean.getGroupName());
             holder.subTitle.setText(context.getString(R.string.dev_no) + groupBean.getDeviceList().size());
             holder.gridView.setAdapter(new GridAdapter(context, groupBean.getDeviceList()));
-            holder.rootView.setOnClickListener(new View.OnClickListener() {
+            holder.arrow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (holder.expandableLayout.isExpanded()) {
+                        RotateAnimation rotateAnimation = new RotateAnimation(0,180);
+                        holder.arrow.startAnimation(rotateAnimation);
                         holder.expandableLayout.collapse();
                     } else {
+                        RotateAnimation rotateAnimation = new RotateAnimation(0,-180);
+                        holder.arrow.startAnimation(rotateAnimation);
                         holder.expandableLayout.expand();
                     }
+                }
+            });
+            holder.rootView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
                 }
             });
         }
@@ -80,12 +97,15 @@ public class SecondPageAdapter extends RecyclerView.Adapter<SecondPageAdapter.Vi
 
         public View rootView;
 
+        public ImageView arrow;
+
         public ViewHolder(View view) {
             super(view);
             gridView = (GridView) view.findViewById(R.id.grid_view);
             title = (TextView) view.findViewById(R.id.title);
             subTitle = (TextView) view.findViewById(R.id.subtitle);
             expandableLayout = (ExpandableLayout) view.findViewById(R.id.expand_layout);
+            arrow = (ImageView) view.findViewById(R.id.arrow);
             rootView = view;
         }
     }

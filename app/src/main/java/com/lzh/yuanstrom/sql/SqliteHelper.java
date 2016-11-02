@@ -55,11 +55,11 @@ public class SqliteHelper extends SQLiteOpenHelper {
     }
 
     public void onCreate(SQLiteDatabase db) {
-        createCmdInfoTable(db);
+//        createCmdInfoTable(db);
         createDevInfoTable(db);
-        createCustomerTable(db);
-        createProfileInfoTable(db);
-        createProfileCmdTable(db);
+//        createCustomerTable(db);
+//        createProfileInfoTable(db);
+//        createProfileCmdTable(db);
     }
 
     private void createProfileInfoTable(SQLiteDatabase db) {

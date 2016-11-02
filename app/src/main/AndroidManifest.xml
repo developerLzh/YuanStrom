@@ -64,6 +64,9 @@
         <activity
             android:name=".ui.MainActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.CreateProfileActivity"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".ui.LoginActivity"

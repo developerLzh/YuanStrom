@@ -21,7 +21,28 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <include layout="@layout/headline_16dp" />
+            <RelativeLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="120dp">
+
+                <TextView android:id="@+id/title"
+                    style="@style/Material_Card_Title"
+                    android:text="Title"/>
+
+                <TextView android:id="@+id/subtitle"
+                    android:layout_below="@+id/title"
+                    style="@style/Material_Card_Subtitle_16dp"
+                    android:text="Subtitle"/>
+                <ImageView
+                    android:id="@+id/arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="5dp"
+                    android:src="@mipmap/down_arrow"/>
+            </RelativeLayout>
 
             <net.cachapa.expandablelayout.ExpandableLayout
                 android:id="@+id/expand_layout"

@@ -186,4 +186,15 @@
 
     <string name="input_profile_name">情景模式名</string>
 
+    <string name="create_profile">创建情景模式</string>
+
+    <string name="chazuo_1">插座一：</string>
+    <string name="chazuo_2">插座二：</string>
+    <string name="chazuo_3">插座三：</string>
+    <string name="chazuo_4">插座四：</string>
+    
+    <string name="at_least_one_action">至少要添加一个操作指令哦</string>
+
+    <string name="please_edit_profile_name">请输入情景模式名</string>
+    <string name="empty_cmd">未添加任何操作指令</string>
 </resources>

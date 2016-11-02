@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@string/cancel" />
+
+        <TextView
+            android:id="@+id/ensure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="8dp"
+            android:text="@string/ensure"
+            android:textColor="@color/colorPrimary" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0.0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingTop="8dp"
+                android:text="@string/chazuo_1" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/chazuo_1_open"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/radio_btn"
+                    android:button="@null"
+                    android:drawableTop="@mipmap/chazuo_icon"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_margin="5dp"
+                    android:padding="5dp"
+                    android:text="open"
+                    android:textColor="@color/text_default_color">
+
+                </RadioButton>
+
+                <RadioButton
+                    android:id="@+id/chazuo_1_close"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/radio_btn"
+                    android:button="@null"
+                    android:checked="false"
+                    android:drawableTop="@mipmap/chazuo_gray"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_margin="5dp"
+                    android:padding="5dp"
+                    android:text="open"
+                    android:textColor="@color/text_default_color">
+
+                </RadioButton>
+            </RadioGroup>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0.0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingTop="8dp"
+                android:text="@string/chazuo_2" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/chazuo_2_open"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/radio_btn"
+                    android:button="@null"
+                    android:drawableTop="@mipmap/chazuo_icon"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_margin="5dp"
+                    android:padding="5dp"
+                    android:text="open"
+                    android:textColor="@color/text_default_color">
+
+                </RadioButton>
+
+                <RadioButton
+                    android:id="@+id/chazuo_2_close"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/radio_btn"
+                    android:button="@null"
+                    android:checked="false"
+                    android:drawableTop="@mipmap/chazuo_gray"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_margin="5dp"
+                    android:padding="5dp"
+                    android:text="open"
+                    android:textColor="@color/text_default_color">
+
+                </RadioButton>
+            </RadioGroup>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0.0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingTop="8dp"
+                android:text="@string/chazuo_3" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/chazuo_3_open"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/radio_btn"
+                    android:button="@null"
+                    android:drawableTop="@mipmap/chazuo_icon"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_margin="5dp"
+                    android:padding="5dp"
+                    android:text="open"
+                    android:textColor="@color/text_default_color">
+
+                </RadioButton>
+
+                <RadioButton
+                    android:id="@+id/chazuo_3_close"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/radio_btn"
+                    android:button="@null"
+                    android:checked="false"
+                    android:drawableTop="@mipmap/chazuo_gray"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_margin="5dp"
+                    android:padding="5dp"
+                    android:text="open"
+                    android:textColor="@color/text_default_color">
+
+                </RadioButton>
+            </RadioGroup>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0.0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingTop="8dp"
+                android:text="@string/chazuo_4" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/chazuo_4_open"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/radio_btn"
+                    android:button="@null"
+                    android:drawableTop="@mipmap/chazuo_icon"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_margin="5dp"
+                    android:padding="5dp"
+                    android:text="open"
+                    android:textColor="@color/text_default_color">
+
+                </RadioButton>
+
+                <RadioButton
+                    android:id="@+id/chazuo_4_close"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/radio_btn"
+                    android:button="@null"
+                    android:checked="false"
+                    android:drawableTop="@mipmap/chazuo_gray"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_margin="5dp"
+                    android:padding="5dp"
+                    android:text="open"
+                    android:textColor="@color/text_default_color">
+
+                </RadioButton>
+            </RadioGroup>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

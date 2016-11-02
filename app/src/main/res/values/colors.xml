@@ -32,13 +32,19 @@
     <color name="blue">#0000ff</color>
 
 
-    <color name="bg_item_normal_state">#fff0f0f0</color>
-    <color name="bg_item_dragging_state">#ffffdddd</color>
-    <color name="bg_item_dragging_active_state">#ffff9999</color>
-    <color name="bg_item_swiping_state">#ffddddff</color>
-    <color name="bg_item_swiping_active_state">#ff9999ff</color>
+    <color name="bg_group_item_normal_state">#ffddffdd</color>
+    <color name="bg_group_item_normal_pressed_state">#ff99cc99</color>
+    <color name="bg_group_item_expanded_state">#ff88dd88</color>
+    <color name="bg_group_item_expanded_pressed_state">#ff99cc99</color>
+    <color name="bg_group_item_dragging_state">#ffeeccff</color>
+    <color name="bg_group_item_dragging_active_state">#ffee99ff</color>
+    <color name="bg_group_item_swiping_state">#ffddccff</color>
+    <color name="bg_group_item_swiping_active_state">#ffbb99ff</color>
 
     <color name="text_default_color">#727272</color>
 
     <color name="alpha_color">#88ffffff</color>
+
+    <color name="expandable_item_indicator_color">#42000000</color>
+
 </resources>

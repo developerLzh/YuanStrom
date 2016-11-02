@@ -1,6 +1,8 @@
 package com.lzh.yuanstrom.ui;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -16,6 +18,8 @@ import android.widget.TextView;
 import com.lzh.yuanstrom.R;
 import com.lzh.yuanstrom.adapter.FirstPageAdapter;
 import com.lzh.yuanstrom.adapter.SecondPageAdapter;
+import com.lzh.yuanstrom.adapter.ThirdPageAdapter;
+import com.lzh.yuanstrom.bean.CustomerBean;
 import com.lzh.yuanstrom.bean.LocalDeviceBean;
 
 import java.util.ArrayList;
@@ -36,6 +40,7 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     FirstPageAdapter firstPageAdapter;
     SecondPageAdapter secondPageAdapter;
+    ThirdPageAdapter thirdPageAdapter;
 
     HekrUserAction hekrUserAction;
 
@@ -82,7 +87,7 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             firstPageAdapter = new FirstPageAdapter(getActivity());
             firstPageAdapter.setOnItemClickListener(new FirstPageAdapter.OnItemClickListener() {
                 @Override
-                public void onItemClick(LocalDeviceBean bean,View v) {
+                public void onItemClick(LocalDeviceBean bean, View v) {
                     FirstPageAdapter.toWhatActivityByCateName(getActivity(), bean.categoryName, bean.devTid);
                 }
             });
@@ -99,7 +104,23 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
             secondPageAdapter = new SecondPageAdapter(getActivity());
             recyclerView.setAdapter(secondPageAdapter);
+        } else if (mPage == 3) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+            thirdPageAdapter = new ThirdPageAdapter(getActivity());
+            thirdPageAdapter.setOnClickListener(new ThirdPageAdapter.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //TODO
+                }
+            });
+            recyclerView.setAdapter(thirdPageAdapter);
+            CustomerBean bean = ((MainActivity) getActivity()).getCustomerBean();
+            if (bean != null) {
+                thirdPageAdapter.setDatas(bean.profileDatas);
+            }
         }
+
+        initHandler();
 
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeRefreshLayout.setOnRefreshListener(this);
@@ -118,6 +139,20 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         }
 
         return view;
+    }
+
+    private void initHandler() {
+        handler = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message message) {
+                switch (message.what){
+                    case 0:
+                        mSwipeRefreshLayout.setRefreshing(false);
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -143,6 +178,8 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         super.onResume();
     }
 
+    private Handler handler;
+
     @Override
     public void onRefresh() {
         if (mPage == 1) {
@@ -151,6 +188,8 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         } else if (mPage == 2) {
             mSwipeRefreshLayout.setRefreshing(true);
             getGroup();
+        } else if(mPage == 3){
+            handler.sendEmptyMessageDelayed(0,2000);
         }
     }
 

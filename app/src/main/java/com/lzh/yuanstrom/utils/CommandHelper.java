@@ -8,9 +8,9 @@ import android.util.Log;
 public class CommandHelper {
 
     /** 第一位备选 **/
-    public static final String SWITCH_COMMAND = "01";//开关命令
-    public static final String RETURN_COMMAND = "03";//开关命令
-    public static final String SET_COMMAND = "04";//开关命令
+    public static final String SWITCH_COMMAND = "01";//开关
+    public static final String RETURN_COMMAND = "03";//获取信息
+    public static final String SET_COMMAND = "04";//设置
 
     /** 第二位备选 **/
     public static final String DOT_PATTERN = "01";//点动模式

@@ -18,6 +18,11 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="MyStyle" parent="android:Widget">
+        <item name="android:background">?android:attr/colorBackground</item>
+        <item name="behavior_hideable">true</item>
+    </style>
+
     <style name="Material_Card_View">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

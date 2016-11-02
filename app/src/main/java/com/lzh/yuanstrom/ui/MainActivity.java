@@ -88,7 +88,7 @@ import java.util.ArrayList;
 /**
  * Created by Vicent on 2016/10/12.
  */
-public class MainActivity extends BaseActivity  {
+public class MainActivity extends BaseActivity {
 
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
@@ -129,8 +129,13 @@ public class MainActivity extends BaseActivity  {
     private static final int CAMERA = 0x01;
     private static final int PICTURE = 0x02;
     private static final int CROP = 0x03;
+    private static final int ADD_PROFILE = 0x04;
 
     private CustomerBean customerBean;
+
+    public CustomerBean getCustomerBean() {
+        return customerBean;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,7 +187,7 @@ public class MainActivity extends BaseActivity  {
                 } else {
                     cusName.setText(getString(R.string.set_name));
                 }
-                if ( 0 != customerBean.getAge()) {
+                if (0 != customerBean.getAge()) {
                     cusAge.setText("  " + customerBean.getAge() + getString(R.string.years_old));
                 } else {
                     cusAge.setText(getString(R.string.set_age));
@@ -370,6 +375,7 @@ public class MainActivity extends BaseActivity  {
                         int pickNo = numberPicker.getValue();
                         ExtraProperties extraProperties = new ExtraProperties();
                         extraProperties.age = pickNo;
+                        extraProperties.profileDatas = customerBean.profileDatas;
                         customerBean.setExtraProperties(extraProperties);
                         uploadCustomer();
                     }
@@ -401,6 +407,13 @@ public class MainActivity extends BaseActivity  {
                     Intent intent = new Intent(context, CreateGroupActivity.class);
                     intent.putExtra("provider", new ExampleDataProvider(LocalDeviceBean.findALll()));
                     startActivity(intent);
+                } else if (tabLayout.getSelectedTabPosition() == 2) {
+                    if (isCustomerNull()) {
+                        ToastUtil.showMessage(MainActivity.this, getString(R.string.no_user));
+                        return;
+                    }
+                    Intent intent = new Intent(context, CreateProfileActivity.class);
+                    startActivityForResult(intent, ADD_PROFILE);
                 }
             }
         });
@@ -640,14 +653,28 @@ public class MainActivity extends BaseActivity  {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         photoHelper.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CROP) {
-            if (data == null) {
-                return;
-            }
-            if (StringUtils.isNotBlank(photoHelper.getFileUri().toString())) {
-                uploadPhoto(photoHelper.getTempPath());
-            } else if (StringUtils.isNotBlank(photoHelper.getCameraPath())) {
-                uploadPhoto(photoHelper.getCameraPath());
+        if (resultCode == RESULT_OK) {
+            if (requestCode == CROP) {
+                if (data == null) {
+                    return;
+                }
+                if (StringUtils.isNotBlank(photoHelper.getFileUri().toString())) {
+                    uploadPhoto(photoHelper.getTempPath());
+                } else if (StringUtils.isNotBlank(photoHelper.getCameraPath())) {
+                    uploadPhoto(photoHelper.getCameraPath());
+                }
+            } else if (requestCode == ADD_PROFILE) {
+                ProfileData profileData = (ProfileData) data.getSerializableExtra("profileData");
+                ExtraProperties extraProperties = new ExtraProperties();
+                List<ProfileData> profileDatas = customerBean.profileDatas;
+                int age = customerBean.getAge();
+                if (null == profileDatas) {
+                    profileDatas = new ArrayList<>();
+                }
+                profileDatas.add(profileData);
+                extraProperties.age = age;
+                extraProperties.profileDatas = profileDatas;
+                uploadCustomer();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
