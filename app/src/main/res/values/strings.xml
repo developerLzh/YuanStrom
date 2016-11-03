@@ -192,9 +192,20 @@
     <string name="chazuo_2">插座二：</string>
     <string name="chazuo_3">插座三：</string>
     <string name="chazuo_4">插座四：</string>
+
+    <string name="dialog_message_group_item_pinned">Group item pinned! (group = %1$d)</string>
+    <string name="dialog_message_child_item_pinned">Child item pinned! (group = %1$d, child = %2$d)</string>
+    <string name="snack_bar_text_item_removed">1 item removed</string>
+    <string name="snack_bar_text_group_item_removed">1 group item removed</string>
+    <string name="snack_bar_text_child_item_removed">1 child item removed</string>
+    <string name="snack_bar_text_button_clicked">Button clicked! (position = %1$d)</string>
+    <string name="snack_bar_action_undo">UNDO</string>
     
     <string name="at_least_one_action">至少要添加一个操作指令哦</string>
 
     <string name="please_edit_profile_name">请输入情景模式名</string>
     <string name="empty_cmd">未添加任何操作指令</string>
+
+    <string name="device_not_found">设备不存在</string>
+
 </resources>

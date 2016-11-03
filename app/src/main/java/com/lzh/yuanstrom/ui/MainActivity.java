@@ -3,20 +3,13 @@ package com.lzh.yuanstrom.ui;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.v4.content.FileProvider;
-import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -27,17 +20,14 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -52,17 +42,15 @@ import com.lzh.yuanstrom.bean.CustomerBean;
 import com.lzh.yuanstrom.bean.ExtraProperties;
 import com.lzh.yuanstrom.bean.LocalDeviceBean;
 import com.lzh.yuanstrom.bean.ProfileData;
-import com.lzh.yuanstrom.common.ExampleDataProvider;
+import com.lzh.yuanstrom.bean.SimpleDeviceBean;
 import com.lzh.yuanstrom.common.GetCustomerListener;
 import com.lzh.yuanstrom.utils.PhotoHelper;
 import com.lzh.yuanstrom.utils.StringUtils;
 import com.lzh.yuanstrom.utils.ToastUtil;
 import com.lzh.yuanstrom.utils.Utils;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.io.Serializable;
 import java.util.List;
 
 import butterknife.BindView;
@@ -73,15 +61,11 @@ import co.mobiwise.materialintro.shape.FocusGravity;
 import co.mobiwise.materialintro.view.MaterialIntroView;
 import me.hekr.hekrsdk.action.HekrUser;
 import me.hekr.hekrsdk.action.HekrUserAction;
-import me.hekr.hekrsdk.bean.DeviceBean;
 import me.hekr.hekrsdk.bean.FileBean;
 import me.hekr.hekrsdk.bean.ProfileBean;
-import me.hekr.hekrsdk.bean.TranslateBean;
 import me.hekr.hekrsdk.util.ConstantsUtil;
 import me.hekr.hekrsdk.util.HekrCodeUtil;
 import me.hekr.hekrsdk.util.SpCache;
-
-import java.util.LinkedList;
 
 import java.util.ArrayList;
 
@@ -404,8 +388,33 @@ public class MainActivity extends BaseActivity {
                 if (tabLayout.getSelectedTabPosition() == 0 || tabLayout.getSelectedTabPosition() == -1) {
                     startActivity(new Intent(context, ConfigActivity.class));
                 } else if (tabLayout.getSelectedTabPosition() == 1) {
-                    Intent intent = new Intent(context, CreateGroupActivity.class);
-                    intent.putExtra("provider", new ExampleDataProvider(LocalDeviceBean.findALll()));
+                    List<SimpleDeviceBean> notAdded = new ArrayList<>();
+                    List<SimpleDeviceBean> added = new ArrayList<>();
+                    for (int i = 0; i < LocalDeviceBean.findALll().size(); i++) {
+                        LocalDeviceBean local = LocalDeviceBean.findALll().get(i);
+                        SimpleDeviceBean simDean = new SimpleDeviceBean();
+                        simDean.setId(i);
+                        simDean.setDevTid(local.devTid);
+                        simDean.setCtrlKey(local.ctrlKey);
+                        simDean.setDevCate(local.categoryName);
+                        simDean.setLogo(local.logo);
+                        simDean.setDevCate(local.categoryName);
+                        notAdded.add(simDean);
+                    }
+
+//                    SimpleDeviceBean bean = new SimpleDeviceBean();
+//                    bean.setId(1);
+//                    bean.setDevTid("e209b52b347f4f2f9b6b8cc5a9903826");
+//                    bean.setCtrlKey("ESP_2M_5CCF7F239BCC");
+//                    bean.setDevCate("");
+//                    bean.setLogo("");
+//                    bean.setDevCate("");
+//                    added.add(bean);
+
+                    Intent intent = new Intent(context,GroupActivity.class);
+                    intent.putExtra("notAdded", (Serializable) notAdded);
+                    intent.putExtra("added", (Serializable) added);
+                    intent.putExtra("isNewCreate",true);
                     startActivity(intent);
                 } else if (tabLayout.getSelectedTabPosition() == 2) {
                     if (isCustomerNull()) {

@@ -20,7 +20,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/list_group_item_height"
+    android:layout_height="96dp"
     android:layout_marginTop="8dp"
     android:background="#ffffff">
 
@@ -40,6 +40,7 @@
             android:layout_gravity="top|left"
             android:background="#20000000"
             android:clickable="true"
+            android:visibility="gone"
             tools:ignore="RtlHardcoded"/>
 
         <TextView
@@ -51,7 +52,7 @@
             android:layout_marginRight="40dp"
             android:gravity="center"/>
 
-        <com.h6ah4i.android.example.advrecyclerview.common.widget.ExpandableItemIndicator
+        <com.lzh.yuanstrom.widget.ExpandableItemIndicator
             android:id="@+id/indicator"
             android:layout_width="24dp"
             android:layout_height="24dp"

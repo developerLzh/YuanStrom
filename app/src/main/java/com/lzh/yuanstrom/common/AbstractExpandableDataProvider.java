@@ -16,6 +16,8 @@
 
 package com.lzh.yuanstrom.common;
 
+import com.lzh.yuanstrom.bean.SimpleDeviceBean;
+
 public abstract class AbstractExpandableDataProvider {
     public static abstract class BaseData {
 
@@ -39,7 +41,7 @@ public abstract class AbstractExpandableDataProvider {
     public abstract int getChildCount(int groupPosition);
 
     public abstract GroupData getGroupItem(int groupPosition);
-    public abstract ChildData getChildItem(int groupPosition, int childPosition);
+    public abstract SimpleDeviceBean getChildItem(int groupPosition, int childPosition);
 
     public abstract void moveGroupItem(int fromGroupPosition, int toGroupPosition);
     public abstract void moveChildItem(int fromGroupPosition, int fromChildPosition, int toGroupPosition, int toChildPosition);

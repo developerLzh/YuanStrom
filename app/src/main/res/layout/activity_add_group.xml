@@ -40,14 +40,11 @@
         <!--android:layout_marginTop="10dp"-->
         <!--android:layout_marginBottom="10dp"-->
         <!--android:text="@string/not_added_list"/>-->
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/device_list"
+    <RelativeLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_weight="1"
         android:layout_height="0.0dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        ></android.support.v7.widget.RecyclerView>
+        android:layout_weight="1"></RelativeLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/input_group_desc"

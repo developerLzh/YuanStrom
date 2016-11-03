@@ -71,6 +71,9 @@
         <activity
             android:name=".ui.LoginActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.GroupActivity"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".ui.ConfigActivity"

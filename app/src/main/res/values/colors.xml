@@ -31,6 +31,11 @@
     <color name="green">#00ff00</color>
     <color name="blue">#0000ff</color>
 
+    <color name="bg_item_normal_state">#fff0f0f0</color>
+    <color name="bg_item_dragging_state">#ffffdddd</color>
+    <color name="bg_item_dragging_active_state">#ffff9999</color>
+    <color name="bg_item_swiping_state">#ffddddff</color>
+    <color name="bg_item_swiping_active_state">#ff9999ff</color>
 
     <color name="bg_group_item_normal_state">#ffddffdd</color>
     <color name="bg_group_item_normal_pressed_state">#ff99cc99</color>
@@ -41,10 +46,17 @@
     <color name="bg_group_item_swiping_state">#ffddccff</color>
     <color name="bg_group_item_swiping_active_state">#ffbb99ff</color>
 
+    <color name="bg_swipe_item_neutral">@android:color/transparent</color>
+    <color name="bg_swipe_item_pinned">#fff9930d</color>
+    <color name="bg_swipe_item_dismiss">#ff2f8b2a</color>
+    <color name="bg_swipe_group_item_pinned">#fff45f30</color>
+    <color name="bg_swipe_group_item_dismiss">#ff295db3</color>
+
     <color name="text_default_color">#727272</color>
 
     <color name="alpha_color">#88ffffff</color>
 
     <color name="expandable_item_indicator_color">#42000000</color>
+    <color name="snackbar_action_color_done">#ffccccff</color>
 
 </resources>

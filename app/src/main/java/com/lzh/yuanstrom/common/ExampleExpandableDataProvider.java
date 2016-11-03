@@ -17,47 +17,46 @@
 package com.lzh.yuanstrom.common;
 
 
+import android.content.Context;
 import android.support.v4.util.Pair;
 
 import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
+import com.lzh.yuanstrom.R;
+import com.lzh.yuanstrom.bean.SimpleDeviceBean;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class ExampleExpandableDataProvider extends AbstractExpandableDataProvider {
-    private List<Pair<GroupData, List<ChildData>>> mData;
+    private List<Pair<GroupData, List<SimpleDeviceBean>>> mData;
 
     // for undo group item
-    private Pair<GroupData, List<ChildData>> mLastRemovedGroup;
+    private Pair<GroupData, List<SimpleDeviceBean>> mLastRemovedGroup;
     private int mLastRemovedGroupPosition = -1;
 
     // for undo child item
-    private ChildData mLastRemovedChild;
+    private SimpleDeviceBean mLastRemovedChild;
     private long mLastRemovedChildParentGroupId = -1;
     private int mLastRemovedChildPosition = -1;
 
-    public ExampleExpandableDataProvider() {
-        final String groupItems = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        final String childItems = "abc";
+    public ExampleExpandableDataProvider(Context context,List<SimpleDeviceBean> notAddedList,List<SimpleDeviceBean> addedList) {
+
+        final String[] groupItems = new String[]{context.getString(R.string.not_added_list),context.getString(R.string.added_list)};
 
         mData = new LinkedList<>();
 
-        for (int i = 0; i < groupItems.length(); i++) {
+        for (int i = 0; i < groupItems.length; i++) {
             //noinspection UnnecessaryLocalVariable
             final long groupId = i;
-            final String groupText = Character.toString(groupItems.charAt(i));
+            final String groupText = groupItems[i];
             final ConcreteGroupData group = new ConcreteGroupData(groupId, groupText);
-            final List<ChildData> children = new ArrayList<>();
 
-            for (int j = 0; j < childItems.length(); j++) {
-                final long childId = group.generateNewChildId();
-                final String childText = Character.toString(childItems.charAt(j));
-
-                children.add(new ConcreteChildData(childId, childText));
+            if(groupText.equals(context.getString(R.string.not_added_list))){
+                mData.add(new Pair<GroupData, List<SimpleDeviceBean>>(group,notAddedList));
+            }else{
+                mData.add(new Pair<GroupData, List<SimpleDeviceBean>>(group,addedList));
             }
-
-            mData.add(new Pair<GroupData, List<ChildData>>(group, children));
         }
     }
 
@@ -81,12 +80,12 @@ public class ExampleExpandableDataProvider extends AbstractExpandableDataProvide
     }
 
     @Override
-    public ChildData getChildItem(int groupPosition, int childPosition) {
+    public SimpleDeviceBean getChildItem(int groupPosition, int childPosition) {
         if (groupPosition < 0 || groupPosition >= getGroupCount()) {
             throw new IndexOutOfBoundsException("groupPosition = " + groupPosition);
         }
 
-        final List<ChildData> children = mData.get(groupPosition).second;
+        final List<SimpleDeviceBean> children = mData.get(groupPosition).second;
 
         if (childPosition < 0 || childPosition >= children.size()) {
             throw new IndexOutOfBoundsException("childPosition = " + childPosition);
@@ -101,7 +100,7 @@ public class ExampleExpandableDataProvider extends AbstractExpandableDataProvide
             return;
         }
 
-        final Pair<GroupData, List<ChildData>> item = mData.remove(fromGroupPosition);
+        final Pair<GroupData, List<SimpleDeviceBean>> item = mData.remove(fromGroupPosition);
         mData.add(toGroupPosition, item);
     }
 
@@ -111,15 +110,15 @@ public class ExampleExpandableDataProvider extends AbstractExpandableDataProvide
             return;
         }
 
-        final Pair<GroupData, List<ChildData>> fromGroup = mData.get(fromGroupPosition);
-        final Pair<GroupData, List<ChildData>> toGroup = mData.get(toGroupPosition);
+        final Pair<GroupData, List<SimpleDeviceBean>> fromGroup = mData.get(fromGroupPosition);
+        final Pair<GroupData, List<SimpleDeviceBean>> toGroup = mData.get(toGroupPosition);
 
-        final ConcreteChildData item = (ConcreteChildData) fromGroup.second.remove(fromChildPosition);
+        final SimpleDeviceBean item = fromGroup.second.remove(fromChildPosition);
 
         if (toGroupPosition != fromGroupPosition) {
             // assign a new ID
             final long newId = ((ConcreteGroupData) toGroup.first).generateNewChildId();
-            item.setChildId(newId);
+            item.setId(newId);
         }
 
         toGroup.second.add(toChildPosition, item);
@@ -174,7 +173,7 @@ public class ExampleExpandableDataProvider extends AbstractExpandableDataProvide
     }
 
     private long undoChildRemoval() {
-        Pair<GroupData, List<ChildData>> group = null;
+        Pair<GroupData, List<SimpleDeviceBean>> group = null;
         int groupPosition = -1;
 
         // find the group
@@ -204,6 +203,14 @@ public class ExampleExpandableDataProvider extends AbstractExpandableDataProvide
         mLastRemovedChild = null;
 
         return RecyclerViewExpandableItemManager.getPackedPositionForChild(groupPosition, insertedPosition);
+    }
+
+    public List<Pair<GroupData, List<SimpleDeviceBean>>> getmData() {
+        return mData;
+    }
+
+    public void setmData(List<Pair<GroupData, List<SimpleDeviceBean>>> mData) {
+        this.mData = mData;
     }
 
     public static final class ConcreteGroupData extends GroupData {
@@ -248,42 +255,6 @@ public class ExampleExpandableDataProvider extends AbstractExpandableDataProvide
             final long id = mNextChildId;
             mNextChildId += 1;
             return id;
-        }
-    }
-
-    public static final class ConcreteChildData extends ChildData {
-
-        private long mId;
-        private final String mText;
-        private boolean mPinned;
-
-        ConcreteChildData(long id, String text) {
-            mId = id;
-            mText = text;
-        }
-
-        @Override
-        public long getChildId() {
-            return mId;
-        }
-
-        @Override
-        public String getText() {
-            return mText;
-        }
-
-        @Override
-        public void setPinned(boolean pinned) {
-            mPinned = pinned;
-        }
-
-        @Override
-        public boolean isPinned() {
-            return mPinned;
-        }
-
-        public void setChildId(long id) {
-            this.mId = id;
         }
     }
 }
