@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- item开始-->
+        <LinearLayout
+            android:id="@+id/share_QQ"
+            style="@style/linear.qr_linear">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/umeng_socialize_qq_on" />
+
+            <TextView
+                style="@style/qr_text"
+                android:text="@string/QR_QQ" />
+        </LinearLayout>
+        <!-- item结束-->
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/line" />
+
+        <!-- item开始-->
+        <LinearLayout
+            android:id="@+id/share_Qzone"
+            style="@style/linear.qr_linear">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/umeng_socialize_qzone_on" />
+
+            <TextView
+                style="@style/qr_text"
+                android:text="@string/QR_Qzone" />
+        </LinearLayout>
+        <!-- item结束-->
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/line" />
+        <!-- item开始-->
+        <LinearLayout
+            android:id="@+id/share_sina"
+            style="@style/linear.qr_linear">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/umeng_socialize_sina_on" />
+
+            <TextView
+                style="@style/qr_text"
+                android:text="@string/QR_sms" />
+        </LinearLayout>
+        <!-- item结束-->
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/line" />
+
+        <!-- item开始-->
+        <LinearLayout
+            android:id="@+id/share_weixin"
+            style="@style/linear.qr_linear">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/umeng_socialize_wechat" />
+
+            <TextView
+                style="@style/qr_text"
+                android:text="@string/QR_weiXin" />
+        </LinearLayout>
+        <!-- item结束-->
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/line" />
+
+        <!-- item开始-->
+        <LinearLayout
+            android:id="@+id/share_wxcircle"
+            style="@style/linear.qr_linear">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/umeng_socialize_wxcircle" />
+
+            <TextView
+                style="@style/qr_text"
+                android:text="@string/QR_wxcircle" />
+        </LinearLayout>
+        <!-- item结束-->
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line" />
+</LinearLayout>
