@@ -79,7 +79,7 @@
                     android:orientation="vertical"
                     android:layout_margin="5dp"
                     android:padding="5dp"
-                    android:text="open"
+                    android:text="close"
                     android:textColor="@color/text_default_color">
 
                 </RadioButton>
@@ -134,7 +134,7 @@
                     android:orientation="vertical"
                     android:layout_margin="5dp"
                     android:padding="5dp"
-                    android:text="open"
+                    android:text="close"
                     android:textColor="@color/text_default_color">
 
                 </RadioButton>
@@ -189,7 +189,7 @@
                     android:orientation="vertical"
                     android:layout_margin="5dp"
                     android:padding="5dp"
-                    android:text="open"
+                    android:text="close"
                     android:textColor="@color/text_default_color">
 
                 </RadioButton>
@@ -244,7 +244,7 @@
                     android:orientation="vertical"
                     android:layout_margin="5dp"
                     android:padding="5dp"
-                    android:text="open"
+                    android:text="close"
                     android:textColor="@color/text_default_color">
 
                 </RadioButton>

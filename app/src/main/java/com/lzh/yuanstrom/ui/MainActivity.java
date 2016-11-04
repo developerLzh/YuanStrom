@@ -3,7 +3,9 @@ package com.lzh.yuanstrom.ui;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -49,6 +51,7 @@ import com.lzh.yuanstrom.utils.StringUtils;
 import com.lzh.yuanstrom.utils.ToastUtil;
 import com.lzh.yuanstrom.utils.Utils;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.List;
@@ -116,6 +119,10 @@ public class MainActivity extends BaseActivity {
     private static final int ADD_PROFILE = 0x04;
 
     private CustomerBean customerBean;
+
+    public void setCustomerBean(CustomerBean customerBean) {
+        this.customerBean = customerBean;
+    }
 
     public CustomerBean getCustomerBean() {
         return customerBean;
@@ -206,6 +213,11 @@ public class MainActivity extends BaseActivity {
                     });
                 } else {
                     cusPhoto.setImageResource(R.mipmap.personal_center);
+                }
+                PageFragment pageFragment = mAdapter.getFragment(tabLayout.getSelectedTabPosition());
+                if(null != pageFragment && pageFragment.thirdPageAdapter != null){
+                    pageFragment.thirdPageAdapter.setDatas(bean.profileDatas);
+                    isFromProfileActivity = false;
                 }
             }
 
@@ -402,15 +414,6 @@ public class MainActivity extends BaseActivity {
                         notAdded.add(simDean);
                     }
 
-//                    SimpleDeviceBean bean = new SimpleDeviceBean();
-//                    bean.setId(1);
-//                    bean.setDevTid("e209b52b347f4f2f9b6b8cc5a9903826");
-//                    bean.setCtrlKey("ESP_2M_5CCF7F239BCC");
-//                    bean.setDevCate("");
-//                    bean.setLogo("");
-//                    bean.setDevCate("");
-//                    added.add(bean);
-
                     Intent intent = new Intent(context,GroupActivity.class);
                     intent.putExtra("notAdded", (Serializable) notAdded);
                     intent.putExtra("added", (Serializable) added);
@@ -475,11 +478,13 @@ public class MainActivity extends BaseActivity {
         });
     }
 
+    private boolean isFromProfileActivity = false;
+
     @Override
     protected void onResume() {
         super.onResume();
         PageFragment pageFragment = mAdapter.getFragment(tabLayout.getSelectedTabPosition());
-        if (pageFragment != null) {
+        if (pageFragment != null && !isFromProfileActivity) {
             Log.e("pageNo", "--->" + pageFragment.mPage);
             pageFragment.onRefresh();
         }
@@ -546,6 +551,14 @@ public class MainActivity extends BaseActivity {
                         mDrawerLayout.closeDrawers();
                         if (menuItem.getItemId() == R.id.change_psw) {
                             showPswDialog();
+                        } else if(menuItem.getItemId() == R.id.nav_share){
+                            Intent intent = new Intent(Intent.ACTION_SEND);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.putExtra(Intent.EXTRA_TEXT, "Android Local Share");   //附带的说明信息
+                            intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/temp_photo.jpg")));
+                            intent.putExtra(Intent.EXTRA_SUBJECT, "Title");
+                            intent.setType("image/*");   //分享图片
+                            startActivity(Intent.createChooser(intent,"分享"));
                         }
                         return true;
                     }
@@ -683,7 +696,9 @@ public class MainActivity extends BaseActivity {
                 profileDatas.add(profileData);
                 extraProperties.age = age;
                 extraProperties.profileDatas = profileDatas;
+                customerBean.setExtraProperties(extraProperties);
                 uploadCustomer();
+                isFromProfileActivity = true;
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

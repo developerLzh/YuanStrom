@@ -10,7 +10,7 @@ public class GroupResult {
 
     public String groupName;
 
-    public long groupId;
+    public String groupId;
 
     public List<UploadDeviceBean> deviceList;
 

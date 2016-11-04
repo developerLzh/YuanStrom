@@ -24,6 +24,7 @@ import com.lzh.yuanstrom.utils.StringUtils;
 import net.cachapa.expandablelayout.ExpandableLayout;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -68,10 +69,10 @@ public class SecondPageAdapter extends RecyclerView.Adapter<SecondPageAdapter.Vi
                 public void onClick(View v) {
                     if (holder.expandableLayout.isExpanded()) {
 
-                        rotateView(holder.arrow,180,0);
+                        rotateView(holder.arrow, 180, 0);
                         holder.expandableLayout.collapse();
                     } else {
-                        rotateView(holder.arrow,0,180);
+                        rotateView(holder.arrow, 0, 180);
                         holder.expandableLayout.expand();
                     }
                 }
@@ -105,7 +106,14 @@ public class SecondPageAdapter extends RecyclerView.Adapter<SecondPageAdapter.Vi
                 simDean.setLogo(local.logo);
                 simDean.setDevCate(local.categoryName);
                 added.add(simDean);
-                localNotAdded.remove(local);
+                Iterator<LocalDeviceBean> iteator = localNotAdded.iterator();
+                while (iteator.hasNext()) {
+                    LocalDeviceBean localbean = iteator.next();
+                    if (localbean.devTid.equals(local.devTid) ) {
+                        iteator.remove();
+                        break;
+                    }
+                }
             } else {//本地不存在
                 SimpleDeviceBean simDean = new SimpleDeviceBean();
                 simDean.setId(i);
@@ -131,9 +139,9 @@ public class SecondPageAdapter extends RecyclerView.Adapter<SecondPageAdapter.Vi
         Intent intent = new Intent(context, GroupActivity.class);
         intent.putExtra("notAdded", (Serializable) notAdded);
         intent.putExtra("added", (Serializable) added);
-        intent.putExtra("groupName",groupBean.getGroupName());
-        intent.putExtra("desc",groupBean.getDesc());
-        intent.putExtra("groupId",groupBean.getGroupId());
+        intent.putExtra("groupName", groupBean.getGroupName());
+        intent.putExtra("desc", groupBean.getDesc());
+        intent.putExtra("groupId", groupBean.getGroupId());
         intent.putExtra("isNewCreate", false);
         context.startActivity(intent);
     }

@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +16,21 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.lzh.yuanstrom.R;
 import com.lzh.yuanstrom.adapter.FirstPageAdapter;
 import com.lzh.yuanstrom.adapter.SecondPageAdapter;
 import com.lzh.yuanstrom.adapter.ThirdPageAdapter;
 import com.lzh.yuanstrom.bean.CustomerBean;
 import com.lzh.yuanstrom.bean.LocalDeviceBean;
+import com.lzh.yuanstrom.bean.ProfileData;
+import com.lzh.yuanstrom.common.GetCustomerListener;
+import com.lzh.yuanstrom.utils.CommandHelper;
+import com.lzh.yuanstrom.utils.FullCommandHelper;
+import com.lzh.yuanstrom.utils.ToastUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +41,9 @@ import me.hekr.hekrsdk.action.HekrUser;
 import me.hekr.hekrsdk.action.HekrUserAction;
 import me.hekr.hekrsdk.bean.DeviceBean;
 import me.hekr.hekrsdk.bean.GroupBean;
+import me.hekr.hekrsdk.listener.DataReceiverListener;
 import me.hekr.hekrsdk.util.HekrCodeUtil;
+import me.hekr.hekrsdk.util.MsgUtil;
 
 public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     public static final String ARG_PAGE = "ARG_PAGE";
@@ -109,8 +121,14 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             thirdPageAdapter = new ThirdPageAdapter(getActivity());
             thirdPageAdapter.setOnClickListener(new ThirdPageAdapter.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-                    //TODO
+                public void onClick(View v, ProfileData profileData) {
+                    if (null != profileData && profileData.profileDatas != null) {
+                        for (String data : profileData.profileDatas) {
+                            com.alibaba.fastjson.JSONObject jb = JSON.parseObject(data);
+                            String devTid = jb.getJSONObject("params").getString("devTid");
+                            sendData(devTid, data);
+                        }
+                    }
                 }
             });
             recyclerView.setAdapter(thirdPageAdapter);
@@ -119,8 +137,6 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 thirdPageAdapter.setDatas(bean.profileDatas);
             }
         }
-
-        initHandler();
 
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeRefreshLayout.setOnRefreshListener(this);
@@ -139,20 +155,6 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         }
 
         return view;
-    }
-
-    private void initHandler() {
-        handler = new Handler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message message) {
-                switch (message.what){
-                    case 0:
-                        mSwipeRefreshLayout.setRefreshing(false);
-                        break;
-                }
-                return false;
-            }
-        });
     }
 
     @Override
@@ -178,8 +180,6 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         super.onResume();
     }
 
-    private Handler handler;
-
     @Override
     public void onRefresh() {
         if (mPage == 1) {
@@ -188,8 +188,23 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         } else if (mPage == 2) {
             mSwipeRefreshLayout.setRefreshing(true);
             getGroup();
-        } else if(mPage == 3){
-            handler.sendEmptyMessageDelayed(0,2000);
+        } else if (mPage == 3) {
+            mSwipeRefreshLayout.setRefreshing(true);
+            ((MainActivity) getActivity()).getCustomerInfo(new GetCustomerListener() {
+                @Override
+                public void getSuccess(CustomerBean bean) {
+                    ((MainActivity) getActivity()).setCustomerBean(bean);
+                    if (bean != null) {
+                        thirdPageAdapter.setDatas(bean.profileDatas);
+                    }
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
+
+                @Override
+                public void getFailed(int errCode) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
+            });
         }
     }
 
@@ -253,4 +268,24 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             }
         });
     }
+
+    public void sendData(String devTid, String command) {
+        try {
+            MsgUtil.sendMsg(getActivity(), devTid, new JSONObject(command), new DataReceiverListener() {
+                @Override
+                public void onReceiveSuccess(String s) {
+                    Log.e("onReceiveSuccess", s);
+                    ToastUtil.showMessage(getActivity(), getString(R.string.send_suc));
+                }
+
+                @Override
+                public void onReceiveTimeout() {
+                    ToastUtil.showMessage(getActivity(), getString(R.string.send_failed));
+                }
+            }, false);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -113,4 +113,28 @@
         <item name="android:scrollbars">vertical</item>
     </style>
 
+    <!-- 我的二维码界面图标布局样式-->
+    <style name="linear.qr_linear">
+        <item name="android:background">@drawable/rect_gray_selector2</item>
+    </style>
+
+    <!-- 可点击线性布局的基本样式-->
+    <style name="linear">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:clickable">true</item>
+        <item name="android:paddingBottom">5dp</item>
+    </style>
+
+    <!-- 我的二维码界面文本样式-->
+    <style name="qr_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/text_default_color</item>
+    </style>
+
 </resources>

@@ -59,7 +59,7 @@ public class ThirdPageAdapter extends RecyclerView.Adapter<ThirdPageAdapter.View
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         if (datas.size() != 0) {
-            ProfileData profileData = datas.get(position);
+            final ProfileData profileData = datas.get(position);
             holder.profileName.setText(profileData.profileName);
             StringBuilder sb = new StringBuilder();
             if (profileData.profileDatas != null) {
@@ -76,7 +76,7 @@ public class ThirdPageAdapter extends RecyclerView.Adapter<ThirdPageAdapter.View
                 @Override
                 public void onClick(View view) {
                     if (null != onClickListener) {
-                        onClickListener.onClick(view);
+                        onClickListener.onClick(view,profileData);
                     }
                 }
             });
@@ -136,7 +136,7 @@ public class ThirdPageAdapter extends RecyclerView.Adapter<ThirdPageAdapter.View
     }
 
     public interface OnClickListener {
-        void onClick(View v);
+        void onClick(View v,ProfileData profileData);
     }
 
 }

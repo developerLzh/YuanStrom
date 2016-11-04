@@ -208,4 +208,18 @@
 
     <string name="device_not_found">设备不存在</string>
 
+    <string name="QR_title">我的二维码</string>
+    <string name="QR_weiXin">微信</string>
+    <string name="QR_sms">短信</string>
+    <string name="QR_QQ">QQ</string>
+    <string name="QR_Qzone">QQ空间</string>
+    <string name="QR_wxcircle">朋友圈</string>
+    <string name="QR_good">分享二维码的好处</string>
+
+    <string name="can_not_save">未找到存储卡，无法存储图片！</string>
+
+    <string name="share_suc">分享成功</string>
+    <string name="share_err">分享错误</string>
+    <string name="share_cancel">取消分享</string>
+
 </resources>

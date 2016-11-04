@@ -18,4 +18,6 @@
 
     <dimen name="list_item_height">64dp</dimen>
 
+    <dimen name="QR_img_size">220dp</dimen>
+
 </resources>

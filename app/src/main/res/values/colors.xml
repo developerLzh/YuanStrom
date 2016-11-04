@@ -59,4 +59,7 @@
     <color name="expandable_item_indicator_color">#42000000</color>
     <color name="snackbar_action_color_done">#ffccccff</color>
 
+    <color name="gray2">#64969696</color>
+
+    <color name="line">#22000000</color>
 </resources>

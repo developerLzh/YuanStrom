@@ -91,6 +91,7 @@ public class CreateProfileActivity extends BaseActivity {
                 Intent intent = new Intent();
                 intent.putExtra("profileData", profileData);
                 setResult(RESULT_OK, intent);
+                CreateProfileActivity.this.finish();
             }
         });
     }
@@ -134,6 +135,7 @@ public class CreateProfileActivity extends BaseActivity {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3, LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(gridLayoutManager);
         mRecyclerView.setAdapter(firstPageAdapter);
+        firstPageAdapter.setDevices(LocalDeviceBean.findALll());
     }
 
     private void showLampDialog(LocalDeviceBean bean) {
@@ -143,13 +145,13 @@ public class CreateProfileActivity extends BaseActivity {
         final CusBottomSheetDialog dialog = new CusBottomSheetDialog(this);
         View root = getLayoutInflater().inflate(R.layout.chazuo_bottom_layout, null);
         final RadioButton c1_Open = (RadioButton) root.findViewById(R.id.chazuo_1_open);
-        final RadioButton c1_Close = (RadioButton) root.findViewById(R.id.chazuo_1_open);
+        final RadioButton c1_Close = (RadioButton) root.findViewById(R.id.chazuo_1_close);
         final RadioButton c2_Open = (RadioButton) root.findViewById(R.id.chazuo_2_open);
-        final RadioButton c2_Close = (RadioButton) root.findViewById(R.id.chazuo_2_open);
+        final RadioButton c2_Close = (RadioButton) root.findViewById(R.id.chazuo_2_close);
         final RadioButton c3_Open = (RadioButton) root.findViewById(R.id.chazuo_3_open);
-        final RadioButton c3_Close = (RadioButton) root.findViewById(R.id.chazuo_3_open);
+        final RadioButton c3_Close = (RadioButton) root.findViewById(R.id.chazuo_3_close);
         final RadioButton c4_Open = (RadioButton) root.findViewById(R.id.chazuo_4_open);
-        final RadioButton c4_Close = (RadioButton) root.findViewById(R.id.chazuo_4_open);
+        final RadioButton c4_Close = (RadioButton) root.findViewById(R.id.chazuo_4_close);
         TextView cancel = (TextView) root.findViewById(R.id.cancel);
         TextView ensure = (TextView) root.findViewById(R.id.ensure);
         cancel.setOnClickListener(new View.OnClickListener() {
