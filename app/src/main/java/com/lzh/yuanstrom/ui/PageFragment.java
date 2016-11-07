@@ -94,7 +94,7 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         ButterKnife.bind(this, view);
 
         if (mPage == 1) {
-            GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3, LinearLayoutManager.VERTICAL, false);
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false);
             recyclerView.setLayoutManager(gridLayoutManager);
             firstPageAdapter = new FirstPageAdapter(getActivity());
             firstPageAdapter.setOnItemClickListener(new FirstPageAdapter.OnItemClickListener() {
@@ -133,8 +133,12 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             });
             recyclerView.setAdapter(thirdPageAdapter);
             CustomerBean bean = ((MainActivity) getActivity()).getCustomerBean();
-            if (bean != null) {
+            if (bean != null && bean.getProfileDatas() != null) {
+                emptyCon.setVisibility(View.GONE);
                 thirdPageAdapter.setDatas(bean.profileDatas);
+            } else{
+                emptyCon.setVisibility(View.VISIBLE);
+                hintTxt.setText(getString(R.string.no_profiles));
             }
         }
 
@@ -194,14 +198,19 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 @Override
                 public void getSuccess(CustomerBean bean) {
                     ((MainActivity) getActivity()).setCustomerBean(bean);
-                    if (bean != null) {
+                    if (bean != null && bean.profileDatas != null) {
+                        emptyCon.setVisibility(View.GONE);
                         thirdPageAdapter.setDatas(bean.profileDatas);
+                    } else {
+                        emptyCon.setVisibility(View.VISIBLE);
+                        hintTxt.setText(getString(R.string.no_device));
                     }
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
 
                 @Override
                 public void getFailed(int errCode) {
+                    ToastUtil.showMessage(getActivity(),HekrCodeUtil.errorCode2Msg(errCode));
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
             });
@@ -219,11 +228,9 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     local.saveNew();
                 }
                 if (null != list && list.size() > 0) {
-                    mSwipeRefreshLayout.setVisibility(View.VISIBLE);
                     emptyCon.setVisibility(View.GONE);
                     firstPageAdapter.setDevices(LocalDeviceBean.findALll());
                 } else {
-                    mSwipeRefreshLayout.setVisibility(View.GONE);
                     emptyCon.setVisibility(View.VISIBLE);
                     hintTxt.setText(getString(R.string.no_device));
                     firstPageAdapter.setDevices(new ArrayList<LocalDeviceBean>());
@@ -233,7 +240,6 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void getDevicesFail(int i) {
                 mSwipeRefreshLayout.setRefreshing(false);
-                mSwipeRefreshLayout.setVisibility(View.GONE);
                 emptyCon.setVisibility(View.VISIBLE);
                 hintTxt.setText(getString(R.string.load_failed) + HekrCodeUtil.errorCode2Msg(i));
                 firstPageAdapter.setDevices(new ArrayList<LocalDeviceBean>());
@@ -247,11 +253,9 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             public void getGroupSuccess(List<GroupBean> list) {
                 mSwipeRefreshLayout.setRefreshing(false);
                 if (null != list && list.size() > 0) {
-                    mSwipeRefreshLayout.setVisibility(View.VISIBLE);
                     emptyCon.setVisibility(View.GONE);
                     secondPageAdapter.setGroups(list);
                 } else {
-                    mSwipeRefreshLayout.setVisibility(View.GONE);
                     emptyCon.setVisibility(View.VISIBLE);
                     hintTxt.setText(getString(R.string.no_group));
                     secondPageAdapter.setGroups(new ArrayList<GroupBean>());
@@ -261,7 +265,6 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void getGroupFail(int i) {
                 mSwipeRefreshLayout.setRefreshing(false);
-                mSwipeRefreshLayout.setVisibility(View.GONE);
                 emptyCon.setVisibility(View.VISIBLE);
                 hintTxt.setText(getString(R.string.load_failed) + HekrCodeUtil.errorCode2Msg(i));
                 secondPageAdapter.setGroups(new ArrayList<GroupBean>());
@@ -280,6 +283,7 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
                 @Override
                 public void onReceiveTimeout() {
+                    Log.e("onReceiveSuccess", "request failed");
                     ToastUtil.showMessage(getActivity(), getString(R.string.send_failed));
                 }
             }, false);

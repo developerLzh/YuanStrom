@@ -61,7 +61,7 @@
 
             <TextView
                 style="@style/qr_text"
-                android:text="@string/QR_sms" />
+                android:text="@string/QR_wb" />
         </LinearLayout>
         <!-- item结束-->
 

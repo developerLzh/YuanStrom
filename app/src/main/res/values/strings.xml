@@ -5,6 +5,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_add">add_cate</string>
+    <string name="action_share">share_action</string>
 
     <string name="register">注册</string>
     <string name="login">登录</string>
@@ -78,6 +79,8 @@
     <string name="about_us">关于我们</string>
 
     <string name="share">分享</string>
+
+    <string name="zhuxiao">注销</string>
 
     <string name="change_psw">修改密码</string>
 
@@ -171,6 +174,7 @@
     <string name="girl">女</string>
 
     <string name="please_name">请输入姓名</string>
+    <string name="please_uid">请Uid</string>
 
     <string name="no_user">无法获取到用户信息，请稍后再试</string>
 
@@ -187,6 +191,10 @@
     <string name="input_profile_name">情景模式名</string>
 
     <string name="create_profile">创建情景模式</string>
+
+    <string name="share_info">共享信息</string>
+
+    <string name="dev_control">设备控制</string>
 
     <string name="chazuo_1">插座一：</string>
     <string name="chazuo_2">插座二：</string>
@@ -210,7 +218,7 @@
 
     <string name="QR_title">我的二维码</string>
     <string name="QR_weiXin">微信</string>
-    <string name="QR_sms">短信</string>
+    <string name="QR_wb">微博</string>
     <string name="QR_QQ">QQ</string>
     <string name="QR_Qzone">QQ空间</string>
     <string name="QR_wxcircle">朋友圈</string>
@@ -221,5 +229,19 @@
     <string name="share_suc">分享成功</string>
     <string name="share_err">分享错误</string>
     <string name="share_cancel">取消分享</string>
+
+    <string name="diandong_str">点动模式</string>
+    <string name="husuo_str">互锁模式</string>
+    <string name="zidong_str">自锁模式</string>
+
+    <string name="device_info">设备信息</string>
+
+    <string name="share_owner">共享者：</string>
+
+    <string name="share_device">授权该设备</string>
+
+    <string name="shouquan_device">授权设备</string>
+
+    <string name="share_dev_tips">授权设备给其他用户，需要填写目标用户的Uid，Uid可以在APP的侧滑栏里查看n(*≧▽≦*)n</string>
 
 </resources>

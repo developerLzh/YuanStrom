@@ -45,9 +45,9 @@ import java.util.ArrayList;
 
 public class ShareBottomDialog {
 
-    String shareTitle = "";
-    String shareContent = "";
-    String shareUrl = "";
+    String shareTitle = "源极风科技有限公司";
+    String shareContent = "成都源极风科技有限公司创建于2016年，是一家以智能家居，网站建设，办公平台，手机APP的技术服务商，集设计，开发于一体。 依靠科技求发展，不断为用户提供满意的产品，是我们始终不变的追求。已成功开发出智能插座，智能网关，智能遥控等一系列产品， 以一流的技术服务受到了用户的一致好评。公司员工奉行“进取 求实 严谨 团结”的方针，不断开拓创新，以技术为核心， 以质量为生命，奉用户为上帝，竭诚为您提供性价比最高的产品，以及无微不至的售后服务。\n";
+    String shareUrl = "http://yuanjifeng.iok.la:51400/HTML/html/index.html#";
     private Activity context;
 
     private BaseUiListener txListener;
@@ -68,11 +68,13 @@ public class ShareBottomDialog {
         return weiboResponse;
     }
 
+    private CusBottomSheetDialog dialog;
+
     public ShareBottomDialog(Activity context) {
         this.context = context;
         this.txListener = new BaseUiListener();
         initWeiboRes();
-        CusBottomSheetDialog dialog = new CusBottomSheetDialog(context);
+        dialog = new CusBottomSheetDialog(context);
         View v = LayoutInflater.from(context).inflate(R.layout.share_dialog, null);
         LinearLayout shareQQ = (LinearLayout) v.findViewById(R.id.share_QQ);
         LinearLayout shareQzone = (LinearLayout) v.findViewById(R.id.share_Qzone);
@@ -114,6 +116,12 @@ public class ShareBottomDialog {
                 share2Wb();
             }
         });
+        dialog.setContentView(v);
+        dialog.show();
+    }
+
+    public void show(){
+        dialog.show();
     }
 
     private void initWeiboRes() {

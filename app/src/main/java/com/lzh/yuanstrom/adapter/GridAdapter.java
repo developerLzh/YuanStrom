@@ -69,7 +69,7 @@ public class GridAdapter extends BaseAdapter {
         }
         final GroupBean.DeviceLis bean = devices.get(position);
         final LocalDeviceBean local = LocalDeviceBean.findByTid(bean.getDevTid());
-        holder.title.setText(bean.getDevTid());
+        holder.title.setText(local.categoryName + "\n" + local.deviceName);
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,14 +80,14 @@ public class GridAdapter extends BaseAdapter {
                 FirstPageAdapter.toWhatActivityByCateName(context, local.categoryName, local.devTid);
             }
         });
-        if(StringUtils.isNotBlank(local.logo)){
+        if (StringUtils.isNotBlank(local.logo)) {
             MyApplication.getInstance().getImageLoader().get(local.logo, new ImageLoader.ImageListener() {
                 @Override
                 public void onResponse(ImageLoader.ImageContainer response, boolean b) {
                     Bitmap bitmap = response.getBitmap();
-                    if(bitmap != null){
+                    if (bitmap != null) {
                         holder.imageView.setImageBitmap(bitmap);
-                    }else{
+                    } else {
                         holder.imageView.setImageResource(R.mipmap.chazuo_icon);
                     }
                 }
@@ -98,9 +98,9 @@ public class GridAdapter extends BaseAdapter {
                 }
             });
         }
-        if(local.online){
+        if (local.online) {
             holder.imageView.setBackgroundColor(context.getResources().getColor(R.color.white));
-        }else{
+        } else {
             holder.imageView.setBackgroundColor(context.getResources().getColor(R.color.gray));
         }
         return convertView;

@@ -1,5 +1,7 @@
 package com.lzh.yuanstrom.ui;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -7,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -68,6 +71,7 @@ import me.hekr.hekrsdk.bean.FileBean;
 import me.hekr.hekrsdk.bean.ProfileBean;
 import me.hekr.hekrsdk.util.ConstantsUtil;
 import me.hekr.hekrsdk.util.HekrCodeUtil;
+import me.hekr.hekrsdk.util.HekrSDK;
 import me.hekr.hekrsdk.util.SpCache;
 
 import java.util.ArrayList;
@@ -89,6 +93,9 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
 
+    @BindView(R.id.collapse_toolbar)
+    CollapsingToolbarLayout collapsingToolbarLayout;
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -100,6 +107,8 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.fab)
     FloatingActionButton fab;
+
+    TextView uid;
 
     ImageView cusPhoto;
 
@@ -140,6 +149,7 @@ public class MainActivity extends BaseActivity {
         cusAge = (TextView) drawer.findViewById(R.id.age);
         cusGender = (TextView) drawer.findViewById(R.id.gender);
         cusPhoto = (ImageView) drawer.findViewById(R.id.photo);
+        uid = (TextView) drawer.findViewById(R.id.uid);
 
         initToolbar();
         initTab();
@@ -215,7 +225,7 @@ public class MainActivity extends BaseActivity {
                     cusPhoto.setImageResource(R.mipmap.personal_center);
                 }
                 PageFragment pageFragment = mAdapter.getFragment(tabLayout.getSelectedTabPosition());
-                if(null != pageFragment && pageFragment.thirdPageAdapter != null){
+                if (null != pageFragment && pageFragment.thirdPageAdapter != null && null != bean && bean.profileDatas != null) {
                     pageFragment.thirdPageAdapter.setDatas(bean.profileDatas);
                     isFromProfileActivity = false;
                 }
@@ -270,6 +280,7 @@ public class MainActivity extends BaseActivity {
                 showNameDialog();
             }
         });
+        uid.setText(hekrUserAction.getUserId());
     }
 
     private void showNameDialog() {
@@ -414,10 +425,10 @@ public class MainActivity extends BaseActivity {
                         notAdded.add(simDean);
                     }
 
-                    Intent intent = new Intent(context,GroupActivity.class);
+                    Intent intent = new Intent(context, GroupActivity.class);
                     intent.putExtra("notAdded", (Serializable) notAdded);
                     intent.putExtra("added", (Serializable) added);
-                    intent.putExtra("isNewCreate",true);
+                    intent.putExtra("isNewCreate", true);
                     startActivity(intent);
                 } else if (tabLayout.getSelectedTabPosition() == 2) {
                     if (isCustomerNull()) {
@@ -491,6 +502,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initToolbar() {
+        collapsingToolbarLayout.setTitleEnabled(false);
         if (toolbar != null) {
             toolbar.setTitle(getString(R.string.app_name));
             setSupportActionBar(toolbar);
@@ -521,27 +533,6 @@ public class MainActivity extends BaseActivity {
         super.onDestroy();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.gate_way, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Snackbar.make(coordinatorLayout, "Replace with your own action", Snackbar.LENGTH_SHORT)
-                    .setAction("Action", null).show();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -551,14 +542,27 @@ public class MainActivity extends BaseActivity {
                         mDrawerLayout.closeDrawers();
                         if (menuItem.getItemId() == R.id.change_psw) {
                             showPswDialog();
-                        } else if(menuItem.getItemId() == R.id.nav_share){
+                        } else if (menuItem.getItemId() == R.id.nav_share) {
                             Intent intent = new Intent(Intent.ACTION_SEND);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             intent.putExtra(Intent.EXTRA_TEXT, "Android Local Share");   //附带的说明信息
                             intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/temp_photo.jpg")));
                             intent.putExtra(Intent.EXTRA_SUBJECT, "Title");
                             intent.setType("image/*");   //分享图片
-                            startActivity(Intent.createChooser(intent,"分享"));
+                            startActivity(Intent.createChooser(intent, "分享"));
+                        } else if (menuItem.getItemId() == R.id.about_us) {
+                            startActivity(new Intent(MainActivity.this, AboutUsActivity.class));
+                        } else if (menuItem.getItemId() == R.id.zhuxiao) {
+                            MainActivity.this.finish();
+                            SpCache.clear();
+                            try {
+                                ActivityManager activityMgr = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+                                activityMgr.killBackgroundProcesses(context.getPackageName());
+                                System.exit(0);
+                                android.os.Process.killProcess(android.os.Process.myPid());
+                            } catch (Exception e) {
+                                Log.e("exit", "exit exception");
+                            }
                         }
                         return true;
                     }

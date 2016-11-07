@@ -29,6 +29,7 @@ import com.lzh.yuanstrom.ui.DevControlActivity;
 import com.lzh.yuanstrom.ui.LampActivity;
 import com.lzh.yuanstrom.ui.YaoKong2Activity;
 import com.lzh.yuanstrom.utils.BitmapCache;
+import com.lzh.yuanstrom.utils.StringUtils;
 import com.mikepenz.materialdrawer.util.DrawerImageLoader;
 
 import me.hekr.hekrsdk.bean.DeviceBean;
@@ -82,12 +83,16 @@ public class FirstPageAdapter extends RecyclerView.Adapter<FirstPageAdapter.View
         if (devices.size() != 0) {
             final LocalDeviceBean deviceBean = devices.get(position);
             holder.title.setText(deviceBean.categoryName);
-            if (deviceBean.online) {
-                holder.subTitle.setText(context.getString(R.string.online));
+            if (StringUtils.isNotBlank(deviceBean.deviceName)) {
+                holder.subTitle.setText(deviceBean.deviceName);
             } else {
-                holder.subTitle.setText(context.getString(R.string.offline));
+                holder.subTitle.setVisibility(View.GONE);
             }
-//            holder.description.setText(deviceBean.getCid());
+            if (deviceBean.online) {
+                holder.stateLine.setImageResource(R.mipmap.online_icon);
+            } else {
+                holder.stateLine.setImageResource(R.mipmap.offline_icon);
+            }
             MyApplication.getInstance().getImageLoader().get(deviceBean.logo, new ImageLoader.ImageListener() {
                 @Override
                 public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b) {
@@ -108,12 +113,12 @@ public class FirstPageAdapter extends RecyclerView.Adapter<FirstPageAdapter.View
                 @Override
                 public void onClick(View v) {
                     if (null != clickListener) {
-                        if(deviceBean.isClicked){
+                        if (deviceBean.isClicked) {
                             deviceBean.isClicked = false;
-                        }else{
+                        } else {
                             deviceBean.isClicked = true;
                         }
-                        clickListener.onItemClick(deviceBean,v);
+                        clickListener.onItemClick(deviceBean, v);
                     }
                 }
             });
@@ -121,8 +126,8 @@ public class FirstPageAdapter extends RecyclerView.Adapter<FirstPageAdapter.View
                 @Override
                 public boolean onLongClick(View v) {
 
-                    if(null != longClickListener){
-                       return longClickListener.onItemLongClick(deviceBean);
+                    if (null != longClickListener) {
+                        return longClickListener.onItemLongClick(deviceBean);
                     }
                     return false;
                 }
@@ -178,6 +183,7 @@ public class FirstPageAdapter extends RecyclerView.Adapter<FirstPageAdapter.View
         public TextView subTitle;
         public ImageView icon;
         public RelativeLayout root;
+        public ImageView stateLine;
 //        public TextView description;
 
         public ViewHolder(View itemView) {
@@ -186,6 +192,7 @@ public class FirstPageAdapter extends RecyclerView.Adapter<FirstPageAdapter.View
             subTitle = (TextView) itemView.findViewById(R.id.subtitle);
             icon = (ImageView) itemView.findViewById(R.id.image);
             root = (RelativeLayout) itemView.findViewById(R.id.root_view);
+            stateLine = (ImageView) itemView.findViewById(R.id.line_state);
 //            description = (TextView) itemView.findViewById(R.id.content);
         }
     }
@@ -212,7 +219,7 @@ public class FirstPageAdapter extends RecyclerView.Adapter<FirstPageAdapter.View
     }
 
     public interface OnItemClickListener {
-        void onItemClick(LocalDeviceBean bean,View v);
+        void onItemClick(LocalDeviceBean bean, View v);
     }
 
     public interface OnItemLongClickListener {

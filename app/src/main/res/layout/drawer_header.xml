@@ -48,4 +48,11 @@
             android:textSize="12sp" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/uid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"/>
+
 </LinearLayout>

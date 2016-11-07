@@ -88,6 +88,12 @@
             android:name=".ui.DevControlActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.AuthDevActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.AuthListActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.AboutUsActivity"
             android:screenOrientation="portrait">
             <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />

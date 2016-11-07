@@ -89,7 +89,7 @@ public class BaseDevActivity extends BaseActivity {
             if (null != intent && StringUtils.isNotBlank(intent.getAction())) {
                 String backData=intent.getStringExtra(ConstantsUtil.HEKR_WS_PAYLOAD);
                 DeviceResult result = new Gson().fromJson(backData,DeviceResult.class);
-                if(result != null && result.params != null && result.params.data != null) {
+                if(result != null && result.params != null && result.params.data != null && result.params.data.raw.length() != 0) {
                     String data = result.params.data.raw;
                     String useful = data.substring(8,data.length() - 2);
                     detailData(useful);

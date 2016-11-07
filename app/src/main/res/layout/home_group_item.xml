@@ -58,7 +58,7 @@
                     android:layout_height="match_parent"
                     android:horizontalSpacing="3dp"
                     android:verticalSpacing="3dp"
-                    android:numColumns="3">
+                    android:numColumns="2">
                 </com.lzh.yuanstrom.widget.NoScrollGridView>
 
             </net.cachapa.expandablelayout.ExpandableLayout>

@@ -1,6 +1,7 @@
 package com.lzh.yuanstrom.ui;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -60,6 +61,9 @@ public class DevControlActivity extends BaseActivity {
 
     @BindView(R.id.dev_img)
     ImageView devImg;
+
+    @BindView(R.id.auth_share)
+    RelativeLayout authShare;
 
     private String devTid;
 
@@ -121,10 +125,18 @@ public class DevControlActivity extends BaseActivity {
                 showChangeNameDialog(local.deviceName);
             }
         });
+        authShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DevControlActivity.this,AuthListActivity.class);
+                intent.putExtra("devTid",devTid);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initBar() {
-        toolbar.setTitle(getString(R.string.start_create_group));
+        toolbar.setTitle(getString(R.string.device_info));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
