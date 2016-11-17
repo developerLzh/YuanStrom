@@ -114,14 +114,14 @@ public class CreateProfileActivity extends BaseActivity {
             @Override
             public void onItemClick(LocalDeviceBean bean, View v) {
                 if (bean.isClicked) {
-                    v.setBackgroundResource(R.drawable.corners_stoke_orange);
+                    v.setBackgroundResource(R.drawable.corners_stoke_self);
                     if (bean.categoryName.contains(getString(R.string.chazuo))) {
                         showChazuoDialog(bean);
                     } else if (bean.categoryName.contains(getString(R.string.lamp))) {
                         showLampDialog(bean);
                     }
                 } else {
-                    v.setBackgroundColor(getResources().getColor(R.color.alpha_white));
+                    v.setBackgroundResource(R.drawable.corners_first_item);
                     Iterator<String> iterator = cmds.iterator();
                     while (iterator.hasNext()) {
                         String s = iterator.next();
@@ -132,7 +132,7 @@ public class CreateProfileActivity extends BaseActivity {
                 }
             }
         });
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3, LinearLayoutManager.HORIZONTAL, false);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(gridLayoutManager);
         mRecyclerView.setAdapter(firstPageAdapter);
         firstPageAdapter.setDevices(LocalDeviceBean.findALll());

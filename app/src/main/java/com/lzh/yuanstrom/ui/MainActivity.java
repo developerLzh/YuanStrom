@@ -1,13 +1,14 @@
 package com.lzh.yuanstrom.ui;
 
-import android.app.ActivityManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.PersistableBundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -22,17 +23,23 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
+import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -45,19 +52,22 @@ import com.lzh.yuanstrom.R;
 import com.lzh.yuanstrom.adapter.TabPagerAdapter;
 import com.lzh.yuanstrom.bean.CustomerBean;
 import com.lzh.yuanstrom.bean.ExtraProperties;
-import com.lzh.yuanstrom.bean.LocalDeviceBean;
 import com.lzh.yuanstrom.bean.ProfileData;
-import com.lzh.yuanstrom.bean.SimpleDeviceBean;
 import com.lzh.yuanstrom.common.GetCustomerListener;
+import com.lzh.yuanstrom.utils.AppManager;
 import com.lzh.yuanstrom.utils.PhotoHelper;
 import com.lzh.yuanstrom.utils.StringUtils;
+import com.lzh.yuanstrom.utils.TimeUtil;
 import com.lzh.yuanstrom.utils.ToastUtil;
 import com.lzh.yuanstrom.utils.Utils;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,10 +81,7 @@ import me.hekr.hekrsdk.bean.FileBean;
 import me.hekr.hekrsdk.bean.ProfileBean;
 import me.hekr.hekrsdk.util.ConstantsUtil;
 import me.hekr.hekrsdk.util.HekrCodeUtil;
-import me.hekr.hekrsdk.util.HekrSDK;
 import me.hekr.hekrsdk.util.SpCache;
-
-import java.util.ArrayList;
 
 /**
  * Created by Vicent on 2016/10/12.
@@ -108,6 +115,9 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.fab)
     FloatingActionButton fab;
 
+    @BindView(R.id.header)
+    ImageView header;
+
     TextView uid;
 
     ImageView cusPhoto;
@@ -127,6 +137,7 @@ public class MainActivity extends BaseActivity {
     private static final int CROP = 0x03;
     private static final int ADD_PROFILE = 0x04;
 
+
     private CustomerBean customerBean;
 
     public void setCustomerBean(CustomerBean customerBean) {
@@ -140,6 +151,13 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+            getWindow().setNavigationBarColor(Color.TRANSPARENT);
+        }
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
@@ -176,6 +194,17 @@ public class MainActivity extends BaseActivity {
         fabClick();
 
         getCustomerInfo();
+    }
+
+    private void initHeaderImg() {
+        String time = TimeUtil.getTime(TimeUtil.HM, System.currentTimeMillis());
+        int hour = Integer.parseInt(time.split(":")[0]);
+//        int hour = Integer.parseInt("15:20".split(":")[0]);
+        if ((hour > 18 && hour < 24) || (hour >= 0 && hour <= 6)) {
+            header.setBackgroundResource(R.drawable.night);
+        } else {
+            header.setBackgroundResource(R.drawable.day);
+        }
     }
 
     private void getCustomerInfo() {
@@ -225,8 +254,15 @@ public class MainActivity extends BaseActivity {
                     cusPhoto.setImageResource(R.mipmap.personal_center);
                 }
                 PageFragment pageFragment = mAdapter.getFragment(tabLayout.getSelectedTabPosition());
-                if (null != pageFragment && pageFragment.thirdPageAdapter != null && null != bean && bean.profileDatas != null) {
-                    pageFragment.thirdPageAdapter.setDatas(bean.profileDatas);
+                if (null != pageFragment && pageFragment.thirdPageAdapter != null && null != bean) {
+                    if (bean.profileDatas != null && bean.profileDatas.size() > 0) {
+                        pageFragment.thirdPageAdapter.setDatas(bean.profileDatas);
+                        pageFragment.emptyCon.setVisibility(View.GONE);
+                    } else {
+                        pageFragment.thirdPageAdapter.setDatas(new ArrayList<ProfileData>());
+                        pageFragment.emptyCon.setVisibility(View.VISIBLE);
+                        pageFragment.hintTxt.setText(getString(R.string.no_profiles));
+                    }
                     isFromProfileActivity = false;
                 }
             }
@@ -314,14 +350,15 @@ public class MainActivity extends BaseActivity {
 
     private void showGenderDialog() {
         RadioGroup radioGroup = new RadioGroup(MainActivity.this);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         final RadioButton boy = new RadioButton(context);
         boy.setText(getString(R.string.boy));
         boy.setTextColor(MainActivity.this.getResources().getColor(R.color.blue_500));
         final RadioButton girl = new RadioButton(context);
         girl.setText(getString(R.string.girl));
         girl.setTextColor(MainActivity.this.getResources().getColor(R.color.pink_500));
-        radioGroup.addView(boy);
-        radioGroup.addView(girl);
+        radioGroup.addView(boy, layoutParams);
+        radioGroup.addView(girl, layoutParams);
         radioGroup.setPadding(100, 50, 100, 50);
         if (StringUtils.isNotBlank(customerBean.getGender())) {
             if (customerBean.getGender().equals("MAN")) {
@@ -409,28 +446,29 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (tabLayout.getSelectedTabPosition() == 0 || tabLayout.getSelectedTabPosition() == -1) {
-                    startActivity(new Intent(context, ConfigActivity.class));
-                } else if (tabLayout.getSelectedTabPosition() == 1) {
-                    List<SimpleDeviceBean> notAdded = new ArrayList<>();
-                    List<SimpleDeviceBean> added = new ArrayList<>();
-                    for (int i = 0; i < LocalDeviceBean.findALll().size(); i++) {
-                        LocalDeviceBean local = LocalDeviceBean.findALll().get(i);
-                        SimpleDeviceBean simDean = new SimpleDeviceBean();
-                        simDean.setId(i);
-                        simDean.setDevTid(local.devTid);
-                        simDean.setCtrlKey(local.ctrlKey);
-                        simDean.setDevCate(local.categoryName);
-                        simDean.setLogo(local.logo);
-                        simDean.setDevCate(local.categoryName);
-                        notAdded.add(simDean);
-                    }
-
-                    Intent intent = new Intent(context, GroupActivity.class);
-                    intent.putExtra("notAdded", (Serializable) notAdded);
-                    intent.putExtra("added", (Serializable) added);
-                    intent.putExtra("isNewCreate", true);
+                    Intent intent = new Intent(context, ConfigActivity.class);
                     startActivity(intent);
-                } else if (tabLayout.getSelectedTabPosition() == 2) {
+//                } else if (tabLayout.getSelectedTabPosition() == 1) {
+//                    List<SimpleDeviceBean> notAdded = new ArrayList<>();
+//                    List<SimpleDeviceBean> added = new ArrayList<>();
+//                    for (int i = 0; i < LocalDeviceBean.findALll().size(); i++) {
+//                        LocalDeviceBean local = LocalDeviceBean.findALll().get(i);
+//                        SimpleDeviceBean simDean = new SimpleDeviceBean();
+//                        simDean.setId(i);
+//                        simDean.setDevTid(local.devTid);
+//                        simDean.setCtrlKey(local.ctrlKey);
+//                        simDean.setDevCate(local.categoryName);
+//                        simDean.setLogo(local.logo);
+//                        simDean.setDevCate(local.categoryName);
+//                        notAdded.add(simDean);
+//                    }
+//
+//                    Intent intent = new Intent(context, GroupActivity.class);
+//                    intent.putExtra("notAdded", (Serializable) notAdded);
+//                    intent.putExtra("added", (Serializable) added);
+//                    intent.putExtra("isNewCreate", true);
+//                    startActivity(intent);
+                } else if (tabLayout.getSelectedTabPosition() == 1) {
                     if (isCustomerNull()) {
                         ToastUtil.showMessage(MainActivity.this, getString(R.string.no_user));
                         return;
@@ -494,6 +532,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        initHeaderImg();
         PageFragment pageFragment = mAdapter.getFragment(tabLayout.getSelectedTabPosition());
         if (pageFragment != null && !isFromProfileActivity) {
             Log.e("pageNo", "--->" + pageFragment.mPage);
@@ -516,6 +555,16 @@ public class MainActivity extends BaseActivity {
             toggle.syncState();
         }
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+    }
+
+//    @Override
+//    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+//        super.onSaveInstanceState(outState, outPersistentState);
+//    }
 
     @Override
     public void onStart() {
@@ -542,31 +591,70 @@ public class MainActivity extends BaseActivity {
                         mDrawerLayout.closeDrawers();
                         if (menuItem.getItemId() == R.id.change_psw) {
                             showPswDialog();
-                        } else if (menuItem.getItemId() == R.id.nav_share) {
-                            Intent intent = new Intent(Intent.ACTION_SEND);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            intent.putExtra(Intent.EXTRA_TEXT, "Android Local Share");   //附带的说明信息
-                            intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/temp_photo.jpg")));
-                            intent.putExtra(Intent.EXTRA_SUBJECT, "Title");
-                            intent.setType("image/*");   //分享图片
-                            startActivity(Intent.createChooser(intent, "分享"));
+//                        } else if (menuItem.getItemId() == R.id.nav_share) {
+//                            Intent intent = new Intent(Intent.ACTION_SEND);
+//                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                            intent.putExtra(Intent.EXTRA_TEXT, "Android Local Share");   //附带的说明信息
+//                            intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/temp_photo.jpg")));
+//                            intent.putExtra(Intent.EXTRA_SUBJECT, "Title");
+//                            intent.setType("image/*");   //分享图片
+//                            startActivity(Intent.createChooser(intent, "分享"));
                         } else if (menuItem.getItemId() == R.id.about_us) {
                             startActivity(new Intent(MainActivity.this, AboutUsActivity.class));
                         } else if (menuItem.getItemId() == R.id.zhuxiao) {
                             MainActivity.this.finish();
                             SpCache.clear();
                             try {
-                                ActivityManager activityMgr = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-                                activityMgr.killBackgroundProcesses(context.getPackageName());
-                                System.exit(0);
-                                android.os.Process.killProcess(android.os.Process.myPid());
+                                AppManager.getAppManager().AppExit(MainActivity.this);
                             } catch (Exception e) {
                                 Log.e("exit", "exit exception");
                             }
+                        } else if (menuItem.getItemId() == R.id.my_code) {
+                            startActivity(new Intent(MainActivity.this, MyCodeActivity.class));
+                        } else if (menuItem.getItemId() == R.id.change_language) {
+                            startActivity(new Intent(MainActivity.this, ChangeLanguageActivity.class));
                         }
                         return true;
                     }
                 });
+    }
+
+    /**
+     * 菜单、返回键响应
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
+            } else {
+                exitBy2Click(); //调用双击退出函数
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 双击退出函数
+     */
+    private static Boolean isExit = false;
+
+    private void exitBy2Click() {
+        Timer tExit = null;
+        if (isExit == false) {
+            isExit = true; // 准备退出
+            Toast.makeText(this, getString(R.string.clcik_again_exit), Toast.LENGTH_SHORT).show();
+            tExit = new Timer();
+            tExit.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    isExit = false; // 取消退出
+                }
+            }, 2000); // 如果2秒钟内没有按下返回键，则启动定时器取消掉刚才执行的任务
+
+        } else {
+            AppManager.getAppManager().AppExit(this);
+        }
     }
 
     private void showPswDialog() {
@@ -621,7 +709,7 @@ public class MainActivity extends BaseActivity {
                         }
                     }
                 })
-                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -684,7 +772,7 @@ public class MainActivity extends BaseActivity {
                 if (data == null) {
                     return;
                 }
-                if (StringUtils.isNotBlank(photoHelper.getFileUri().toString())) {
+                if (StringUtils.isNotBlank(photoHelper.getTempPath())) {
                     uploadPhoto(photoHelper.getTempPath());
                 } else if (StringUtils.isNotBlank(photoHelper.getCameraPath())) {
                     uploadPhoto(photoHelper.getCameraPath());

@@ -1,13 +1,20 @@
 package com.lzh.yuanstrom.ui;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -82,9 +89,9 @@ public class DevControlActivity extends BaseActivity {
             @Override
             public void onResponse(ImageLoader.ImageContainer response, boolean b) {
                 Bitmap bitmap = response.getBitmap();
-                if(null != bitmap){
+                if (null != bitmap) {
                     devImg.setImageBitmap(bitmap);
-                }else{
+                } else {
                     devImg.setImageBitmap(null);
                 }
             }
@@ -95,22 +102,23 @@ public class DevControlActivity extends BaseActivity {
             }
         });
 
-        if(StringUtils.isBlank(local.devTid)){
-            ToastUtil.showMessage(this,context.getString(R.string.dev_not_exist));
+        if (StringUtils.isBlank(local.devTid)) {
+            ToastUtil.showMessage(this, context.getString(R.string.dev_not_exist));
             finish();
             return;
         }
         initView();
+        createReceiver();
     }
 
     private void initView() {
         devCate.setText(local.categoryName);
-        devName.setText(local.deviceName +" ");
+        devName.setText(local.deviceName + " ");
         currentWifi.setText("");
         toControl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirstPageAdapter.toWhatActivityByCateName(context,local.categoryName,devTid);
+                FirstPageAdapter.toWhatActivityByCateName(context, local.categoryName, devTid);
             }
         });
         deleteDev.setOnClickListener(new View.OnClickListener() {
@@ -128,11 +136,45 @@ public class DevControlActivity extends BaseActivity {
         authShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(DevControlActivity.this,AuthListActivity.class);
-                intent.putExtra("devTid",devTid);
+                Intent intent = new Intent(DevControlActivity.this, AuthListActivity.class);
+                intent.putExtra("devTid", devTid);
                 startActivity(intent);
             }
         });
+    }
+
+    private BroadcastReceiver connectionReceiver;
+
+    /**
+     * 监听网络变化
+     */
+    public void createReceiver() {
+        // 创建网络监听广播
+        if (connectionReceiver == null) {
+            connectionReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    String action = intent.getAction();
+                    if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+                        ConnectivityManager mConnectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                        NetworkInfo netInfo = mConnectivityManager.getActiveNetworkInfo();
+                        if (netInfo != null && netInfo.isAvailable()) {
+                            WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+                            String nowWifi = wifiManager.getConnectionInfo().getSSID().replace("\"", "");
+                            if (!TextUtils.isEmpty(nowWifi)) {
+                                currentWifi.setText(nowWifi);
+                            }
+                        } else {
+                            currentWifi.setText("");
+                        }
+                    }
+                }
+            };
+            // 注册网络监听广播
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+            registerReceiver(connectionReceiver, intentFilter);
+        }
     }
 
     private void initBar() {
@@ -158,13 +200,13 @@ public class DevControlActivity extends BaseActivity {
                         hekrUserAction.deleteDevice(devTid, local.bindKey, new HekrUser.DeleteDeviceListener() {
                             @Override
                             public void deleteDeviceSuccess() {
-                                Snackbar.make(rootView,getString(R.string.delete_dev_suc),Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(rootView, getString(R.string.delete_dev_suc), Snackbar.LENGTH_SHORT).show();
                                 finish();
                             }
 
                             @Override
                             public void deleteDeviceFail(int i) {
-                                Snackbar.make(rootView, HekrCodeUtil.errorCode2Msg(i),Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(rootView, HekrCodeUtil.errorCode2Msg(i), Snackbar.LENGTH_SHORT).show();
                             }
                         });
                         dialog.dismiss();
@@ -178,7 +220,8 @@ public class DevControlActivity extends BaseActivity {
                 }).create();
         dialog.show();
     }
-    private void showChangeNameDialog(final String name){
+
+    private void showChangeNameDialog(final String name) {
         final EditText edit = new EditText(this);
         edit.setText(name);
         AlertDialog dialog = new AlertDialog.Builder(this)
@@ -188,20 +231,20 @@ public class DevControlActivity extends BaseActivity {
                     @Override
                     public void onClick(final DialogInterface dialog, int which) {
                         final String s = edit.getText().toString();
-                        if(StringUtils.isNotBlank(s)){
+                        if (StringUtils.isNotBlank(s)) {
                             hekrUserAction.renameDevice(devTid, local.ctrlKey, s, local.desc, new HekrUser.RenameDeviceListener() {
-                                        @Override
-                                        public void renameDeviceSuccess() {
-                                            dialog.dismiss();
-                                            Snackbar.make(rootView,getString(R.string.change_dev_suc),Snackbar.LENGTH_SHORT).show();
-                                            devName.setText(s);
-                                        }
+                                @Override
+                                public void renameDeviceSuccess() {
+                                    dialog.dismiss();
+                                    Snackbar.make(rootView, getString(R.string.change_dev_suc), Snackbar.LENGTH_SHORT).show();
+                                    devName.setText(s);
+                                }
 
-                                        @Override
-                                        public void renameDeviceFail(int i) {
-                                            Snackbar.make(rootView, HekrCodeUtil.errorCode2Msg(i),Snackbar.LENGTH_SHORT).show();
-                                        }
-                                    });
+                                @Override
+                                public void renameDeviceFail(int i) {
+                                    Snackbar.make(rootView, HekrCodeUtil.errorCode2Msg(i), Snackbar.LENGTH_SHORT).show();
+                                }
+                            });
 
                         }
                     }
@@ -214,5 +257,13 @@ public class DevControlActivity extends BaseActivity {
                 })
                 .create();
         dialog.show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (connectionReceiver != null) {
+            unregisterReceiver(connectionReceiver);
+        }
     }
 }

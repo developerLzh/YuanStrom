@@ -306,7 +306,7 @@ public class PhotoHelper {
         return fileUri;
     }
 
-    public void deleteTemp(String path) {
+    public static void deleteTemp(String path) {
         if (StringUtils.isNotBlank(path)) {
             try {
                 File file = new File(path);

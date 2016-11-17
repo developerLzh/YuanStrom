@@ -1,6 +1,8 @@
 package com.lzh.yuanstrom.ui;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -24,6 +26,7 @@ import com.lzh.yuanstrom.bean.AuthBean;
 import com.lzh.yuanstrom.bean.LocalDeviceBean;
 import com.lzh.yuanstrom.utils.StringUtils;
 import com.lzh.yuanstrom.utils.ToastUtil;
+import com.uuzuche.lib_zxing.activity.CodeUtils;
 
 import java.util.List;
 
@@ -56,7 +59,9 @@ public class AuthListActivity extends BaseActivity implements SwipeRefreshLayout
 
     @OnClick(R.id.grant_btn)
     void grantBtn() {
-        showAuthDialog();
+//        showAuthDialog();
+        Intent intent = new Intent(AuthListActivity.this, ScanActivity.class);
+        startActivityForResult(intent, SCAN);
     }
 
     private AuthListAdapter adapter;
@@ -64,6 +69,8 @@ public class AuthListActivity extends BaseActivity implements SwipeRefreshLayout
     private String devTid;
 
     private LocalDeviceBean local;
+
+    public static final int SCAN = 0x23;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,14 +99,14 @@ public class AuthListActivity extends BaseActivity implements SwipeRefreshLayout
                 hekrUserAction.cancelOAuth(hekrUserAction.getUserId(), local.ctrlKey, grantee, local.devTid, new HekrUser.CancelOAuthListener() {
                     @Override
                     public void CancelOAuthSuccess() {
-                        ToastUtil.showMessage(AuthListActivity.this,"取消授权成功");
+                        ToastUtil.showMessage(AuthListActivity.this, "取消授权成功");
                         swipeRefreshLayout.setRefreshing(true);
                         onRefresh();
                     }
 
                     @Override
                     public void CancelOauthFail(int i) {
-                        ToastUtil.showMessage(AuthListActivity.this,HekrCodeUtil.errorCode2Msg(i));
+                        ToastUtil.showMessage(AuthListActivity.this, HekrCodeUtil.errorCode2Msg(i));
                     }
                 });
             }
@@ -141,7 +148,7 @@ public class AuthListActivity extends BaseActivity implements SwipeRefreshLayout
             @Override
             public void getOAuthListSuccess(List<OAuthListBean> list) {
                 swipeRefreshLayout.setRefreshing(false);
-                adapter.setAuthListAdapter(list,devTid);
+                adapter.setAuthListAdapter(list, devTid);
                 Log.e("tag", "getOAuthListSuccess");
             }
 
@@ -157,21 +164,16 @@ public class AuthListActivity extends BaseActivity implements SwipeRefreshLayout
         getAuthList();
     }
 
-    private void showAuthDialog() {
-        final EditText editName = new EditText(this);
+    private void showNotShouquanDialog(final String url) {
         AlertDialog dialog = new AlertDialog.Builder(AuthListActivity.this)
-                .setView(editName)
-                .setTitle(getString(R.string.shouquan_device))
+                .setTitle(getString(R.string.hint))
+                .setMessage(getString(R.string.not_allow_qr_code))
                 .setPositiveButton(getString(R.string.ensure), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        String uid = editName.getText().toString();
-                        if (StringUtils.isNotBlank(uid)) {
-                            dialogInterface.dismiss();
-                            shouquanDevice(uid);
-                        } else {
-                            ToastUtil.showMessage(AuthListActivity.this, getString(R.string.please_uid));
-                        }
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setData(Uri.parse(url));
+                        startActivity(intent);
                     }
                 })
                 .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -197,7 +199,7 @@ public class AuthListActivity extends BaseActivity implements SwipeRefreshLayout
         CharSequence url = TextUtils.concat(new CharSequence[]{ConstantsUtil.UrlUtil.BASE_USER_URL, "authorization"});
         hekrUserAction.postHekrData(url, JSON.toJSONString(authBean), new HekrUserAction.GetHekrDataListener() {
             public void getSuccess(Object object) {
-                Log.e("postHekrData",object.toString());
+                Log.e("postHekrData", object.toString());
                 swipeRefreshLayout.setRefreshing(true);
                 onRefresh();
             }
@@ -206,5 +208,26 @@ public class AuthListActivity extends BaseActivity implements SwipeRefreshLayout
                 ToastUtil.showMessage(AuthListActivity.this, HekrCodeUtil.errorCode2Msg(errorCode));
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SCAN) {
+                Bundle bundle = data.getExtras();
+                if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
+                    String url = bundle.getString(CodeUtils.RESULT_STRING);
+                    if (url.contains(getString(R.string.company_url))) {
+                        String uid = url.replace(getString(R.string.company_url), "");
+                        shouquanDevice(uid);
+                    } else {
+                        showNotShouquanDialog(url);
+                    }
+                } else {
+                    ToastUtil.showMessage(AuthListActivity.this, getString(R.string.scan_failed));
+                }
+            }
+        }
     }
 }

@@ -9,6 +9,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.LinearLayout;
 
+import com.lzh.yuanstrom.MyApplication;
 import com.lzh.yuanstrom.R;
 import com.lzh.yuanstrom.utils.StringUtils;
 
@@ -54,6 +55,9 @@ public class SplashActivity extends BaseActivity {
         setContentView(R.layout.activity_splash);
 
         ButterKnife.bind(this);
+
+        MyApplication.getInstance().loadLanguage();
+
         refresheToken = SpCache.getString("refresh_TOKEN", "");
         if (StringUtils.isNotBlank(refresheToken)) {
             hekrUserAction.refresh_token();

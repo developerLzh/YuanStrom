@@ -12,6 +12,8 @@
         <!-- item开始-->
         <LinearLayout
             android:id="@+id/share_QQ"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             style="@style/linear.qr_linear">
 
             <ImageView
@@ -25,14 +27,12 @@
         </LinearLayout>
         <!-- item结束-->
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/line" />
 
         <!-- item开始-->
         <LinearLayout
             android:id="@+id/share_Qzone"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             style="@style/linear.qr_linear">
 
             <ImageView
@@ -45,34 +45,13 @@
                 android:text="@string/QR_Qzone" />
         </LinearLayout>
         <!-- item结束-->
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/line" />
-        <!-- item开始-->
-        <LinearLayout
-            android:id="@+id/share_sina"
-            style="@style/linear.qr_linear">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/umeng_socialize_sina_on" />
-
-            <TextView
-                style="@style/qr_text"
-                android:text="@string/QR_wb" />
-        </LinearLayout>
-        <!-- item结束-->
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/line" />
 
         <!-- item开始-->
         <LinearLayout
             android:id="@+id/share_weixin"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             style="@style/linear.qr_linear">
 
             <ImageView
@@ -86,13 +65,11 @@
         </LinearLayout>
         <!-- item结束-->
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/line" />
 
         <!-- item开始-->
         <LinearLayout
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:id="@+id/share_wxcircle"
             style="@style/linear.qr_linear">
 
@@ -107,8 +84,4 @@
         </LinearLayout>
         <!-- item结束-->
     </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/line" />
 </LinearLayout>

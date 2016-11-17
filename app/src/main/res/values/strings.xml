@@ -10,6 +10,8 @@
     <string name="register">注册</string>
     <string name="login">登录</string>
 
+    <string name="delete_group">删除群组</string>
+
     <string name="reset_psw">重置密码</string>
 
     <string name="weibo">微博</string>
@@ -77,6 +79,7 @@
     <string name="device_manage">设备管理</string>
     <string name="question">常见问题</string>
     <string name="about_us">关于我们</string>
+    <string name="change_language">多语言</string>
 
     <string name="share">分享</string>
 
@@ -103,7 +106,7 @@
 
     <string name="navi_hint">在这里可以打开侧滑栏，里面有很多神奇的东西哦(｡◕ˇ∀ˇ◕）</string>
 
-    <string name="fab_hint">点击这里，如果是在设备列表下可以添加设备，种类分组列表下可以添加分组，情景模式列表下可以添加情景模式(♥◠‿◠)ﾉ</string>
+    <string name="fab_hint">点击这里，如果是在设备列表下可以添加设备，情景模式列表下可以添加情景模式(♥◠‿◠)ﾉ</string>
 
     <string name="add_device">添加设备</string>
 
@@ -136,13 +139,13 @@
     <string name="delete">删除</string>
 
     <string name="hint">温馨提示</string>
-    <string name="sure_delete">你确定要删除该这杯吗？</string>
+    <string name="sure_delete">你确定要删除该设备吗？</string>
 
     <string name="dev_cate">设备品类</string>
     <string name="share_auth">共享授权</string>
     <string name="dev_hardware">设备固件信息</string>
     <string name="dev_share_msg">设备共享信息</string>
-    <string name="current_wifi">当前路由器</string>
+    <string name="current_wifi">当前网络</string>
     <string name="dev_name">设备名</string>
     <string name="to_control">进入控制页面</string>
 
@@ -153,10 +156,12 @@
     <string name="change_dev">修改设备名</string>
     <string name="change_dev_suc">修改设备名成功</string>
 
-    <string name="send_suc">发送成功</string>
-    <string name="send_failed">发送失败</string>
+    <string name="send_suc">成功</string>
+    <string name="send_failed">失败</string>
 
     <string name="delete_dev_suc">删除设备成功</string>
+
+    <string name="delete_group_suc">删除群组成功</string>
 
     <string name="from_gallery">从相册中选择</string>
 
@@ -242,6 +247,186 @@
 
     <string name="shouquan_device">授权设备</string>
 
-    <string name="share_dev_tips">授权设备给其他用户，需要填写目标用户的Uid，Uid可以在APP的侧滑栏里查看n(*≧▽≦*)n</string>
+    <string name="share_dev_tips">授权设备给其他用户，需要扫描目标用户APP《我的二维码》里面的二维码，您也可以让目标用户将二维码图片发给你，识别二维码图片授权哦n(*≧▽≦*)n</string>
+
+    <string name="scan_qr_code">扫描二维码</string>
+
+    <string name="scan_failed">扫描二维码失败</string>
+
+    <string name="not_allow_qr_code">您所扫描的二维码跟授权设备操作无关，是否选择在浏览器中访问该链接</string>
+
+    <string name="my_code">我的二维码</string>
+
+    <string name="clear_screen">清屏</string>
+
+    <!-- 【诶之 -->
+
+    <string name="company_name">源极风科技有限公司</string>
+
+    <string name="company_url">http://yuanjifeng.iok.la:51400/HTML/html/index.html</string>
+
+    <string name="company_info">成都源极风科技有限公司创建于2016年，是一家以智能家居，网站建设，办公平台，手机APP的技术服务商，集设计，开发于一体。 依靠科技求发展，不断为用户提供满意的产品，是我们始终不变的追求。已成功开发出智能插座，智能网关，智能遥控等一系列产品， 以一流的技术服务受到了用户的一致好评。公司员工奉行“进取 求实 严谨 团结”的方针，不断开拓创新，以技术为核心， 以质量为生命，奉用户为上帝，竭诚为您提供性价比最高的产品，以及无微不至的售后服务。
+</string>
+
+    <string name="about_us_introduce">公司网址：http://yuanjifeng.iok.la:51400/HTML/html/index.html \n 商务合作：18011442703 \n 合作伙伴：http://www.hekr.me/ \n 问题反馈： developerlzh@gmail.com</string>
+
+    <!--<string name="company_name">XX公司</string>-->
+
+    <!--<string name="company_url">http://www.baidu.com</string>-->
+
+    <!--<string name="company_info">公司介绍</string>-->
+
+    <!--<string name="about_us_introduce">公司网址：http://www.baidu.com \n 商务合作：12345678910 \n 合作伙伴：http://www.hekr.me/ \n 问题反馈： developerlzh@gmail.com</string>-->
+
+    <string name="qrcode_hint">在设备主人将要把设备授权给你时，你可以让设备主人打开APP扫描这个二维码。您也可以将 "根目录/YuanStrom" 文件夹下的 MyQrCode.png 使用第三方APP发送给设备主人，他可以使用APP识别二维码图片授权给你</string>
+
+    <string name="dev_name_maohao">设备名：</string>
+    <string name="open">打开 </string>
+    <string name="close">关闭 </string>
+    <string name="first_jack">第一个插座</string>
+    <string name="second_jack">第二个插座</string>
+    <string name="third_jack">第三个插座</string>
+    <string name="fourth_jack">第四个插座</string>
+    <string name="action">执行操作：</string>
+
+    <string name="now">正在</string>
+    <string name="run_di">执行第</string>
+    <string name="tiao_order">条指令</string>
+
+    <string name="sure_delete_profile">确定要删除该情景模式吗？</string>
+
+    <string name="clcik_again_exit">再按一次退出程序</string>
+
+    <string name="long_click">tips:长按可以呼出操作列表哦</string>
+
+    <string name="query_ing">查询中..</string>
+
+    <string name="dev_offline">设备离线，发送操作指令将不会成功执行</string>
+
+    <string name="dev_error">设备可能已经断开连接，请复位设备再试试</string>
+
+    <string name="flow_system">跟随系统</string>
+    <string name="zh">简体中文</string>
+    <string name="en">English</string>
+
+    <string name="code0">网络超时</string>
+    <string name="code1">登录信息过期，请重新登录！</string>
+    <string name="code2">未知错误！</string>
+    <string name="code5200000">服务内部错误</string>
+    <string name="code400016">操作过于频繁,请稍候再试</string>
+    <string name="code400017">今日操作已达上限</string>
+    <string name="code3400001">手机号码无效</string>
+    <string name="code3400002">验证码错误</string>
+    <string name="code3400003">验证码过期</string>
+    <string name="code3400005">发送验证码次数过多</string>
+    <string name="code3400006">无效的请求类型</string>
+    <string name="code3400007">无效的旧密码</string>
+    <string name="code3400008">用户已注册</string>
+    <string name="code3400009">用户尚未验证</string>
+    <string name="code3400010">账号或密码错误</string>
+    <string name="code3400011">用户不存在</string>
+    <string name="code3400012">无效的邮件token</string>
+    <string name="code3400013">账户已认证</string>
+    <string name="code3400014">账户已经关联了某个三方账号</string>
+    <string name="code5400001">内部错误</string>
+    <string name="code5400002">app重复登录</string>
+    <string name="code5400003">appTid不能为空</string>
+    <string name="code5400004">授权关系已存在</string>
+    <string name="code5400005">授权关系不存在</string>
+    <string name="code5400006">因网络原因绑定失败</string>
+    <string name="code5400007">因超时原因绑定失败</string>
+    <string name="code5400009">修改用户档案失败</string>
+    <string name="code54000010">校验code失败</string>
+    <string name="code54000011">设备授权次数达到上限</string>
+    <string name="code54000012">因内部错误绑定失败</string>
+    <string name="code54000013">因重复绑定绑定失败</string>
+    <string name="code54000014">设备不属于用户</string>
+    <string name="code54000015">没有这样的指令</string>
+    <string name="code54000016">设备无法重复登录</string>
+    <string name="code54000017">devTid不能为空</string>
+    <string name="code54000018">创建定时预约次数达到上限</string>
+    <string name="code54000019">授权的指令已过期</string>
+    <string name="code54000020">不支持该指令</string>
+    <string name="code54000021">不合法的邮件token</string>
+    <string name="code54000022">不合法的旧密码</string>
+    <string name="code54000023">不合法的校验code</string>
+    <string name="code54000024">由于内部错误设备无法找到，请重连</string>
+    <string name="code54000025">不存在该pid</string>
+    <string name="code54000026">没有对该指令的权限</string>
+    <string name="code54000027">指定模板不存在</string>
+    <string name="code54000028">由于内部不正确的状态导致设备无法被找到</string>
+    <string name="code54000035">指定任务不存在</string>
+    <string name="code54000036">无法创建重复模板</string>
+    <string name="code54000037">设备id 不匹配</string>
+    <string name="code54000039">用户不存在</string>
+    <string name="code54000040">校验code过期</string>
+    <string name="code54000041">校验code发送失败</string>
+    <string name="code54000042">校验code类型不合法</string>
+    <string name="code54000043">设备无法强制绑定</string>
+    <string name="code5500000">内部服务错误</string>
+    <string name="code6400001">指定id的反向注册申请不存在</string>
+    <string name="code6400002">不合法的反向授权请求</string>
+    <string name="code6400003">只有属主可以授权设备给其他人</string>
+    <string name="code6400004">指定devTid的设备不存在</string>
+    <string name="code6400005">达到文件夹所能容纳设备数量的上限</string>
+    <string name="code6400006">无法创建同名文件夹</string>
+    <string name="code6400007">指定id的文件夹不存在</string>
+    <string name="code6400008">达到创建文件夹数量上限</string>
+    <string name="code6400009">无法删除根目录</string>
+    <string name="code6400010">无法给根目录改名</string>
+    <string name="code6400011">指定的规则不存在</string>
+    <string name="code6400012">指定的定时预约任务不存在</string>
+    <string name="code6400013">无法创建相同的规则</string>
+    <string name="code6400014">无法创建相同的定时预约</string>
+    <string name="code6400015">不合法的prodPubKey</string>
+    <string name="code6400016">没有权限这样做</string>
+    <string name="code6400017">请求参数错误</string>
+    <string name="code6400018">指定的网盘文件不存在</string>
+    <string name="code6400020">找不到这个红外码</string>
+    <string name="code6400021">红外服务请求出错</string>
+    <string name="code6400022">无法找到指令集</string>
+    <string name="code6400023">参数不支持</string>
+    <string name="code6400024">解析json失败</string>
+    <string name="code6500001">删除网盘文件失败</string>
+    <string name="code6500002">上传网盘文件失败</string>
+    <string name="code6500003">http网络调用失败</string>
+    <string name="code8200000">成功</string>
+    <string name="code8400000">产品不存在</string>
+    <string name="code8400001">协议模板不存在</string>
+    <string name="code8400002">非法参数</string>
+    <string name="code8400003">平台参数错误</string>
+    <string name="code9200000">成功</string>
+    <string name="code9400000">错误</string>
+    <string name="code9400001">非法参数</string>
+    <string name="code9400002">action 不存在</string>
+    <string name="code9400003">产品不存在</string>
+    <string name="code9400004">超时</string>
+    <string name="code9400005">方法不支持</string>
+    <string name="code9500000">服务错误</string>
+    <string name="code9500001">服务应答错误</string>
+    <string name="code_default">服务器异常，请重新再试！</string>
+
+    <string name="please_lan_psw">请输入网络密码</string>
+    <string name="found_device">发现设备</string>
+    <string name="device_serial_no">设备序列号：</string>
+    <string name="device_cate">设备种类：</string>
+    <string name="bind_suc">设备与账户绑定成功：</string>
+    <string name="bind_failed">设备与账户绑定失败，错误码：</string>
+    <string name="continue_query_device">继续查询设备..</string>
+    <string name="add_device_complete">添加设备操作完成</string>
+    <string name="total_founded">共发现 </string>
+    <string name="ge_device_new_bind"> 个设备，其中新绑定 </string>
+    <string name="ge"> 个</string>
+    <string name="add_suc_will_exit">成功的添加了新设备，即将退出该界面</string>
+    <string name="not_founded_any_device">未发现任何新设备</string>
+    <string name="error_cause"> 个设备，可能的原因：1.WIFI密码错误 2.局域网内无任何准备入网的设备 </string>
+    <string name="ready">添加设备引擎已准备就绪..</string>
+    <string name="start_founded">开始搜寻设备..</string>
+    <string name="empty_psw">密码为空?</string>
+    <string name="no_net">无可用网络!</string>
+    <string name="get_pin_code">开始获取pinCode</string>
+    <string name="get_pin_code_suc">获取pinCode成功</string>
+    <string name="get_pin_code_failed">获取pinCode失败，错误码：</string>
+    <string name="maybe_one_minute">开始查询在网设备,这可能会耗时一分钟左右...</string>
 
 </resources>

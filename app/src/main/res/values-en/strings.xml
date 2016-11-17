@@ -1,0 +1,448 @@
+<resources>
+    <string name="app_name">YuanStorm Smart Home</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_add">add_cate</string>
+    <string name="action_share">share_action</string>
+
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+
+    <string name="delete_group">Delete group</string>
+
+    <string name="reset_psw">Reset password</string>
+
+    <string name="weibo">Weibo</string>
+
+    <string name="online">Online</string>
+    <string name="offline">Offline</string>
+    <string name="conned">Connected</string>
+    <string name="lamp">Intelligent lamp</string>
+    <string name="chazuo">Misc/Socket</string>
+    <string name="yaokong">Remote control</string>
+    <string name="hongwai">Infrared</string>
+    <string name="menci">Door and window sensors</string>
+    <string name="changjing">Profile</string>
+    <string name="mianban">Control Panel</string>
+    <string name="yaokong_2">Remote control 2</string>
+
+    <string name="auth_login">Authorization login</string>
+    <string name="running">YuanStrom is Running</string>
+    <string name="get_dev_from_cloud_failed">Get data from cloud failed</string>
+    <string name="upload_dev_failed">Sync data to the cloud failed</string>
+
+    <string name="login_account_hint">Phone number</string>
+    <string name="login_psw_hint">Password</string>
+
+    <string name="new_password">New password</string>
+
+    <string name="phone_no">Phone number</string>
+    <string name="verification_code">Verification Code</string>
+
+    <string name="forget_psw">Forget password?</string>
+
+    <string name="or_other_login">Or third party login</string>
+
+    <string name="qq_login">QQ Auth login</string>
+    <string name="weibo_login">Weibo Auth login</string>
+
+    <string name="get_code">Get verification code</string>
+
+    <string name="response_error">Request no response, error code:</string>
+    <string name="out_time">Network connection timeout, please check network connection</string>
+    <string name="no_internet">Network connection failed, please check network connection</string>
+
+    <string name="parse_error">Data exception, parse failed</string>
+
+    <string name="wait">Please wait a moment..</string>
+
+    <string name="please_phone">Please enter your phone number</string>
+    <string name="please_legal_phone">Please enter a valid phone number.</string>
+
+    <string name="get_code_success">Obtain verification code success</string>
+
+    <string name="yanzheng_code">Verification Code</string>
+
+    <string name="blank_account_or_psw">Please fill in the phone number or password</string>
+
+    <string name="blank_account_or_psw_or_code">Please fill in the phone number, password and verification code.</string>
+
+    <string name="peiwang_suc">Configuration success!</string>
+    <string name="peizhi_dev_suc">Successful configuration device!</string>
+    <string name="peiwang_fal">Configuration failed!</string>
+
+    <string name="dev_no">Device number:</string>
+
+    <string name="account_manage">Account management</string>
+    <string name="device_manage">Device management</string>
+    <string name="question">Common problem</string>
+    <string name="about_us">About us</string>
+    <string name="change_language">Multi language</string>
+
+    <string name="share">Share</string>
+
+    <string name="zhuxiao">LogOut</string>
+
+    <string name="change_psw">Change password</string>
+
+    <string name="old_psw">Original password</string>
+    <string name="new_psw">New password</string>
+    <string name="confirm_psw">Confirm password</string>
+
+    <string name="ensure">ensure</string>
+    <string name="cancel">cancel</string>
+
+    <string name="edit_all">Please fill complete!</string>
+    <string name="psw_not_same">Verify that the password is not consistent with the new password！</string>
+    <string name="psw_max_than_6">Password at least 6 digits</string>
+
+    <string name="change_psw_suc">Change password success</string>
+
+    <string name="please_edit_phone">Please enter your mobile phone number when you sign up.</string>
+
+    <string name="please_img_code">Please enter a graphic verification code</string>
+
+    <string name="navi_hint">Here you can open the drawer, there are many wonderful things.(｡◕ˇ∀ˇ◕）</string>
+
+    <string name="fab_hint">Click here, if it is in the device list can be added to the device, the scene mode list can be added to the scenario model(♥◠‿◠)ﾉ</string>
+
+    <string name="add_device">Add device</string>
+
+    <string name="peiwanging">configuring...</string>
+
+    <string name="no_device">No query to any device, \n you can click on the lower right corner of the Add button to add</string>
+
+    <string name="no_group">You have not added any group, \n click the Add button to add a try</string>
+
+    <string name="no_profiles">You have not added the scene mode, the lower right corner of the \n add button to add a scene mode</string>
+
+    <string name="reload">reload</string>
+
+    <string name="load_failed">Failed to load,</string>
+
+    <string name="start_create_group">Create Group</string>
+
+    <string name="inout_group_name">Enter group name</string>
+
+    <string name="not_added_list">Device to be selected:</string>
+    <string name="added_list">Selected device:</string>
+
+    <string name="at_least_one">At least to choose a device</string>
+
+    <string name="group_desc">Group description (optional)</string>
+
+    <string name="choice_method">Selection function</string>
+
+    <string name="set">Set</string>
+    <string name="delete">Delete</string>
+
+    <string name="hint">Hint</string>
+    <string name="sure_delete">Are you sure you want to delete the device?</string>
+
+    <string name="dev_cate">Device category</string>
+    <string name="share_auth">Shared authorization</string>
+    <string name="dev_hardware">Device firmware information</string>
+    <string name="dev_share_msg">Equipment sharing information</string>
+    <string name="current_wifi">Current LAN</string>
+    <string name="dev_name">Device name</string>
+    <string name="to_control">Entry control page</string>
+
+    <string name="delete_dev">Delete device</string>
+
+    <string name="dev_not_exist">Device not exist</string>
+
+    <string name="change_dev">Change device name</string>
+    <string name="change_dev_suc">Change device name success</string>
+
+    <string name="send_suc">Success</string>
+    <string name="send_failed">Failed</string>
+
+    <string name="delete_dev_suc">delete device success</string>
+
+    <string name="delete_group_suc">delete group success</string>
+
+    <string name="from_gallery">Select from album</string>
+
+    <string name="from_camera">Take photos</string>
+
+    <string name="no_sdcard">SD card not found, can not use the photo</string>
+
+    <string name="choice_photo">Select head</string>
+
+    <string name="set_name">Set name</string>
+    <string name="set_age">Set age</string>
+    <string name="set_gender">Set gender</string>
+
+    <string name="boy">Male</string>
+    <string name="girl">Female</string>
+
+    <string name="please_name">Please enter your name</string>
+    <string name="please_uid">please Uid</string>
+
+    <string name="no_user">Unable to obtain user information, please try again later</string>
+
+    <string name="set_suc">Success</string>
+    <string name="set_failed">Failed</string>
+
+    <string name="please_gender">Please choice gender</string>
+
+    <string name="years_old">years old</string>
+    <string name="candidate_list">Alternative list:</string>
+
+    <string name="profile_tips">(you can select multiple devices and multiple modes of operation)</string>
+
+    <string name="input_profile_name">Profile name</string>
+
+    <string name="create_profile">Create profile</string>
+
+    <string name="share_info">Share info</string>
+
+    <string name="dev_control">Device control</string>
+
+    <string name="chazuo_1">Jack one:</string>
+    <string name="chazuo_2">Jack two:</string>
+    <string name="chazuo_3">Jack three:</string>
+    <string name="chazuo_4">Jack four:</string>
+
+    <string name="dialog_message_group_item_pinned">Group item pinned! (group = %1$d)</string>
+    <string name="dialog_message_child_item_pinned">Child item pinned! (group = %1$d, child = %2$d)</string>
+    <string name="snack_bar_text_item_removed">1 item removed</string>
+    <string name="snack_bar_text_group_item_removed">1 group item removed</string>
+    <string name="snack_bar_text_child_item_removed">1 child item removed</string>
+    <string name="snack_bar_text_button_clicked">Button clicked! (position = %1$d)</string>
+    <string name="snack_bar_action_undo">UNDO</string>
+
+    <string name="at_least_one_action">At least one of the operating instructions to add oh</string>
+
+    <string name="please_edit_profile_name">Please enter a profile name</string>
+    <string name="empty_cmd">Did not add any operating instructions</string>
+
+    <string name="device_not_found">Device not found</string>
+
+    <string name="QR_title">My two-dimensional code</string>
+    <string name="QR_weiXin">WeChat</string>
+    <string name="QR_wb">Weibo</string>
+    <string name="QR_QQ">QQ</string>
+    <string name="QR_Qzone">Qzone</string>
+    <string name="QR_wxcircle">WeChat Moments</string>
+    <string name="QR_good">Share the benefits of the qr code</string>
+
+    <string name="can_not_save">SD card not found, unable to store pictures!</string>
+
+    <string name="share_suc">Share success</string>
+    <string name="share_err">Share failed</string>
+    <string name="share_cancel">Share cancel</string>
+
+    <string name="diandong_str">Jog mode</string>
+    <string name="husuo_str">Interlocked mode</string>
+    <string name="zidong_str">Self locking mode</string>
+
+    <string name="device_info">Device info</string>
+
+    <string name="share_owner">Shared person：</string>
+
+    <string name="share_device">Authorize the device</string>
+
+    <string name="shouquan_device">Authorized equipment</string>
+
+    <string name="share_dev_tips">Authorized devices to other users,
+        the need to scan the target user APP "My two-dimensional code" inside the two-dimensional code,
+        you can also allow the user to the two-dimensional code image sent to you,
+        to identify the two-dimensional code image authorization n(*≧▽≦*)n</string>
+
+    <string name="scan_qr_code">Scan qr code</string>
+
+    <string name="scan_failed">Scan qr code failed</string>
+
+    <string name="not_allow_qr_code">The two-dimensional code you scan has nothing to do with the authorization device, and if you choose to access the link in your browser</string>
+
+    <string name="my_code">My two-dimensional code</string>
+
+    <string name="clear_screen">Clear screen</string>
+
+    <!-- 【诶之 -->
+
+    <string name="company_name">YuanStrom Technology Co., Ltd.</string>
+
+    <string name="company_url">http://yuanjifeng.iok.la:51400/HTML/html/index.html</string>
+
+    <string name="company_info">Chengdu YuanStrom Technology Co., Ltd. was founded in 2016,
+        is a smart home, website construction,
+        office platform, mobile phone APP technology service providers,
+        set design, development in one. Rely on science and technology for development,
+        and constantly provide users with satisfactory products,
+        is our constant pursuit. Has successfully developed a smart socket,
+        intelligent gateway, intelligent remote control and a series of products,
+        with first-class technical services by the user\'s praise.
+        The employees of the company adhere to the "rigorous and realistic progressive unity" principle,
+        continuous innovation, technology as the core, to the quality of life, customer as God,
+        wholeheartedly provides the highest price for your products, customer service and meticulous service.</string>
+
+    <string name="about_us_introduce">Company website:http://yuanjifeng.iok.la:51400/HTML/html/index.html
+        \n Business cooperation:18011442703
+        \n Cooperative partner:http://www.hekr.me/
+        \n Problem feedback: developerlzh@gmail.com</string>
+
+    <!--<string name="company_name">XX Technology Co., Ltd.</string>-->
+
+    <!--<string name="company_url">http://www.baidu.com</string>-->
+
+    <!--<string name="company_info">Company introduce</string>-->
+
+    <!--<string name="about_us_introduce">Company website:http://www.baidu.com \n Business cooperation:12345678910 \n Cooperative partner:http://www.hekr.me/ \n Problem feedback: developerlzh@gmail.com</string>-->
+
+    <string name="qrcode_hint">You can let the device host turn on the APP scan this two-dimensional code when the device owner is going to authorize the device to you.
+        You can also "root directory /YuanStrom" folder under the MyQrCode.png using third party APP sent to the device owner, he can use the APP to identify the two-dimensional code image authorization to you</string>
+
+    <string name="dev_name_maohao">Device name：</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
+    <string name="first_jack">first jack</string>
+    <string name="second_jack">second jack</string>
+    <string name="third_jack">third jack</string>
+    <string name="fourth_jack">fourth jack</string>
+    <string name="action">action：</string>
+
+    <string name="now"></string>
+    <string name="run_di">running the</string>
+    <string name="tiao_order">th order</string>
+
+    <string name="sure_delete_profile">Are you sure delete the profile?</string>
+
+    <string name="clcik_again_exit">Then click one exit procedure</string>
+
+    <string name="long_click">tips:long press can call out the operation list</string>
+
+    <string name="query_ing">querying..</string>
+
+    <string name="dev_offline">Device offline, send operation instructions will not be successfully executed</string>
+
+    <string name="dev_error">Device may be disconnected, please reset the device and try again</string>
+
+    <string name="flow_system">Flow system</string>
+    <string name="zh">简体中文</string>
+    <string name="en">English</string>
+
+    <string name="code0">network timeout</string>
+    <string name="code1">login information expired, please login again.</string>
+    <string name="code2">unknown error!</string>
+    <string name="code5200000">service internal error</string>
+    <string name="code400016">frequent operation, please try again later</string>
+    <string name="code400017">today has reached its limit operation</string>
+    <string name="code3400001">cell phone number is invalid</string>
+    <string name="code3400002">verification code error</string>
+    <string name="code3400003">captcha expired</string>
+    <string name="code3400005">send verification code number too much</string>
+    <string name="code3400006">invalid request type</string>
+    <string name="code3400007">invalid old password</string>
+    <string name="code3400008">users registered</string>
+    <string name="code3400009">user\'s not verify</string>
+    <string name="code3400010">account or password error</string>
+    <string name="code3400011">user does not exist</string>
+    <string name="code3400012">invalid email token</string>
+    <string name="code3400013">account certified</string>
+    <string name="code3400014">account already associated a tripartite account</string>
+    <string name="code5400001">internal error</string>
+    <string name="code5400002">app repeat login</string>
+    <string name="code5400003">appTid can\'t be empty</string>
+    <string name="code5400004">authorized relationship existing</string>
+    <string name="code5400005">authorized relationship does not exist</string>
+    <string name="code5400006">binding for network reasons failed</string>
+    <string name="code5400007">binding for overtime reason failure</string>
+    <string name="code5400009">modify user profiles failure</string>
+    <string name="code54000010">check code failure</string>
+    <string name="code54000011">equipment authorization number to limit</string>
+    <string name="code54000012">due to internal error bound failure</string>
+    <string name="code54000013">because of repeated binding binding failure</string>
+    <string name="code54000014">equipment does not belong to the user</string>
+    <string name="code54000015">no such instructions</string>
+    <string name="code54000016">devices cannot repeat login</string>
+    <string name="code54000017">devTid can\'t be empty</string>
+    <string name="code54000018">create timing to make an appointment to reach limit</string>
+    <string name="code54000019">authorized instruction is out of date</string>
+    <string name="code54000020">does not support the directive</string>
+    <string name="code54000021">illegal email token</string>
+    <string name="code54000022">illegal old password</string>
+    <string name="code54000023">illegal check code</string>
+    <string name="code54000024">equipment cannot find due to internal error, please reconnect to</string>
+    <string name="code54000025">does not exist the pid</string>
+    <string name="code54000026">don\'t have the right to the directive</string>
+    <string name="code54000027">specifies the template does not exist</string>
+    <string name="code54000028">due to incorrect status inside equipment could not be found</string>
+    <string name="code54000035">task given there is no</string>
+    <string name="code54000036">unable to create repeated template</string>
+    <string name="code54000037">device id does not match the</string>
+    <string name="code54000039">user does not exist</string>
+    <string name="code54000040">check code expired</string>
+    <string name="code54000041">validation code sent failure</string>
+    <string name="code54000042">check code type illegal</string>
+    <string name="code54000043">equipment to mandatory binding</string>
+    <string name="code5500000">internal service error</string>
+
+    <string name="code6400001">reverse application for registration of the specified id does not exist</string>
+    <string name="code6400002">illegal reverse authorization request</string>
+    <string name="code6400003">only the owner can authorize equipment to others</string>
+    <string name="code6400004">designated devTid device does not exist</string>
+    <string name="code6400005">folder can hold equipment quantities of cap</string>
+    <string name="code6400006">unable to create the folder with the same</string>
+    <string name="code6400007">specifies the id of the folder does not exist</string>
+    <string name="code6400008">cap on the number to create the folder</string>
+    <string name="code6400009">unable to delete the root directory</string>
+    <string name="code6400010">can\'t give the root directory name</string>
+    <string name="code6400011">the rules specified does not exist</string>
+    <string name="code6400012">specified time booking task does not exist</string>
+    <string name="code6400013">unable to create the same rules</string>
+    <string name="code6400014">unable to create the same time to make an appointment</string>
+    <string name="code6400015">illegal prodPubKey</string>
+    <string name="code6400016">no permission to do</string>
+    <string name="code6400017">request parameter error</string>
+    <string name="code6400018">the specified network backup file does not exist</string>
+    <string name="code6400020">can\'t find the ir code</string>
+    <string name="code6400021">infrared service request error</string>
+    <string name="code6400022">cannot find the instruction set</string>
+    <string name="code6400023">parameter does not support</string>
+    <string name="code6400024">parsing json failure</string>
+    <string name="code6500001">delete network backup file failed</string>
+    <string name="code6500002">failed to upload the network backup file</string>
+    <string name="code6500003">HTTP network call failure</string>
+    <string name="code8200000">success</string>
+    <string name="code8400000">product there is no</string>
+    <string name="code8400001">does not exist agreement template</string>
+    <string name="code8400002">illegal parameter</string>
+    <string name="code8400003">platform parameter error</string>
+    <string name="code9200000">success</string>
+    <string name="code9400000">error</string>
+    <string name="code9400001">illegal parameter</string>
+    <string name="code9400002">action does not exist</string>
+    <string name="code9400003">product there is no</string>
+    <string name="code9400004">timeout</string>
+    <string name="code9400005">method does not support</string>
+    <string name="code9500000">service error</string>
+    <string name="code9500001">service response error</string>
+    <string name="code_default">server is unusual, please try again.</string>
+
+    <string name="please_lan_psw">Please enter your LAN password</string>
+    <string name="found_device">Founded device</string>
+    <string name="device_serial_no">Device serial number:</string>
+    <string name="device_cate">Device category</string>
+    <string name="bind_suc">Device and account binding success:</string>
+    <string name="bind_failed">Device and account binding failed, error code:</string>
+    <string name="continue_query_device">Continue to query the device..</string>
+    <string name="add_device_complete">Add device operation completed</string>
+    <string name="total_founded">Total founded </string>
+    <string name="ge_device_new_bind"> device(s)，New binding </string>
+    <string name="ge"> device(s)</string>
+    <string name="add_suc_will_exit">Successfully added new device, is about to exit the interface</string>
+    <string name="not_founded_any_device">Not founded any devices</string>
+    <string name="error_cause"> device(s),possible reasons: 1.WIFI password wrong 2.LAN network without any preparation device </string>
+    <string name="ready">Add the device engine is ready..</string>
+    <string name="start_founded">Start searching the device..</string>
+    <string name="empty_psw">Password is empty?</string>
+    <string name="no_net">No available network!</string>
+    <string name="get_pin_code">Start getting the pinCode</string>
+    <string name="get_pin_code_suc">get the pinCode success</string>
+    <string name="get_pin_code_failed">get the pinCode failed,error code:</string>
+    <string name="maybe_one_minute">Starting with the query in the network device, which may take a minute or so...</string>
+</resources>

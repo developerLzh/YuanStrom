@@ -10,8 +10,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Switch;
 
 import com.lzh.yuanstrom.R;
@@ -39,16 +41,16 @@ import me.hekr.hekrsdk.util.SpCache;
 public class ChazuoActivity extends BaseDevActivity {
 
     @BindView(R.id.radio_1)
-    Switch switch1;
+    CheckBox switch1;
 
     @BindView(R.id.radio_2)
-    Switch switch2;
+    CheckBox switch2;
 
     @BindView(R.id.radio_3)
-    Switch switch3;
+    CheckBox switch3;
 
     @BindView(R.id.radio_4)
-    Switch switch4;
+    CheckBox switch4;
 
     @BindView(R.id.chazuo_img)
     ImageView chazuoImg;
@@ -65,40 +67,34 @@ public class ChazuoActivity extends BaseDevActivity {
     @BindView(R.id.zisuo)
     RadioButton zisuo;
 
+    @BindView(R.id.radio_group)
+    RadioGroup radioGroup;
+
 //        hekrUserAction.registerAuth();
 //        hekrUserAction.getOAuthInfoRequest();
 //        hekrUserAction.agreeOAuth();
 
-    @OnCheckedChanged(R.id.zisuo)
+    @OnClick(R.id.zisuo)
     void zisuo() {
-        if (zisuo.isChecked()) {
-            zisuo.setTextColor(getResources().getColor(R.color.colorPrimary));
-        } else {
-            zisuo.setTextColor(getResources().getColor(R.color.text_default_color));
-        }
+        zisuo.setTextColor(getResources().getColor(R.color.colorPrimary));
+        sendSetData("01", "00", zisuo);
     }
 
-    @OnCheckedChanged(R.id.husuo)
+    @OnClick(R.id.husuo)
     void husuo() {
-        if (husuo.isChecked()) {
-            husuo.setTextColor(getResources().getColor(R.color.colorPrimary));
-        } else {
-            husuo.setTextColor(getResources().getColor(R.color.text_default_color));
-        }
+        sendSetData("02", "00", husuo);
     }
 
-    @OnCheckedChanged(R.id.diandong)
+    @OnClick(R.id.diandong)
     void diandong() {
-        if (diandong.isChecked()) {
-            diandong.setTextColor(getResources().getColor(R.color.colorPrimary));
-        } else {
-            diandong.setTextColor(getResources().getColor(R.color.text_default_color));
-        }
+        sendSetData("00", "00", diandong);
     }
+
+    private RadioButton lastCheckedSet;
 
     private boolean needSendMsg = true;
 
-    @OnCheckedChanged(R.id.radio_1)
+    @OnClick(R.id.radio_1)
     void switch1Check() {
         String switchState = "";
         if (switch1.isChecked()) {
@@ -107,13 +103,13 @@ public class ChazuoActivity extends BaseDevActivity {
             switchState = "02";
         }
         if (needSendMsg) {
-        sendData(CommandHelper.SWITCH_COMMAND, "01", switchState);//发送命令
+            sendSwitchData(CommandHelper.SWITCH_COMMAND, "01", switchState, switch1);//发送命令
         } else {
             needSendMsg = true;
         }
     }
 
-    @OnCheckedChanged(R.id.radio_2)
+    @OnClick(R.id.radio_2)
     void switch2Check() {
         String switchState = "";
         if (switch2.isChecked()) {
@@ -122,13 +118,13 @@ public class ChazuoActivity extends BaseDevActivity {
             switchState = "02";
         }
         if (needSendMsg) {
-        sendData(CommandHelper.SWITCH_COMMAND, "02", switchState);//发送命令
+            sendSwitchData(CommandHelper.SWITCH_COMMAND, "02", switchState, switch2);//发送命令
         } else {
             needSendMsg = true;
         }
     }
 
-    @OnCheckedChanged(R.id.radio_3)
+    @OnClick(R.id.radio_3)
     void switch3Check() {
         String switchState = "";
         if (switch3.isChecked()) {
@@ -137,13 +133,13 @@ public class ChazuoActivity extends BaseDevActivity {
             switchState = "02";
         }
         if (needSendMsg) {
-        sendData(CommandHelper.SWITCH_COMMAND, "03", switchState);//发送命令
+            sendSwitchData(CommandHelper.SWITCH_COMMAND, "03", switchState, switch3);//发送命令
         } else {
             needSendMsg = true;
         }
     }
 
-    @OnCheckedChanged(R.id.radio_4)
+    @OnClick(R.id.radio_4)
     void switch4Check() {
         String switchState = "";
         if (switch4.isChecked()) {
@@ -152,7 +148,7 @@ public class ChazuoActivity extends BaseDevActivity {
             switchState = "02";
         }
         if (needSendMsg) {
-        sendData(CommandHelper.SWITCH_COMMAND, "04", switchState);//发送命令
+            sendSwitchData(CommandHelper.SWITCH_COMMAND, "04", switchState, switch4);//发送命令
         } else {
             needSendMsg = true;
         }
@@ -164,8 +160,6 @@ public class ChazuoActivity extends BaseDevActivity {
         setContentView(R.layout.activity_switch);
 
         ButterKnife.bind(this);
-
-        husuo.setChecked(true);
 
         initBar();
     }
@@ -205,8 +199,18 @@ public class ChazuoActivity extends BaseDevActivity {
             needSendMsg = false;
             int a = Integer.parseInt(secondCommand, 16);
             changeSwitchState(a);
-        } else if(firstCommand.equals(CommandHelper.SWITCH_COMMAND)){
-            getDevState();
+
+            int b = Integer.parseInt(thirdCommand, 16);
+            if (b == 0) {
+                lastCheckedSet = diandong;
+                changeSet(diandong,true);
+            } else if (b == 1) {
+                lastCheckedSet = zisuo;
+                changeSet(zisuo,true);
+            } else if (b == 2) {
+                lastCheckedSet = husuo;
+                changeSet(husuo,true);
+            }
         }
     }
 
@@ -238,4 +242,124 @@ public class ChazuoActivity extends BaseDevActivity {
     protected void detailSendFailed() {
         super.detailSendFailed();
     }
+
+    private void sendSwitchData(String firstCommand, String secondCommand, final String thirdCommand, final CheckBox switchA) {
+        CommandHelper commandHelper = new CommandHelper.CommandBuilder().setFirstCommand(firstCommand).setSecondCommand(secondCommand).setThirdCommand(thirdCommand).build();
+        FullCommandHelper fullCommandHelper = new FullCommandHelper(devTid, local.ctrlKey, commandHelper.toString());
+        Log.e("commandHelper", fullCommandHelper.toString());
+        showLoading(true);
+        try {
+            MsgUtil.sendMsg(ChazuoActivity.this, devTid, new JSONObject(fullCommandHelper.toString()), new DataReceiverListener() {
+                @Override
+                public void onReceiveSuccess(String s) {
+                    Log.e("onReceiveSuccess", s);
+                    hideLoading();
+                    ToastUtil.showMessage(ChazuoActivity.this, getString(R.string.send_suc));
+                    changeSwitch(thirdCommand, switchA, true);
+                }
+
+                @Override
+                public void onReceiveTimeout() {
+                    hideLoading();
+                    detailSendFailed();
+                    ToastUtil.showMessage(ChazuoActivity.this, getString(R.string.send_failed));
+                    changeSwitch(thirdCommand, switchA, false);
+                }
+            }, false);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void sendSetData(String secondCommand, final String thirdCommand, final RadioButton radioButton) {
+        CommandHelper commandHelper = new CommandHelper.CommandBuilder().setFirstCommand("04").setSecondCommand(secondCommand).setThirdCommand(thirdCommand).build();
+        FullCommandHelper fullCommandHelper = new FullCommandHelper(devTid, local.ctrlKey, commandHelper.toString());
+        Log.e("commandHelper", fullCommandHelper.toString());
+        showLoading(true);
+        try {
+            MsgUtil.sendMsg(ChazuoActivity.this, devTid, new JSONObject(fullCommandHelper.toString()), new DataReceiverListener() {
+                @Override
+                public void onReceiveSuccess(String s) {
+                    Log.e("onReceiveSuccess", s);
+                    hideLoading();
+                    ToastUtil.showMessage(ChazuoActivity.this, getString(R.string.send_suc));
+                    getDevState();
+                }
+
+                @Override
+                public void onReceiveTimeout() {
+                    hideLoading();
+                    detailSendFailed();
+                    ToastUtil.showMessage(ChazuoActivity.this, getString(R.string.send_failed));
+                    changeSet(radioButton, false);
+                }
+            }, false);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void changeSet(RadioButton radioButton, boolean success) {
+        if (success) {
+            diandong.setTextColor(getResources().getColor(R.color.text_default_color));
+            zisuo.setTextColor(getResources().getColor(R.color.text_default_color));
+            husuo.setTextColor(getResources().getColor(R.color.text_default_color));
+            if (radioButton.getId() == R.id.zisuo) {
+                zisuo.setChecked(true);
+                zisuo.setTextColor(getResources().getColor(R.color.colorPrimary));
+            } else if (radioButton.getId() == R.id.husuo) {
+                husuo.setChecked(true);
+                husuo.setTextColor(getResources().getColor(R.color.colorPrimary));
+            } else if (radioButton.getId() == R.id.diandong) {
+                diandong.setChecked(true);
+                diandong.setTextColor(getResources().getColor(R.color.colorPrimary));
+            }
+        } else {
+            diandong.setTextColor(getResources().getColor(R.color.text_default_color));
+            zisuo.setTextColor(getResources().getColor(R.color.text_default_color));
+            husuo.setTextColor(getResources().getColor(R.color.text_default_color));
+            if (lastCheckedSet.getId() == R.id.zisuo) {
+                zisuo.setChecked(true);
+                zisuo.setTextColor(getResources().getColor(R.color.colorPrimary));
+            } else if (lastCheckedSet.getId() == R.id.husuo) {
+                husuo.setChecked(true);
+                husuo.setTextColor(getResources().getColor(R.color.colorPrimary));
+            } else if (lastCheckedSet.getId() == R.id.diandong) {
+                diandong.setChecked(true);
+                diandong.setTextColor(getResources().getColor(R.color.colorPrimary));
+            }
+
+        }
+    }
+
+    private void changeSwitch(String thirdCommand, CheckBox switchA, boolean success) {
+        if (success) {
+            if (diandong.isChecked()) {
+                switch1.setChecked(false);
+                switch2.setChecked(false);
+                switch3.setChecked(false);
+                switch4.setChecked(false);
+            } else if (zisuo.isChecked()) {
+                if (thirdCommand.equals("01")) {
+                    switchA.setChecked(true);
+                } else {
+                    switchA.setChecked(false);
+                }
+            } else if (husuo.isChecked()) {
+                switch1.setChecked(false);
+                switch2.setChecked(false);
+                switch3.setChecked(false);
+                switch4.setChecked(false);
+                switchA.setChecked(true);
+            }
+
+        } else {
+            if (thirdCommand.equals("02")) {
+                switchA.setChecked(true);
+            } else {
+                switchA.setChecked(false);
+            }
+        }
+    }
+
 }

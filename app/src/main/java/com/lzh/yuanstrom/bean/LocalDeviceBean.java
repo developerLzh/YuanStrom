@@ -1,13 +1,18 @@
 package com.lzh.yuanstrom.bean;
 
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.lzh.yuanstrom.MyApplication;
 import com.lzh.yuanstrom.sql.SqliteHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import me.hekr.hekrsdk.bean.DeviceBean;
 
@@ -112,7 +117,7 @@ public class LocalDeviceBean {
         values.put("folderName", folderName);
         values.put("categoryName", categoryName);
         values.put("productName", productName);
-        values.put("forceBind", forceBind ? 1:0);
+        values.put("forceBind", forceBind ? 1 : 0);
         values.put("maxDevShareNum", maxDevShareNum);
         boolean flag = db.insert("t_dev_info", null, values) != -1;
         return flag;
@@ -290,12 +295,37 @@ public class LocalDeviceBean {
         local.model = device.getModel();
         local.cidName = device.getCidName();
         local.folderName = device.getFolderName();
-        local.categoryName = device.getCategoryName().getZh_CN();
-        local.productName = device.getProductName().getZh_CN();
+
+        if (isChinese()) {
+            local.categoryName = device.getCategoryName().getZh_CN();
+            local.productName = device.getProductName().getZh_CN();
+        } else {
+            local.categoryName = device.getCategoryName().getEn_US();
+            local.productName = device.getProductName().getEn_US();
+        }
+
         local.forceBind = device.isForceBind();
         local.maxDevShareNum = device.getMaxDevShareNum();
 
         return local;
+    }
+
+    public static boolean isChinese() {
+        SharedPreferences preferences = MyApplication.getInstance().getSharedPreferences();
+        String language = preferences.getString("language", "default");
+        if (language.equals("zh")) {
+            return true;
+        } else if (language.equals("en")) {
+            return false;
+        } else {
+            String defaultLag = MyApplication.getInstance().getSharedPreferences().getString("defaultLanguage", "zh");
+            if (defaultLag.equals("zh")) {
+                return true;
+            } else if (defaultLag.equals("en")) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

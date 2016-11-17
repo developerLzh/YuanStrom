@@ -1,9 +1,11 @@
 package com.lzh.yuanstrom.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -32,7 +34,15 @@ import com.lzh.yuanstrom.utils.BitmapCache;
 import com.lzh.yuanstrom.utils.StringUtils;
 import com.mikepenz.materialdrawer.util.DrawerImageLoader;
 
+import co.mobiwise.materialintro.animation.MaterialIntroListener;
+import co.mobiwise.materialintro.prefs.PreferencesManager;
+import co.mobiwise.materialintro.shape.Focus;
+import co.mobiwise.materialintro.shape.FocusGravity;
+import co.mobiwise.materialintro.view.MaterialIntroView;
+import me.hekr.hekrsdk.action.HekrUser;
+import me.hekr.hekrsdk.action.HekrUserAction;
 import me.hekr.hekrsdk.bean.DeviceBean;
+import me.hekr.hekrsdk.util.HekrCodeUtil;
 
 /**
  * Created by chris.black on 6/11/15.
@@ -40,11 +50,13 @@ import me.hekr.hekrsdk.bean.DeviceBean;
 public class FirstPageAdapter extends RecyclerView.Adapter<FirstPageAdapter.ViewHolder> {
 
     private List<LocalDeviceBean> devices;
-    private Context context;
+    private Activity context;
     private CharSequence[] items;
 
     private OnItemClickListener clickListener;
     private OnItemLongClickListener longClickListener;
+
+    private PreferencesManager preferencesManager;
 
     public void setOnItemClickListener(OnItemClickListener clickListener) {
         this.clickListener = clickListener;
@@ -54,10 +66,12 @@ public class FirstPageAdapter extends RecyclerView.Adapter<FirstPageAdapter.View
         this.longClickListener = longClickListener;
     }
 
-    public FirstPageAdapter(Context context) {
+    public FirstPageAdapter(Activity context) {
         super();
         devices = new ArrayList<>();
         this.context = context;
+
+        preferencesManager = new PreferencesManager(context);
 
         items = new CharSequence[]{context.getString(R.string.set), context.getString(R.string.delete), context.getString(R.string.cancel)};
     }
@@ -84,6 +98,7 @@ public class FirstPageAdapter extends RecyclerView.Adapter<FirstPageAdapter.View
             final LocalDeviceBean deviceBean = devices.get(position);
             holder.title.setText(deviceBean.categoryName);
             if (StringUtils.isNotBlank(deviceBean.deviceName)) {
+                holder.subTitle.setVisibility(View.VISIBLE);
                 holder.subTitle.setText(deviceBean.deviceName);
             } else {
                 holder.subTitle.setVisibility(View.GONE);
@@ -113,6 +128,12 @@ public class FirstPageAdapter extends RecyclerView.Adapter<FirstPageAdapter.View
                 @Override
                 public void onClick(View v) {
                     if (null != clickListener) {
+                        if (preferencesManager.isDisplayed("DevItemLongClick")) {
+
+                        } else {
+                            showGuide(holder.root, context.getString(R.string.long_click), null, "DevItemLongClick", context);
+                            return;
+                        }
                         if (deviceBean.isClicked) {
                             deviceBean.isClicked = false;
                         } else {
@@ -135,47 +156,21 @@ public class FirstPageAdapter extends RecyclerView.Adapter<FirstPageAdapter.View
         }
     }
 
-    public void showDialog(final Context context, final String devTid) {
-        AlertDialog dialog = new AlertDialog.Builder(context)
-                .setTitle(context.getString(R.string.choice_method))
-                .setItems(items, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int i) {
-                        if (items[i].equals(context.getString(R.string.cancel))) {
-                            dialog.dismiss();
-                        } else if (items[i].equals(context.getString(R.string.delete))) {
-                            dialog.dismiss();
-                            showSureDialog();
-                        } else if (items[i].equals(context.getString(R.string.set))) {
-                            //TODO to setting
-                            Intent intent = new Intent(context, DevControlActivity.class);
-                            intent.putExtra("devTid", devTid);
-                            context.startActivity(intent);
-                        }
-                    }
-                })
-                .create();
-        dialog.show();
-    }
-
-    private void showSureDialog() {
-        AlertDialog dialog = new AlertDialog.Builder(context)
-                .setTitle(context.getString(R.string.hint))
-                .setMessage(context.getString(R.string.sure_delete))
-                .setPositiveButton(context.getString(R.string.ensure), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //TODO delete device
-                        dialog.dismiss();
-                    }
-                })
-                .setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).create();
-        dialog.show();
+    private void showGuide(View v, String guideStr, MaterialIntroListener listener, String useageId, Activity context) {
+        new MaterialIntroView.Builder(context)
+                .enableDotAnimation(true)
+                .enableIcon(false)
+                .setFocusGravity(FocusGravity.CENTER)
+                .setFocusType(Focus.MINIMUM)
+                .setDelayMillis(500)
+                .enableFadeAnimation(true)
+                .performClick(false)
+                .setInfoText(guideStr)
+                .setTarget(v)
+                .dismissOnTouch(true)
+                .setListener(listener)
+                .setUsageId(useageId) //THIS SHOULD BE UNIQUE ID
+                .show();
     }
 
     protected static class ViewHolder extends RecyclerView.ViewHolder {

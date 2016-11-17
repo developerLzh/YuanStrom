@@ -7,6 +7,9 @@ package com.lzh.yuanstrom.utils;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.os.Environment;
+
+import com.litesuits.android.log.Log;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -61,7 +64,6 @@ public class AppManager {
     public void finishActivity(Activity activity) {
         if (activity != null && null != activityStack) {
             activityStack.remove(activity);
-            activity = null;
         }
     }
 
@@ -70,34 +72,39 @@ public class AppManager {
 
             List<Activity> activities = new LinkedList<Activity>();
             for (Activity activity : activityStack) {
-                if (activity.getClass().equals(cls)) {
+                Log.e("activity Name", activity.getClass().getName());
+                Log.e("cls Name", cls.getName());
+                if (activity.getClass().getName().equals(cls.getName())) {
                     activities.add(activity);
                 }
             }
 
-            //����Activity
             for (Activity activity : activities) {
+                activity.finish();
                 finishActivity(activity);
             }
 
         }
     }
 
+    /**
+     * 结束所有Activity
+     */
     public void finishAllActivity() {
         if (null != activityStack) {
-            for (int i = 0, size = activityStack.size(); i < size; i++) {
-                if (null != activityStack.get(i)) {
-                    activityStack.get(i).finish();
-                }
+            for (Activity activity : activityStack) {
+                activity.finish();
             }
-
             activityStack.clear();
         }
     }
 
     public void AppExit(Context context) {
         try {
-
+            if (PhotoHelper.hasSdcard()) {
+                PhotoHelper.deleteTemp(Environment.getExternalStorageDirectory().getAbsolutePath() + "/YuanStrom/MyQrCode.png");
+                PhotoHelper.deleteTemp(Environment.getExternalStorageDirectory().getAbsolutePath() + "/YuanStrom/CompanyQrCode.png");
+            }
             finishAllActivity();
             ActivityManager activityMgr = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
             activityMgr.killBackgroundProcesses(context.getPackageName());

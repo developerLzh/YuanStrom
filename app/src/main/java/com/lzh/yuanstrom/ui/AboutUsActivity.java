@@ -16,8 +16,6 @@ import android.widget.ImageView;
 import com.lzh.yuanstrom.R;
 import com.lzh.yuanstrom.utils.Utils;
 import com.lzh.yuanstrom.widget.ShareBottomDialog;
-import com.sina.weibo.sdk.api.share.IWeiboHandler;
-import com.sina.weibo.sdk.api.share.IWeiboShareAPI;
 import com.tencent.tauth.Tencent;
 
 import java.io.File;
@@ -32,12 +30,10 @@ import butterknife.ButterKnife;
 public class AboutUsActivity extends BaseActivity {
 
     private ShareBottomDialog.BaseUiListener txListener;
-    private IWeiboShareAPI weiboShareAPI;
-    private IWeiboHandler.Response weiboResponse;
 
     private ShareBottomDialog dialog;
 
-    String shareUrl = "http://yuanjifeng.iok.la:51400/HTML/html/index.html#";
+    String shareUrl;
 
     @BindView(R.id.QR_img)
     ImageView qrImg;
@@ -51,20 +47,21 @@ public class AboutUsActivity extends BaseActivity {
         setContentView(R.layout.activity_about_us);
         ButterKnife.bind(this);
 
+        shareUrl = getString(R.string.company_url);
+
         initToolbar();
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                final File file = new File(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/YuanStrom"), "QrCode.png");
+                final File file = new File(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/YuanStrom"), "CompanyQrCode.png");
                 final Bitmap bitmap;
                 if (file.exists()) {
-//                    qrImg.setImageURI(Uri.fromFile(file));
-                    bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/YuanStrom/QrCode.png");
+                    bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/YuanStrom/CompanyQrCode.png");
                 } else {
-                    int radius = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.QR_img_size), getResources().getDisplayMetrics());
+                    int radius = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.QR_img_size) / 4, getResources().getDisplayMetrics());
                     bitmap = Utils.createQRImage(shareUrl, radius, radius, BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher));
-                    Utils.saveBitmap(context, "QrCode.png", bitmap);
+                    Utils.saveBitmap(context, "CompanyQrCode.png", bitmap);
                 }
                 runOnUiThread(new Runnable() {
                     @Override
@@ -72,7 +69,6 @@ public class AboutUsActivity extends BaseActivity {
                         qrImg.setImageBitmap(bitmap);
                     }
                 });
-
             }
         }).start();
     }
@@ -81,20 +77,13 @@ public class AboutUsActivity extends BaseActivity {
         if (toolbar != null) {
             toolbar.setTitle(getString(R.string.about_us));
             setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     AboutUsActivity.this.onBackPressed();
                 }
             });
-        }
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        if (null != weiboShareAPI) {
-            weiboShareAPI.handleWeiboResponse(intent, weiboResponse); //当前应用唤起微博分享后，返回当前应用
         }
     }
 
@@ -119,8 +108,6 @@ public class AboutUsActivity extends BaseActivity {
         if (id == R.id.action_share) {
             dialog = new ShareBottomDialog(this);
             txListener = dialog.getTxListener();
-            weiboShareAPI = dialog.getmWeiboShareAPI();
-            weiboResponse = dialog.getWeiboResponse();
             return true;
         }
 

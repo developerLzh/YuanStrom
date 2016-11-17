@@ -32,7 +32,7 @@
             android:text="@string/share_owner"
             android:textSize="20sp" />
 
-        <Button
+        <Button android:textAllCaps="false"
             android:id="@+id/grant_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

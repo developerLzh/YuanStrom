@@ -162,7 +162,7 @@ public class Utils {
         }
         try {
             FileOutputStream out = new FileOutputStream(f);
-            bm.compress(Bitmap.CompressFormat.PNG, 90, out);
+            bm.compress(Bitmap.CompressFormat.PNG, 30, out);
             out.flush();
             out.close();
             Log.i("saveBitmap", "已经保存");
@@ -231,7 +231,7 @@ public class Utils {
             }
 
             // 生成二维码图片的格式，使用ARGB_8888
-            Bitmap bitmap = Bitmap.createBitmap(widthPix, heightPix, Bitmap.Config.ARGB_8888);
+            Bitmap bitmap = Bitmap.createBitmap(widthPix, heightPix, Bitmap.Config.ARGB_4444);
             bitmap.setPixels(pixels, 0, widthPix, 0, 0, widthPix, heightPix);
 
             if (logoBm != null) {
@@ -275,7 +275,7 @@ public class Utils {
 
         //logo大小为二维码整体大小的1/5
         float scaleFactor = srcWidth * 1.0f / 5 / logoWidth;
-        Bitmap bitmap = Bitmap.createBitmap(srcWidth, srcHeight, Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = Bitmap.createBitmap(srcWidth, srcHeight, Bitmap.Config.ARGB_4444);
         try {
             Canvas canvas = new Canvas(bitmap);
             canvas.drawBitmap(src, 0, 0, null);

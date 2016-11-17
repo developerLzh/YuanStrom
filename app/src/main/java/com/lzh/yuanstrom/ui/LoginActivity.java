@@ -29,6 +29,7 @@ import com.lzh.yuanstrom.utils.AppManager;
 import com.lzh.yuanstrom.utils.StringUtils;
 import com.lzh.yuanstrom.utils.ToastUtil;
 import com.lzh.yuanstrom.utils.Utils;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import java.util.concurrent.TimeUnit;
 
@@ -262,9 +263,9 @@ public class LoginActivity extends BaseActivity {
             public void loginSuccess(String s) {
                 Log.e("login", "login success");
                 hideLoading();
+                AppManager.getAppManager().finishActivity(SplashActivity.class);
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
-                AppManager.getAppManager().finishActivity(SplashActivity.class);
                 finish();
             }
 
@@ -395,6 +396,7 @@ public class LoginActivity extends BaseActivity {
         if (data != null) {
             String certificate = data.getStringExtra(HekrOAuthLoginActivity.OAUTH_CODE);
             if (!TextUtils.isEmpty(certificate)) {
+                showLoading(true);
                 loginOAuth(resultCode, certificate);
             }
         }
@@ -413,6 +415,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void mOAuthSuccess(JWTBean jwtBean) {
                 //该OAuth账号已经和主账号绑定
+                hideLoading();
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
             }
@@ -420,6 +423,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void mOAuthFail(int errorCode) {
                 //失败
+                hideLoading();
                 Snackbar.make(home, HekrCodeUtil.errorCode2Msg(errorCode), Snackbar.LENGTH_SHORT).show();
             }
         });
@@ -427,7 +431,6 @@ public class LoginActivity extends BaseActivity {
 
     //创建匿名帐号并且绑定
     private void createUserAndBind(final int type, final String bindToken) {
-        showLoading(true);
         hekrUserAction.createUserAndBind(type, bindToken, new HekrUser.CreateUserAndBindListener() {
             @Override
             public void createSuccess(String str) {

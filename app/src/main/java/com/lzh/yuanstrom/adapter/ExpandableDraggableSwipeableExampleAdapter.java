@@ -243,7 +243,7 @@ public class ExpandableDraggableSwipeableExampleAdapter
         holder.mContainer.setOnClickListener(mSwipeableViewContainerOnClickListener);
 
         // set text
-        holder.mTextView.setText(item.getDevTid());
+        holder.mTextView.setText(item.getDevName());
 
         final int dragState = holder.getDragStateFlags();
 

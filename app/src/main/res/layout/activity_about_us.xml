@@ -27,14 +27,24 @@
             android:layout_width="@dimen/QR_img_size"
             android:layout_height="@dimen/QR_img_size"
             android:layout_gravity="center_horizontal"
+            android:scaleType="fitXY"
             />
         <TextView
             android:id="@+id/company_info"
-            android:text="aa"
+            android:text="@string/company_info"
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"/>
+            android:textSize="10sp"
+            android:padding="5dp"/>
+        <TextView
+            android:text="@string/about_us_introduce"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:autoLink="phone|web|email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"/>
 
     </LinearLayout>
 

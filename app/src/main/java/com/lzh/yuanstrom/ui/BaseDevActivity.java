@@ -93,6 +93,8 @@ public class BaseDevActivity extends BaseActivity {
                     String data = result.params.data.raw;
                     String useful = data.substring(8,data.length() - 2);
                     detailData(useful);
+                } else {
+                    ToastUtil.showMessage(context,getString(R.string.dev_error));
                 }
                 Log.e("backData",backData);
             }

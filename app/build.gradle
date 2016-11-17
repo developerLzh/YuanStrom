@@ -5,12 +5,13 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
 
+    
     defaultConfig {
         applicationId "com.lzh.yuanstrom"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        versionCode 8
+        versionName "1.8"
     }
     buildTypes {
         release {
@@ -20,6 +21,8 @@ android {
     }
     packagingOptions {
         exclude 'AndroidManifest.xml'
+        exclude 'META-INF/NOTICE.txt'// 这里是具体的冲突文件全路径
+        exclude 'META-INF/LICENSE.txt'
     }
     lintOptions {
         checkReleaseBuilds false
@@ -57,16 +60,19 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
 
-    compile 'com.github.zzz40500:android-shapeLoadingView:1.0.3.2'
+    compile 'com.tencent.bugly:crashreport:2.3.1'
+
+//    compile 'com.github.zzz40500:android-shapeLoadingView:1.0.3.2'
 
     compile(name:'hekrsdk-1.0.0', ext:'aar')
+    compile(name:'lib-zxing-debug', ext:'aar')
 
     compile 'io.reactivex:rxjava:1.1.0'
     compile 'io.reactivex:rxandroid:1.1.0'
 
-    compile 'net.qiujuer.genius:ui:2.0.0-beta2'
-
-    compile 'net.qiujuer.genius:res:2.0.0-beta2'
+//    compile 'net.qiujuer.genius:ui:2.0.0-beta2'
+//
+//    compile 'net.qiujuer.genius:res:2.0.0-beta2'
     compile 'com.github.iammert:MaterialIntroView:1.5.2'
 
     compile('com.mikepenz:materialdrawer:4.5.9@aar') {

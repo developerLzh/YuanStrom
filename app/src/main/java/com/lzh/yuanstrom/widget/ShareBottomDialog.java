@@ -45,9 +45,9 @@ import java.util.ArrayList;
 
 public class ShareBottomDialog {
 
-    String shareTitle = "源极风科技有限公司";
-    String shareContent = "成都源极风科技有限公司创建于2016年，是一家以智能家居，网站建设，办公平台，手机APP的技术服务商，集设计，开发于一体。 依靠科技求发展，不断为用户提供满意的产品，是我们始终不变的追求。已成功开发出智能插座，智能网关，智能遥控等一系列产品， 以一流的技术服务受到了用户的一致好评。公司员工奉行“进取 求实 严谨 团结”的方针，不断开拓创新，以技术为核心， 以质量为生命，奉用户为上帝，竭诚为您提供性价比最高的产品，以及无微不至的售后服务。\n";
-    String shareUrl = "http://yuanjifeng.iok.la:51400/HTML/html/index.html#";
+    String shareTitle = "";
+    String shareContent = "";
+    String shareUrl = "";
     private Activity context;
 
     private BaseUiListener txListener;
@@ -73,18 +73,20 @@ public class ShareBottomDialog {
     public ShareBottomDialog(Activity context) {
         this.context = context;
         this.txListener = new BaseUiListener();
-        initWeiboRes();
+
+        shareTitle = context.getString(R.string.company_name);
+        shareContent = context.getString(R.string.company_info);
+        shareUrl = context.getString(R.string.company_url);
+
         dialog = new CusBottomSheetDialog(context);
         View v = LayoutInflater.from(context).inflate(R.layout.share_dialog, null);
         LinearLayout shareQQ = (LinearLayout) v.findViewById(R.id.share_QQ);
         LinearLayout shareQzone = (LinearLayout) v.findViewById(R.id.share_Qzone);
-        LinearLayout shareSina = (LinearLayout) v.findViewById(R.id.share_sina);
         LinearLayout shareWx = (LinearLayout) v.findViewById(R.id.share_weixin);
         LinearLayout shareWxCircle = (LinearLayout) v.findViewById(R.id.share_wxcircle);
 
         reg2Wx();
         reg2QQ();
-        reg2Weibo();
 
         shareQQ.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,54 +112,12 @@ public class ShareBottomDialog {
                 share2WxCircle();
             }
         });
-        shareSina.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                share2Wb();
-            }
-        });
         dialog.setContentView(v);
         dialog.show();
     }
 
     public void show(){
         dialog.show();
-    }
-
-    private void initWeiboRes() {
-        this.weiboResponse = new IWeiboHandler.Response() {
-            @Override
-            public void onResponse(BaseResponse response) {
-                switch (response.errCode) {
-                    case WBConstants.ErrorCode.ERR_OK:
-                        ToastUtil.showMessage(context,context.getString(R.string.share_suc));
-                        break;
-                    case WBConstants.ErrorCode.ERR_CANCEL:
-                        ToastUtil.showMessage(context,context.getString(R.string.share_cancel));
-                        break;
-                    case WBConstants.ErrorCode.ERR_FAIL:
-                        Log.e("WBError", response.errMsg + " " + response.errCode + " " + response.reqPackageName);
-                        ToastUtil.showMessage(context,context.getString(R.string.share_err));
-                        break;
-                }
-            }
-        };
-    }
-
-    private void share2Wb() {
-        Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/YuanStrom" + "/QrCode.png");
-        TextObject textObject = new TextObject();
-        textObject.title = shareTitle;
-        textObject.text = shareContent;
-        textObject.actionUrl = shareUrl;
-        textObject.setThumbImage(BmpUtils.createBitmapThumbnail(bitmap));
-
-        WeiboMultiMessage weiboMessage = new WeiboMultiMessage();//初始化微博的分享消息
-        weiboMessage.textObject = textObject;
-        SendMultiMessageToWeiboRequest request = new SendMultiMessageToWeiboRequest();
-        request.transaction = String.valueOf(System.currentTimeMillis());
-        request.multiMessage = weiboMessage;
-        mWeiboShareAPI.sendRequest(context, request);
     }
 
     private void reg2Weibo() {
@@ -177,7 +137,7 @@ public class ShareBottomDialog {
         params.putString(QQShare.SHARE_TO_QQ_SUMMARY, shareContent);       //
         params.putString(QQShare.SHARE_TO_QQ_TARGET_URL, shareUrl);
         if (PhotoHelper.hasSdcard()) {
-            params.putString(QQShare.SHARE_TO_QQ_IMAGE_LOCAL_URL, Environment.getExternalStorageDirectory().getAbsolutePath() + "/YuanStrom" + "/QrCode.png"); //图片地址
+            params.putString(QQShare.SHARE_TO_QQ_IMAGE_LOCAL_URL, Environment.getExternalStorageDirectory().getAbsolutePath() + "/YuanStrom" + "/CompanyQrCode.png"); //图片地址
         }
         params.putString(QQShare.SHARE_TO_QQ_APP_NAME, context.getResources().getString(R.string.app_name));
         params.putInt(QQShare.SHARE_TO_QQ_EXT_INT, QQShare.SHARE_TO_QQ_FLAG_QZONE_ITEM_HIDE);  //隐藏分享到QQ控件按钮
@@ -210,7 +170,7 @@ public class ShareBottomDialog {
         //分享到QQ空间
         ArrayList<String> urls = new ArrayList<>(); //图片地址，最多支持9张图片
         if (PhotoHelper.hasSdcard()) {
-            urls.add(Environment.getExternalStorageDirectory().getAbsolutePath() + "/YuanStrom" + "/QrCode.png"); //图片地址
+            urls.add(Environment.getExternalStorageDirectory().getAbsolutePath() + "/YuanStrom" + "/CompanyQrCode.png"); //图片地址
         }
 
         final Bundle params = new Bundle();
@@ -244,7 +204,7 @@ public class ShareBottomDialog {
         WXWebpageObject webPage = new WXWebpageObject();
         webPage.webpageUrl = shareUrl;
 
-        Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/YuanStrom" + "/QrCode.png");
+        Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/YuanStrom" + "/CompanyQrCode.png");
 
         WXMediaMessage msg = new WXMediaMessage(webPage);
         msg.title = shareTitle;

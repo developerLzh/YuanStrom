@@ -13,6 +13,8 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
 
+    <uses-permission android:name="android.permission.READ_LOGS" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
     <!-- 这个权限用于进行配网时阻止屏幕休眠-->
@@ -23,6 +25,8 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- 写入扩展存储，向扩展卡写入数据，用于写入用户数据-->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.VIBRATE"></uses-permission>
 
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 
@@ -91,7 +95,16 @@
             android:name=".ui.AuthDevActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.MyCodeActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.AuthListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.ScanActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.ChangeLanguageActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.AboutUsActivity"

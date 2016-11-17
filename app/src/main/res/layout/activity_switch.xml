@@ -40,18 +40,16 @@
                 android:orientation="horizontal"
                 android:gravity="center">
                 
-                <Switch
+                <CheckBox
                     android:id="@+id/radio_2"
                     android:layout_width="56dp"
                     android:layout_height="60dp"
                     android:button="@null"
-                    android:thumb="@null"
                     android:background="@drawable/switch_selector"/>
-                <Switch
+                <CheckBox
                     android:id="@+id/radio_3"
                     android:layout_marginLeft="40dp"
                     android:layout_width="56dp"
-                    android:thumb="@null"
                     android:layout_height="60dp"
                     android:button="@null"
                     android:background="@drawable/switch_selector"/>
@@ -64,18 +62,16 @@
                 android:orientation="horizontal"
                 android:gravity="center">
 
-                <Switch
+                <CheckBox
                     android:id="@+id/radio_1"
                     android:layout_width="56dp"
                     android:layout_height="60dp"
                     android:button="@null"
-                    android:thumb="@null"
                     android:background="@drawable/switch_selector"/>
-                <Switch
+                <CheckBox
                     android:id="@+id/radio_4"
                     android:layout_marginLeft="160dp"
                     android:layout_width="56dp"
-                    android:thumb="@null"
                     android:layout_height="60dp"
                     android:button="@null"
                     android:background="@drawable/switch_selector"/>
@@ -83,6 +79,7 @@
             </LinearLayout>
 
             <RadioGroup
+                android:id="@+id/radio_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/aaa"
@@ -117,6 +114,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
+                    android:checked="true"
                     android:textColor="@color/text_default_color"
                     android:text="@string/zidong_str"
                     android:drawableTop="@drawable/zisuo_selector"

@@ -23,6 +23,8 @@ import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -81,7 +83,7 @@ public class GroupActivity extends BaseActivity implements ExpandableItemPinnedM
 
                 String desc = editDesc.getText().toString();
                 if (StringUtils.isBlank(desc)) {
-                    desc = "";
+                    desc = " ";
                 }
 
                 showLoading(true);
@@ -287,4 +289,37 @@ public class GroupActivity extends BaseActivity implements ExpandableItemPinnedM
         void deleteFailed(int errorCode);
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (!isNewCreate) {
+            getMenuInflater().inflate(R.menu.group_menu, menu);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.delete) {
+            android.util.Log.e("Tag", "menu changed");
+            deleteGroup(groupId, new DeleteGroupListener() {
+                @Override
+                public void deleteSuccess() {
+                    ToastUtil.showMessage(GroupActivity.this, getString(R.string.delete_group_suc));
+                    GroupActivity.this.finish();
+                }
+
+                @Override
+                public void deleteFailed(int errorCode) {
+                    ToastUtil.showMessage(GroupActivity.this, HekrCodeUtil.errorCode2Msg(errorCode));
+                }
+            });
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 }

@@ -62,4 +62,15 @@
     <color name="gray2">#64969696</color>
 
     <color name="line">#22000000</color>
+
+    <color name="green_300">#42bd41</color>
+    <color name="green_200">#72d572</color>
+    <color name="brown_200">#bcaaa4</color>
+    <color name="red_300">#f36c60</color>
+    <color name="red_200">#f69988</color>
+    <color name="blue_500">#5677fc</color>
+    <color name="pink_500">#e91e63</color>
+
+    <color name="scan_corner_color">#0effc2</color>
+
 </resources>

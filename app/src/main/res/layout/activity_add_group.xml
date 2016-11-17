@@ -78,7 +78,7 @@
         <!--android:paddingRight="16dp"-->
         <!--&gt;</android.support.v7.widget.RecyclerView>-->
 
-    <Button
+    <Button android:textAllCaps="false"
         android:id="@+id/create_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
