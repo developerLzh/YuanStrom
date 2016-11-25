@@ -37,7 +37,7 @@ import com.lzh.yuanstrom.utils.ToastUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.hekr.hekrsdk.action.HekrUser;
-import me.hekr.hekrsdk.util.HekrCodeUtil;
+import com.lzh.yuanstrom.utils.HekrCodeUtil;
 
 /**
  * Created by Administrator on 2016/10/25.
@@ -83,7 +83,7 @@ public class DevControlActivity extends BaseActivity {
         ButterKnife.bind(this);
         devTid = getIntent().getStringExtra("devTid");
         local = LocalDeviceBean.findByTid(devTid);
-        initBar();
+        setCanBackToolbar(getString(R.string.device_info));
 
         MyApplication.getInstance().getImageLoader().get(local.logo, new ImageLoader.ImageListener() {
             @Override
@@ -177,18 +177,6 @@ public class DevControlActivity extends BaseActivity {
         }
     }
 
-    private void initBar() {
-        toolbar.setTitle(getString(R.string.device_info));
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DevControlActivity.this.onBackPressed();
-            }
-        });
-    }
-
     private void showSureDialog() {
         AlertDialog dialog = new AlertDialog.Builder(context)
                 .setTitle(context.getString(R.string.hint))
@@ -206,7 +194,7 @@ public class DevControlActivity extends BaseActivity {
 
                             @Override
                             public void deleteDeviceFail(int i) {
-                                Snackbar.make(rootView, HekrCodeUtil.errorCode2Msg(i), Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(rootView, HekrCodeUtil.errorCode2Msg(context,i), Snackbar.LENGTH_SHORT).show();
                             }
                         });
                         dialog.dismiss();
@@ -242,7 +230,7 @@ public class DevControlActivity extends BaseActivity {
 
                                 @Override
                                 public void renameDeviceFail(int i) {
-                                    Snackbar.make(rootView, HekrCodeUtil.errorCode2Msg(i), Snackbar.LENGTH_SHORT).show();
+                                    Snackbar.make(rootView, HekrCodeUtil.errorCode2Msg(context,i), Snackbar.LENGTH_SHORT).show();
                                 }
                             });
 

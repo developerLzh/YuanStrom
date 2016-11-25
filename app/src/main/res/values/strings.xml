@@ -395,6 +395,7 @@
     <string name="code8400001">协议模板不存在</string>
     <string name="code8400002">非法参数</string>
     <string name="code8400003">平台参数错误</string>
+    <string name="code8400004">指定pid不存在</string>
     <string name="code9200000">成功</string>
     <string name="code9400000">错误</string>
     <string name="code9400001">非法参数</string>
@@ -428,5 +429,30 @@
     <string name="get_pin_code_suc">获取pinCode成功</string>
     <string name="get_pin_code_failed">获取pinCode失败，错误码：</string>
     <string name="maybe_one_minute">开始查询在网设备,这可能会耗时一分钟左右...</string>
+
+    <string name="sunday">日</string>
+    <string name="monday">一</string>
+    <string name="tuesday">二</string>
+    <string name="wednesday">三</string>
+    <string name="thursday">四</string>
+    <string name="friday">五</string>
+    <string name="saturday">六</string>
+
+    <string name="timing_task">定时任务</string>
+
+    <string name="repeat">重复</string>
+
+    <string name="once_or_repeat">添加单次任务还是重复任务?</string>
+
+    <string name="once">单次</string>
+    <string name="next_step">下一步</string>
+
+    <string name="please_date">请选择日期</string>
+
+    <string name="please_time">请选择具体时间</string>
+
+    <string name="select_repeat_day">选择重复的周期</string>
+
+    <string name="must_have_one">至少得选择一个日期</string>
 
 </resources>

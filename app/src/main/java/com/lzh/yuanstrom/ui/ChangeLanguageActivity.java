@@ -48,7 +48,7 @@ public class ChangeLanguageActivity extends BaseActivity {
         setContentView(R.layout.activity_change_language);
         ButterKnife.bind(this);
 
-        initToolbar();
+        setCanBackToolbar(getString(R.string.change_language));
 
         initView();
 

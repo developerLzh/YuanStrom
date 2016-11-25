@@ -5,6 +5,7 @@
     <color name="colorAccent">#00838f</color>
     <color name="barColor">#00acc1</color>
     <color name="theme_accent">#FF4081</color>
+    <color name="theme_accent_deep">#88FF4081</color>
     <color name="theme_accent_normal">#FCFCFC</color>
 
     <color name="text">#212121</color>

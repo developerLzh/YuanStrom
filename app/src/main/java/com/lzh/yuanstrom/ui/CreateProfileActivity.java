@@ -66,7 +66,7 @@ public class CreateProfileActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         deviceBeanList = LocalDeviceBean.findALll();
-        initBar();
+        setCanBackToolbar(getString(R.string.create_profile));
         initRecycler();
         initView();
     }
@@ -92,18 +92,6 @@ public class CreateProfileActivity extends BaseActivity {
                 intent.putExtra("profileData", profileData);
                 setResult(RESULT_OK, intent);
                 CreateProfileActivity.this.finish();
-            }
-        });
-    }
-
-    private void initBar() {
-        toolbar.setTitle(getString(R.string.create_profile));
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CreateProfileActivity.this.onBackPressed();
             }
         });
     }

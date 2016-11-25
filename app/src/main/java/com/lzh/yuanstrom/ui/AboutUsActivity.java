@@ -49,7 +49,7 @@ public class AboutUsActivity extends BaseActivity {
 
         shareUrl = getString(R.string.company_url);
 
-        initToolbar();
+        setCanBackToolbar(getString(R.string.about_us));
 
         new Thread(new Runnable() {
             @Override
@@ -71,20 +71,6 @@ public class AboutUsActivity extends BaseActivity {
                 });
             }
         }).start();
-    }
-
-    private void initToolbar() {
-        if (toolbar != null) {
-            toolbar.setTitle(getString(R.string.about_us));
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AboutUsActivity.this.onBackPressed();
-                }
-            });
-        }
     }
 
     @Override

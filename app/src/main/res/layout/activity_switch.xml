@@ -138,14 +138,12 @@
 
     </RelativeLayout>
 
-    <!--<android.support.design.widget.FloatingActionButton-->
-    <!--android:id="@+id/fab"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="bottom|end"-->
-    <!--android:layout_margin="@dimen/fab_margin"-->
-    <!--app:backgroundTint="@color/green_500"-->
-    <!--app:rippleColor="@color/green_a100"-->
-    <!--android:src="@mipmap/clock_icon" />-->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_gravity="bottom|right"
+        android:src="@drawable/ic_alarm_white_24dp"/>
 
 </android.support.design.widget.CoordinatorLayout>

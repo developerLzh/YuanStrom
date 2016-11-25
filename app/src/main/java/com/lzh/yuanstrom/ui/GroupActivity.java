@@ -51,7 +51,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.hekr.hekrsdk.action.HekrUserAction;
 import me.hekr.hekrsdk.util.ConstantsUtil;
-import me.hekr.hekrsdk.util.HekrCodeUtil;
+import com.lzh.yuanstrom.utils.HekrCodeUtil;
 
 public class GroupActivity extends BaseActivity implements ExpandableItemPinnedMessageDialogFragment.EventListener {
     private static final String FRAGMENT_LIST_VIEW = "list view";
@@ -103,7 +103,7 @@ public class GroupActivity extends BaseActivity implements ExpandableItemPinnedM
                                 @Override
                                 public void createFailed(int errorCode) {
                                     hideLoading();
-                                    Snackbar.make(home, HekrCodeUtil.errorCode2Msg(errorCode), Snackbar.LENGTH_SHORT).show();
+                                    Snackbar.make(home, HekrCodeUtil.errorCode2Msg(context,errorCode), Snackbar.LENGTH_SHORT).show();
                                 }
                             });
                         }
@@ -124,7 +124,7 @@ public class GroupActivity extends BaseActivity implements ExpandableItemPinnedM
                         @Override
                         public void createFailed(int errorCode) {
                             hideLoading();
-                            Snackbar.make(home, HekrCodeUtil.errorCode2Msg(errorCode), Snackbar.LENGTH_SHORT).show();
+                            Snackbar.make(home, HekrCodeUtil.errorCode2Msg(context,errorCode), Snackbar.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -163,7 +163,7 @@ public class GroupActivity extends BaseActivity implements ExpandableItemPinnedM
 
         initData();
 
-        initBar();
+        setCanBackToolbar(getString(R.string.start_create_group));
 
         if (savedInstanceState == null) {
             myFragment = new GroupFragment();
@@ -223,18 +223,6 @@ public class GroupActivity extends BaseActivity implements ExpandableItemPinnedM
             getDataProvider().getChildItem(groupPosition, childPosition).setPinned(ok);
             ((GroupFragment) fragment).notifyChildItemChanged(groupPosition, childPosition);
         }
-    }
-
-    private void initBar() {
-        toolbar.setTitle(getString(R.string.start_create_group));
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GroupActivity.this.onBackPressed();
-            }
-        });
     }
 
     public ExampleExpandableDataProvider getDataProvider() {
@@ -313,7 +301,7 @@ public class GroupActivity extends BaseActivity implements ExpandableItemPinnedM
 
                 @Override
                 public void deleteFailed(int errorCode) {
-                    ToastUtil.showMessage(GroupActivity.this, HekrCodeUtil.errorCode2Msg(errorCode));
+                    ToastUtil.showMessage(GroupActivity.this, HekrCodeUtil.errorCode2Msg(context,errorCode));
                 }
             });
             return true;

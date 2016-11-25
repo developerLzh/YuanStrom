@@ -80,7 +80,7 @@ import me.hekr.hekrsdk.action.HekrUserAction;
 import me.hekr.hekrsdk.bean.FileBean;
 import me.hekr.hekrsdk.bean.ProfileBean;
 import me.hekr.hekrsdk.util.ConstantsUtil;
-import me.hekr.hekrsdk.util.HekrCodeUtil;
+import com.lzh.yuanstrom.utils.HekrCodeUtil;
 import me.hekr.hekrsdk.util.SpCache;
 
 /**
@@ -702,7 +702,7 @@ public class MainActivity extends BaseActivity {
                                     public void changeFail(int i) {
                                         hideLoading();
                                         Utils.handErrorCode(i, context);
-                                        Snackbar.make(coordinatorLayout, HekrCodeUtil.errorCode2Msg(i), Snackbar.LENGTH_SHORT).show();
+                                        Snackbar.make(coordinatorLayout, HekrCodeUtil.errorCode2Msg(context,i), Snackbar.LENGTH_SHORT).show();
                                     }
                                 });
                             }
@@ -819,7 +819,7 @@ public class MainActivity extends BaseActivity {
                 photoHelper.deleteTemp(photoHelper.getCameraPath());
                 photoHelper.setCameraPath("");
                 photoHelper.setTempPath("");
-                ToastUtil.showMessage(context, getString(R.string.set_failed) + "：" + HekrCodeUtil.errorCode2Msg(i));
+                ToastUtil.showMessage(context, getString(R.string.set_failed) + "：" + HekrCodeUtil.errorCode2Msg(context,i));
             }
         });
     }

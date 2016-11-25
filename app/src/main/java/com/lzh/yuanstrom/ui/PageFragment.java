@@ -49,7 +49,7 @@ import me.hekr.hekrsdk.action.HekrUserAction;
 import me.hekr.hekrsdk.bean.DeviceBean;
 import me.hekr.hekrsdk.bean.GroupBean;
 import me.hekr.hekrsdk.listener.DataReceiverListener;
-import me.hekr.hekrsdk.util.HekrCodeUtil;
+import com.lzh.yuanstrom.utils.HekrCodeUtil;
 import me.hekr.hekrsdk.util.MsgUtil;
 
 public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
@@ -248,7 +248,7 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
                     @Override
                     public void getFailed(int errCode) {
-                        ToastUtil.showMessage(context, HekrCodeUtil.errorCode2Msg(errCode));
+                        ToastUtil.showMessage(context, HekrCodeUtil.errorCode2Msg(context,errCode));
                         mSwipeRefreshLayout.setRefreshing(false);
                     }
                 });
@@ -309,7 +309,7 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 mSwipeRefreshLayout.setRefreshing(false);
                 emptyCon.setVisibility(View.VISIBLE);
                 if (isAdded()) {
-                    hintTxt.setText(context.getString(R.string.load_failed) + HekrCodeUtil.errorCode2Msg(i));
+                    hintTxt.setText(context.getString(R.string.load_failed) + HekrCodeUtil.errorCode2Msg(context,i));
                 }
                 firstPageAdapter.setDevices(new ArrayList<LocalDeviceBean>());
             }
@@ -379,7 +379,7 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             public void getGroupFail(int i) {
                 mSwipeRefreshLayout.setRefreshing(false);
                 emptyCon.setVisibility(View.VISIBLE);
-                hintTxt.setText(context.getString(R.string.load_failed) + HekrCodeUtil.errorCode2Msg(i));
+                hintTxt.setText(context.getString(R.string.load_failed) + HekrCodeUtil.errorCode2Msg(context,i));
                 secondPageAdapter.setGroups(new ArrayList<GroupBean>());
             }
         });
@@ -570,7 +570,7 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
                             @Override
                             public void deleteDeviceFail(int i) {
-                                ToastUtil.showMessage(context, HekrCodeUtil.errorCode2Msg(i));
+                                ToastUtil.showMessage(context, HekrCodeUtil.errorCode2Msg(context,i));
                             }
                         });
                         dialog.dismiss();

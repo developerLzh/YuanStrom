@@ -2,47 +2,33 @@ package com.lzh.yuanstrom.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.util.List;
-import java.util.ArrayList;
-
-import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.Volley;
 import com.lzh.yuanstrom.MyApplication;
 import com.lzh.yuanstrom.R;
 import com.lzh.yuanstrom.bean.LocalDeviceBean;
 import com.lzh.yuanstrom.ui.ChazuoActivity;
-import com.lzh.yuanstrom.ui.DevControlActivity;
 import com.lzh.yuanstrom.ui.LampActivity;
-import com.lzh.yuanstrom.ui.YaoKong2Activity;
-import com.lzh.yuanstrom.utils.BitmapCache;
 import com.lzh.yuanstrom.utils.StringUtils;
-import com.mikepenz.materialdrawer.util.DrawerImageLoader;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import co.mobiwise.materialintro.animation.MaterialIntroListener;
 import co.mobiwise.materialintro.prefs.PreferencesManager;
 import co.mobiwise.materialintro.shape.Focus;
 import co.mobiwise.materialintro.shape.FocusGravity;
 import co.mobiwise.materialintro.view.MaterialIntroView;
-import me.hekr.hekrsdk.action.HekrUser;
-import me.hekr.hekrsdk.action.HekrUserAction;
-import me.hekr.hekrsdk.bean.DeviceBean;
-import me.hekr.hekrsdk.util.HekrCodeUtil;
 
 /**
  * Created by chris.black on 6/11/15.
@@ -207,7 +193,7 @@ public class FirstPageAdapter extends RecyclerView.Adapter<FirstPageAdapter.View
         } else if (cateName.equals(context.getString(R.string.mianban))) {
 
         } else if (cateName.equals(context.getString(R.string.yaokong_2))) {
-            intent.setClass(context, YaoKong2Activity.class);
+//            intent.setClass(context, YaoKong2Activity.class);
         }
         intent.putExtra("devTid", devTid);
         context.startActivity(intent);

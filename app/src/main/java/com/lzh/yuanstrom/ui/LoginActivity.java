@@ -44,7 +44,7 @@ import me.hekr.hekrsdk.bean.JWTBean;
 import me.hekr.hekrsdk.bean.MOAuthBean;
 import me.hekr.hekrsdk.util.BaseHttpUtil;
 import me.hekr.hekrsdk.util.ConstantsUtil;
-import me.hekr.hekrsdk.util.HekrCodeUtil;
+import com.lzh.yuanstrom.utils.HekrCodeUtil;
 import me.hekr.hekrsdk.util.SpCache;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -272,7 +272,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void loginFail(int i) {
                 hideLoading();
-                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(i), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(context,i), Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -290,7 +290,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void checkVerifyCodeFail(int i) {
                 hideLoading();
-                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(i), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(context,i), Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -307,7 +307,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void registerFail(int i) {
                 hideLoading();
-                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(i), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(context,i), Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -327,7 +327,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void getImgCaptchaFail(int i) {
                 hideLoading();
-                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(i), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(context,i), Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -356,7 +356,7 @@ public class LoginActivity extends BaseActivity {
 
                                 @Override
                                 public void checkCaptchaFail(int i) {
-                                    Snackbar.make(home, HekrCodeUtil.errorCode2Msg(i), Snackbar.LENGTH_SHORT).show();
+                                    Snackbar.make(home, HekrCodeUtil.errorCode2Msg(context,i), Snackbar.LENGTH_SHORT).show();
                                 }
                             });
                         }
@@ -385,7 +385,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void getVerifyCodeFail(int i) {
                 hideLoading();
-                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(i), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(context,i), Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -424,7 +424,7 @@ public class LoginActivity extends BaseActivity {
             public void mOAuthFail(int errorCode) {
                 //失败
                 hideLoading();
-                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(errorCode), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(context,errorCode), Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -443,7 +443,7 @@ public class LoginActivity extends BaseActivity {
             public void createFail(int errorCode) {
                 //失败
                 hideLoading();
-                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(errorCode), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(context,errorCode), Snackbar.LENGTH_SHORT).show();
             }
         });
     }

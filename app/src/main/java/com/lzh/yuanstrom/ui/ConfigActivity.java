@@ -75,21 +75,9 @@ public class ConfigActivity extends BaseActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_config);
         ButterKnife.bind(this);
-        initBar();
+        setCanBackToolbar(getString(R.string.add_device));
         initView();
         initData();
-    }
-
-    private void initBar() {
-        toolbar.setTitle(getString(R.string.add_device));
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ConfigActivity.this.onBackPressed();
-            }
-        });
     }
 
     private void initView() {

@@ -39,7 +39,7 @@ public class MyCodeActivity extends BaseActivity {
 
         ButterKnife.bind(this);
 
-        initBar();
+        setCanBackToolbar(getString(R.string.my_code));
 
         shareUrl = getString(R.string.company_url) + hekrUserAction.getUserId();
 
@@ -64,17 +64,5 @@ public class MyCodeActivity extends BaseActivity {
                 });
             }
         }).start();
-    }
-
-    private void initBar() {
-        toolbar.setTitle(getString(R.string.my_code));
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyCodeActivity.this.onBackPressed();
-            }
-        });
     }
 }

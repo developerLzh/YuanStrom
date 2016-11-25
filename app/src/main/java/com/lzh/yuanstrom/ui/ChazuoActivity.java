@@ -1,23 +1,19 @@
 package com.lzh.yuanstrom.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Switch;
 
 import com.lzh.yuanstrom.R;
-import com.lzh.yuanstrom.bean.DeviceInfo;
+import com.lzh.yuanstrom.bean.LocalDeviceBean;
 import com.lzh.yuanstrom.utils.CommandHelper;
 import com.lzh.yuanstrom.utils.FullCommandHelper;
 import com.lzh.yuanstrom.utils.ToastUtil;
@@ -27,13 +23,9 @@ import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
-import me.hekr.hekrsdk.action.HekrUser;
-import me.hekr.hekrsdk.bean.OAuthBean;
 import me.hekr.hekrsdk.listener.DataReceiverListener;
 import me.hekr.hekrsdk.util.MsgUtil;
-import me.hekr.hekrsdk.util.SpCache;
 
 /**
  * Created by Vicent on 2016/8/17.
@@ -70,9 +62,8 @@ public class ChazuoActivity extends BaseDevActivity {
     @BindView(R.id.radio_group)
     RadioGroup radioGroup;
 
-//        hekrUserAction.registerAuth();
-//        hekrUserAction.getOAuthInfoRequest();
-//        hekrUserAction.agreeOAuth();
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
 
     @OnClick(R.id.zisuo)
     void zisuo() {
@@ -161,17 +152,15 @@ public class ChazuoActivity extends BaseDevActivity {
 
         ButterKnife.bind(this);
 
-        initBar();
-    }
+        setCanBackToolbar(getString(R.string.dev_control));
 
-    private void initBar() {
-        toolbar.setTitle(getString(R.string.dev_control));
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                ChazuoActivity.this.onBackPressed();
+            public void onClick(View view) {
+                Intent intent = new Intent(ChazuoActivity.this,TimingActivity.class);
+                intent.putExtra("devTid",devTid);
+                intent.putExtra("ctrlKey", LocalDeviceBean.findByTid(devTid).ctrlKey);
+                startActivity(intent);
             }
         });
     }
@@ -203,13 +192,13 @@ public class ChazuoActivity extends BaseDevActivity {
             int b = Integer.parseInt(thirdCommand, 16);
             if (b == 0) {
                 lastCheckedSet = diandong;
-                changeSet(diandong,true);
+                changeSet(diandong, true);
             } else if (b == 1) {
                 lastCheckedSet = zisuo;
-                changeSet(zisuo,true);
+                changeSet(zisuo, true);
             } else if (b == 2) {
                 lastCheckedSet = husuo;
-                changeSet(husuo,true);
+                changeSet(husuo, true);
             }
         }
     }

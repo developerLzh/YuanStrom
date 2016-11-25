@@ -37,7 +37,7 @@ import me.hekr.hekrsdk.action.HekrUser;
 import me.hekr.hekrsdk.action.HekrUserAction;
 import me.hekr.hekrsdk.bean.OAuthListBean;
 import me.hekr.hekrsdk.util.ConstantsUtil;
-import me.hekr.hekrsdk.util.HekrCodeUtil;
+import com.lzh.yuanstrom.utils.HekrCodeUtil;
 
 /**
  * Created by Administrator on 2016/11/7.
@@ -82,7 +82,7 @@ public class AuthListActivity extends BaseActivity implements SwipeRefreshLayout
 
         ButterKnife.bind(this);
 
-        initToolbar();
+        setCanBackToolbar(getString(R.string.share_info));
 
         initRecycler();
 
@@ -106,7 +106,7 @@ public class AuthListActivity extends BaseActivity implements SwipeRefreshLayout
 
                     @Override
                     public void CancelOauthFail(int i) {
-                        ToastUtil.showMessage(AuthListActivity.this, HekrCodeUtil.errorCode2Msg(i));
+                        ToastUtil.showMessage(AuthListActivity.this, HekrCodeUtil.errorCode2Msg(context,i));
                     }
                 });
             }
@@ -129,18 +129,6 @@ public class AuthListActivity extends BaseActivity implements SwipeRefreshLayout
         recyclerView.setLayoutManager(manager);
         adapter = new AuthListAdapter(this);
         recyclerView.setAdapter(adapter);
-    }
-
-    private void initToolbar() {
-        toolbar.setTitle(getString(R.string.share_info));
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AuthListActivity.this.onBackPressed();
-            }
-        });
     }
 
     private void getAuthList() {
@@ -205,7 +193,7 @@ public class AuthListActivity extends BaseActivity implements SwipeRefreshLayout
             }
 
             public void getFail(int errorCode) {
-                ToastUtil.showMessage(AuthListActivity.this, HekrCodeUtil.errorCode2Msg(errorCode));
+                ToastUtil.showMessage(AuthListActivity.this, HekrCodeUtil.errorCode2Msg(context,errorCode));
             }
         });
     }

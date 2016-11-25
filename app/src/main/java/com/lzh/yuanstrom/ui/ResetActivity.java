@@ -23,7 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.hekr.hekrsdk.action.HekrUser;
-import me.hekr.hekrsdk.util.HekrCodeUtil;
+import com.lzh.yuanstrom.utils.HekrCodeUtil;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -79,7 +79,7 @@ public class ResetActivity extends BaseActivity {
             @Override
             public void getVerifyCodeFail(int i) {
                 hideLoading();
-                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(i), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(context,i), Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -120,7 +120,7 @@ public class ResetActivity extends BaseActivity {
             @Override
             public void resetFail(int i) {
                 hideLoading();
-                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(i), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(context,i), Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -131,7 +131,7 @@ public class ResetActivity extends BaseActivity {
         setContentView(R.layout.activity_forget_psw);
         ButterKnife.bind(this);
 
-        setToolbar();
+        setCanBackToolbar(getString(R.string.reset_psw));
     }
 
     private void startCountDown() {
@@ -155,15 +155,4 @@ public class ResetActivity extends BaseActivity {
 
     int time;
 
-    private void setToolbar() {
-        toolbar.setTitle(getString(R.string.reset_psw));
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ResetActivity.this.onBackPressed();
-            }
-        });
-    }
 }

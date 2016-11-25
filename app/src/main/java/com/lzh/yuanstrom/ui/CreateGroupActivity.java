@@ -41,7 +41,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.hekr.hekrsdk.action.HekrUserAction;
 import me.hekr.hekrsdk.util.ConstantsUtil;
-import me.hekr.hekrsdk.util.HekrCodeUtil;
+import com.lzh.yuanstrom.utils.HekrCodeUtil;
 
 /**
  * Created by Administrator on 2016/10/18.

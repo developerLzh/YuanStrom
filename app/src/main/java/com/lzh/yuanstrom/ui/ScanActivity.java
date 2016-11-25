@@ -51,7 +51,7 @@ public class ScanActivity extends BaseActivity {
 
         ButterKnife.bind(this);
 
-        initBar();
+        setCanBackToolbar(getString(R.string.scan_qr_code));
 
         initView();
     }
@@ -128,18 +128,6 @@ public class ScanActivity extends BaseActivity {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    private void initBar() {
-        toolbar.setTitle(getString(R.string.scan_qr_code));
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ScanActivity.this.onBackPressed();
-            }
-        });
     }
 
     /**

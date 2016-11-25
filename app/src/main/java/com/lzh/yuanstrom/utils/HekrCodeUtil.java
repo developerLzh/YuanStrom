@@ -47,196 +47,196 @@ public class HekrCodeUtil {
             case 0:
                 return context.getString(R.string.code0);
             case 1:
-                return "";
+                return context.getString(R.string.code1);
             case 2:
-                return "";
+                return context.getString(R.string.code2);
             case 500:
             case 5200000:
-                return "";
+                return context.getString(R.string.code5200000);
             case 400016:
-                return "";
+                return context.getString(R.string.code400016);
             case 400017:
-                return "";
+                return context.getString(R.string.code400017);
             case 3400001:
-                return "";
+                return context.getString(R.string.code3400001);
             case 3400002:
-                return "";
+                return context.getString(R.string.code3400002);
             case 3400003:
-                return "";
+                return context.getString(R.string.code3400003);
             case 3400005:
-                return "";
+                return context.getString(R.string.code3400005);
             case 3400006:
-                return "";
+                return context.getString(R.string.code3400006);
             case 3400007:
-                return "";
+                return context.getString(R.string.code3400007);
             case 3400008:
-                return "";
+                return context.getString(R.string.code3400008);
             case 3400009:
-                return "";
+                return context.getString(R.string.code3400009);
             case 3400010:
-                return "";
+                return context.getString(R.string.code3400010);
             case 3400011:
-                return "";
+                return context.getString(R.string.code3400011);
             case 3400012:
-                return "";
+                return context.getString(R.string.code3400012);
             case 3400013:
-                return "";
+                return context.getString(R.string.code3400013);
             case 3400014:
-                return "";
+                return context.getString(R.string.code3400014);
             case 5400001:
-                return "";
+                return context.getString(R.string.code5400001);
             case 5400002:
-                return "";
+                return context.getString(R.string.code5400002);
             case 5400003:
-                return "";
+                return context.getString(R.string.code5400003);
             case 5400004:
-                return "";
+                return context.getString(R.string.code5400004);
             case 5400005:
-                return "";
+                return context.getString(R.string.code5400005);
             case 5400006:
-                return "";
+                return context.getString(R.string.code5400006);
             case 5400007:
-                return "";
+                return context.getString(R.string.code5400007);
             case 5400009:
-                return "";
+                return context.getString(R.string.code5400009);
             case 5400010:
-                return "";
+                return context.getString(R.string.code54000010);
             case 5400011:
-                return "";
+                return context.getString(R.string.code54000011);
             case 5400012:
-                return "";
+                return context.getString(R.string.code54000012);
             case 5400013:
-                return "";
+                return context.getString(R.string.code54000013);
             case 5400014:
-                return "";
+                return context.getString(R.string.code54000014);
             case 5400015:
-                return "";
+                return context.getString(R.string.code54000015);
             case 5400016:
-                return "";
+                return context.getString(R.string.code54000016);
             case 5400017:
-                return "";
+                return context.getString(R.string.code54000017);
             case 5400018:
-                return "";
+                return context.getString(R.string.code54000018);
             case 5400019:
-                return "";
+                return context.getString(R.string.code54000019);
             case 5400020:
-                return "";
+                return context.getString(R.string.code54000020);
             case 5400021:
-                return "";
+                return context.getString(R.string.code54000021);
             case 5400022:
-                return "";
+                return context.getString(R.string.code54000022);
             case 5400023:
-                return "";
+                return context.getString(R.string.code54000023);
             case 5400024:
-                return "";
+                return context.getString(R.string.code54000024);
             case 5400025:
-                return "";
+                return context.getString(R.string.code54000025);
             case 5400026:
-                return "";
+                return context.getString(R.string.code54000026);
             case 5400027:
-                return "";
+                return context.getString(R.string.code54000027);
             case 5400028:
-                return "";
+                return context.getString(R.string.code54000028);
             case 5400035:
-                return "";
+                return context.getString(R.string.code54000035);
             case 5400036:
-                return "";
+                return context.getString(R.string.code54000036);
             case 5400037:
-                return "";
+                return context.getString(R.string.code54000037);
             case 5400039:
-                return "";
+                return context.getString(R.string.code54000039);
             case 5400040:
-                return "";
+                return context.getString(R.string.code54000040);
             case 5400041:
-                return "";
+                return context.getString(R.string.code54000041);
             case 5400042:
-                return "";
+                return context.getString(R.string.code54000042);
             case 5400043:
-                return "";
+                return context.getString(R.string.code54000043);
             case 5500000:
-                return "";
+                return context.getString(R.string.code5500000);
             case 6400001:
-                return "";
+                return context.getString(R.string.code6400001);
             case 6400002:
-                return "";
+                return context.getString(R.string.code6400002);
             case 6400003:
-                return "";
+                return context.getString(R.string.code6400003);
             case 6400004:
-                return "";
+                return context.getString(R.string.code6400004);
             case 6400005:
-                return "";
+                return context.getString(R.string.code6400005);
             case 6400006:
-                return "";
+                return context.getString(R.string.code6400006);
             case 6400007:
-                return "";
+                return context.getString(R.string.code6400007);
             case 6400008:
-                return "";
+                return context.getString(R.string.code6400008);
             case 6400009:
-                return "";
+                return context.getString(R.string.code6400009);
             case 6400010:
-                return "";
+                return context.getString(R.string.code6400010);
             case 6400011:
-                return "";
+                return context.getString(R.string.code6400011);
             case 6400012:
-                return "";
+                return context.getString(R.string.code6400012);
             case 6400013:
-                return "";
+                return context.getString(R.string.code6400013);
             case 6400014:
-                return "";
+                return context.getString(R.string.code6400014);
             case 6400015:
-                return "";
+                return context.getString(R.string.code6400015);
             case 6400016:
-                return "";
+                return context.getString(R.string.code6400016);
             case 6400017:
-                return "";
+                return context.getString(R.string.code6400017);
             case 6400018:
-                return "";
+                return context.getString(R.string.code6400018);
             case 6400020:
-                return "";
+                return context.getString(R.string.code6400020);
             case 6400021:
-                return "";
+                return context.getString(R.string.code6400021);
             case 6400022:
-                return "";
+                return context.getString(R.string.code6400022);
             case 6400023:
-                return "";
+                return context.getString(R.string.code6400023);
             case 6400024:
-                return "";
+                return context.getString(R.string.code6400024);
             case 6500001:
-                return "";
+                return context.getString(R.string.code6500001);
             case 6500002:
-                return "";
+                return context.getString(R.string.code6500002);
             case 6500003:
-                return "";
+                return context.getString(R.string.code6500003);
             case 8200000:
-                return "";
+                return context.getString(R.string.code8200000);
             case 8400000:
-                return "";
+                return context.getString(R.string.code8400000);
             case 8400001:
-                return "";
+                return context.getString(R.string.code8400001);
             case 8400002:
-                return "";
+                return context.getString(R.string.code8400002);
             case 8400003:
-                return "";
+                return context.getString(R.string.code8400003);
             case 8400004:
-                return "";
+                return context.getString(R.string.code8400004);
             case 9200000:
-                return "";
+                return context.getString(R.string.code9200000);
             case 9400000:
-                return "";
+                return context.getString(R.string.code9400000);
             case 9400001:
-                return "";
+                return context.getString(R.string.code9400001);
             case 9400002:
-                return "";
+                return context.getString(R.string.code9400002);
             case 9400003:
-                return "";
+                return context.getString(R.string.code9400003);
             case 9400004:
-                return "";
+                return context.getString(R.string.code9400004);
             case 9400005:
-                return "";
+                return context.getString(R.string.code9400005);
             case 9500000:
-                return "";
+                return context.getString(R.string.code9500000);
             case 9500001:
-                return "";
+                return context.getString(R.string.code9500001);
             default:
                 return "" + errorCode;
         }
