@@ -1,101 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginTop="10dp"
     android:background="@color/colorPrimary"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/out_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/ic_out_date" />
 
-            <TextView
-                android:id="@+id/time_noon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/hour_minute"
-                android:layout_marginLeft="10dp"
-                android:paddingBottom="5dp"
-                android:text="上午"
-                android:textColor="@color/white" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/hour_minute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@+id/time_noon"
-                android:text="7:40"
-                android:textColor="@color/white"
-                android:textSize="35sp" />
-
-            <Switch
-                android:id="@+id/state_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerInParent="true"
-                android:layout_marginRight="10dp"
-                android:theme="@style/MySwitch"/>
-        </RelativeLayout>
-
-        <RelativeLayout
+        <TextView
+            android:id="@+id/time_noon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_alignBottom="@+id/hour_minute"
+            android:layout_marginLeft="10dp"
+            android:paddingBottom="5dp"
+            android:text="上午"
+            android:textColor="@color/white" />
 
-            <TextView
-                android:id="@+id/repeat_or_once"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:text="2016年3月25日"
-                android:textColor="@color/white" />
+        <TextView
+            android:id="@+id/hour_minute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/time_noon"
+            android:text="7:40"
+            android:textColor="@color/white"
+            android:textSize="35sp" />
 
-            <ImageView
-                android:id="@+id/expand_img"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:padding="4dp"
-                android:src="@drawable/ic_expand_more_white_24dp" />
+        <Switch
+            android:id="@+id/state_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="10dp"
+            android:theme="@style/MySwitch" />
+    </RelativeLayout>
 
-        </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <net.cachapa.expandablelayout.ExpandableLayout
-            android:id="@+id/expandable_layout"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/task_content"
+            android:textColor="@color/white" />
+
+        <!--<TextView-->
+            <!--android:id="@+id/repeat_or_once"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:paddingBottom="10dp"-->
+            <!--android:paddingTop="10dp"-->
+            <!--android:text="2016-3-25"-->
+            <!--android:textColor="@color/white" />-->
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="40dp">
+
+        <ImageView
+            android:id="@+id/expand_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/task_content"
+            android:layout_alignParentRight="true"
+            android:padding="4dp"
+            android:src="@drawable/ic_expand_more_white_24dp" />
+
+        <TextView
+            android:id="@+id/task_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:el_expanded="true">
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/expand_img"
+            android:gravity="left|bottom"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="16sp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+        <!--<ImageView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:layout_marginBottom="5dp"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:layout_marginRight="10dp"-->
+        <!--android:src="@color/gray" />-->
+    </RelativeLayout>
+
+    <net.cachapa.expandablelayout.ExpandableLayout
+        android:id="@+id/expandable_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:el_expanded="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/repeat_checkbox"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:text="@string/repeat"
+                android:enabled="false"
+                android:textColor="@color/white"
+                app:theme="@style/MyCheckBox" />
 
-                <android.support.v7.widget.AppCompatCheckBox
-                    android:id="@+id/repeat_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/repeat"
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/change_date"
                     android:textColor="@color/white"
-                    app:theme="@style/MyCheckBox" />
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
                 <LinearLayout
+                    android:id="@+id/week_con"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
                     android:orientation="horizontal">
 
                     <CheckBox
@@ -200,63 +257,67 @@
 
                 </LinearLayout>
 
-                <TextView
+            </FrameLayout>
+
+            <!--<ImageView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:layout_marginBottom="5dp"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:src="@color/gray" />-->
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/task_content">
+
+                <ImageView
+                    android:id="@+id/delete_item"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
-                    android:text="Task Content:"
+                    android:padding="3dp"
+                    android:src="@drawable/delete_icon" />
+
+                <TextView
+                    android:id="@+id/sure_change"
+                    android:visibility="invisible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@color/colorPrimary"
+                    android:text="@string/sure_to_change"
                     android:textColor="@color/white" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
+
+                <ImageView
+                    android:id="@+id/collapse_img"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:minHeight="40dp">
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:padding="4dp"
+                    android:src="@drawable/ic_expand_less_white_24dp" />
 
-                    <ImageView
-                        android:id="@+id/collapse_img"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="10dp"
-                        android:padding="4dp"
-                        android:layout_alignBottom="@+id/task_content"
-                        android:src="@drawable/ic_expand_less_white_24dp" />
-                    <TextView
-                        android:id="@+id/task_content"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minHeight="40dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_toLeftOf="@+id/collapse_img"
-                        android:gravity="left|bottom"
-                        android:paddingBottom="10dp"
-                        android:text="aaaa"
-                        android:textSize="16sp"
-                        android:textColor="@color/white" />
-
-                    <ImageView
-                        android:id="@+id/delete_item"
-                        android:layout_below="@+id/task_content"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="3dp"
-                        android:layout_marginLeft="10dp"
-                        android:src="@drawable/delete_icon"/>
+            </RelativeLayout>
 
 
-                </RelativeLayout>
-            </LinearLayout>
+        </LinearLayout>
 
-        </net.cachapa.expandablelayout.ExpandableLayout>
+    </net.cachapa.expandablelayout.ExpandableLayout>
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:src="@color/gray"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"/>
 
-    </LinearLayout>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:src="@color/gray" />
+
+
+</LinearLayout>

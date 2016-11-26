@@ -21,7 +21,7 @@ import me.hekr.hekrsdk.action.HekrUserAction;
 public class BaseActivity extends AppCompatActivity {
     protected AlertDialog progressHUD;
 
-    protected HekrUserAction hekrUserAction;
+    public HekrUserAction hekrUserAction;
 
     protected Context context;
 
@@ -48,7 +48,7 @@ public class BaseActivity extends AppCompatActivity {
         super.finish();
     }
 
-    protected void showLoading(boolean cancelable) {
+    public void showLoading(boolean cancelable) {
         progressHUD = new ProgressDialog(this);
         progressHUD.setTitle("");
         progressHUD.setMessage(this.getString(R.string.wait));
@@ -58,7 +58,7 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    protected void hideLoading() {
+    public void hideLoading() {
         if (null != progressHUD && progressHUD.isShowing()) {
             progressHUD.dismiss();
         }

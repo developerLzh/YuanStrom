@@ -455,4 +455,24 @@
 
     <string name="must_have_one">至少得选择一个日期</string>
 
+    <string name="sure_to_change">确认修改</string>
+
+    <string name="task_content">任务内容:</string>
+
+    <string name="morning">上午</string>
+    <string name="afternoon">下午</string>
+
+    <string name="xingqi_yi">星期一</string>
+    <string name="xingqi_er">星期二</string>
+    <string name="xingqi_san">星期三</string>
+    <string name="xingqi_si">星期四</string>
+    <string name="xingqi_wu">星期五</string>
+    <string name="xingqi_liu">星期六</string>
+    <string name="xingqi_tian">星期天</string>
+
+    <string name="delete_suc">删除成功</string>
+    <string name="change_suc">修改成功</string>
+
+    <string name="no_timing">没有查询到任何定时任务，您可以点击下方的添加按钮添加一个</string>
+
 </resources>

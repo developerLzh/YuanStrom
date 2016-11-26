@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,38 +16,40 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.litesuits.android.log.Log;
 import com.lzh.yuanstrom.R;
 import com.lzh.yuanstrom.adapter.TimingAdapter;
 import com.lzh.yuanstrom.bean.LocalDeviceBean;
+import com.lzh.yuanstrom.bean.TimingBean;
 import com.lzh.yuanstrom.utils.CommandHelper;
 import com.lzh.yuanstrom.utils.FullCommandHelper;
 import com.lzh.yuanstrom.utils.HekrCodeUtil;
 import com.lzh.yuanstrom.utils.ToastUtil;
 import com.lzh.yuanstrom.widget.CusBottomSheetDialog;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.hekr.hekrsdk.action.HekrUserAction;
 import me.hekr.hekrsdk.util.ConstantsUtil;
 
-import java.util.Date;
-import java.util.Calendar;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-
 /**
  * Created by Administrator on 2016/11/23.
  */
 
-public class TimingActivity extends BaseActivity {
+public class TimingActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
@@ -57,14 +60,21 @@ public class TimingActivity extends BaseActivity {
     @BindView(R.id.fab)
     FloatingActionButton fab;
 
+    @BindView(R.id.swipe_layout)
+    SwipeRefreshLayout swipeLayout;
+
+    @BindView(R.id.empty_con)
+    LinearLayout emptyCon;
+
+    @BindView(R.id.hint_txt)
+    TextView hint_txt;
+
     private TimingAdapter adapter;
 
     private int year, monthOfYear, dayOfMonth, hourOfDay, minute;
 
     private String devTid;
     private String ctrlKey;
-
-    private List<String> cmds;
 
     private boolean isRepeat;
 
@@ -81,11 +91,10 @@ public class TimingActivity extends BaseActivity {
 
         setCanBackToolbar(getString(R.string.timing_task));
 
-        cmds = new ArrayList<>();
         devTid = getIntent().getStringExtra("devTid");
         ctrlKey = getIntent().getStringExtra("ctrlKey");
 
-        adapter = new TimingAdapter(this);
+        adapter = new TimingAdapter(this, devTid, ctrlKey);
         LinearLayoutManager manager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(adapter);
@@ -98,6 +107,14 @@ public class TimingActivity extends BaseActivity {
         });
 
         initCalendar();
+
+        swipeLayout.setOnRefreshListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        onRefresh();
     }
 
     private void initCalendar() {
@@ -205,11 +222,19 @@ public class TimingActivity extends BaseActivity {
             @Override
             public void onTimeSet(TimePicker timePicker, int i, int i1) {
                 Log.e("timePicker", i + "      " + i1);
+                String hour = "";
+                String minute = "";
                 if (i < 10) {
-                    time = "0" + i + ":" + i1 + ":" + "00";
+                    hour += "0" + i;
                 } else {
-                    time = i + ":" + i1 + ":" + "00";
+                    hour += i;
                 }
+                if (i1 < 10) {
+                    minute += "0" + i1;
+                } else {
+                    minute += i1;
+                }
+                time = hour + ":" + minute + ":" + "00";
                 showChazuoDialog(LocalDeviceBean.findByTid(devTid));
             }
         }, hourOfDay, minute, true);
@@ -228,6 +253,7 @@ public class TimingActivity extends BaseActivity {
         jsonObject.put("taskName", "One time reservation");
         jsonObject.put("schedulerType", "ONCE");
         jsonObject.put("timeZoneOffset", 480);
+        jsonObject.put("enable", true);
         jsonObject.put("taskKey", System.currentTimeMillis());
         jsonObject.put("desc", "");
         jsonObject.put("isForce", false);
@@ -240,6 +266,7 @@ public class TimingActivity extends BaseActivity {
             @Override
             public void getSuccess(Object o) {
                 String a = o.toString();
+                getTasks();
                 Log.e("return-data", a);
             }
 
@@ -267,6 +294,7 @@ public class TimingActivity extends BaseActivity {
         jsonObject.put("timeZoneOffset", 480);
         jsonObject.put("taskKey", System.currentTimeMillis());
         jsonObject.put("desc", "");
+        jsonObject.put("enable", true);
         jsonObject.put("isForce", false);
         jsonObject.put("triggerTime", time);
         jsonObject.put("repeatList", repeatArray);
@@ -278,12 +306,44 @@ public class TimingActivity extends BaseActivity {
             @Override
             public void getSuccess(Object o) {
                 String a = o.toString();
+                getTasks();
                 Log.e("return-data", a);
             }
 
             @Override
             public void getFail(int i) {
                 ToastUtil.showMessage(context, HekrCodeUtil.errorCode2Msg(context, i));
+            }
+        });
+    }
+
+    public void getTasks() {
+        CharSequence url = TextUtils.concat(new CharSequence[]{ConstantsUtil.UrlUtil.BASE_USER_URL, "rule/schedulerTask?devTid=" + devTid + "&ctrlKey=" + ctrlKey});
+        hekrUserAction.getHekrData(url, new HekrUserAction.GetHekrDataListener() {
+            @Override
+            public void getSuccess(Object o) {
+                Log.e("return-data",o.toString());
+                swipeLayout.setRefreshing(false);
+                JSONArray ja = JSONArray.parseArray(o.toString());
+                List<TimingBean> beans = new ArrayList<>();
+                for (Object o1 : ja) {
+                    TimingBean bean = JSONObject.parseObject(o1.toString(), TimingBean.class);
+                    bean.needShowChange = false;
+                    beans.add(bean);
+                }
+                adapter.setBeans(beans);
+                if (beans.size() == 0) {
+                    emptyCon.setVisibility(View.VISIBLE);
+                } else {
+                    emptyCon.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void getFail(int i) {
+                swipeLayout.setRefreshing(false);
+                emptyCon.setVisibility(View.VISIBLE);
+                hint_txt.setText(HekrCodeUtil.errorCode2Msg(context, i));
             }
         });
     }
@@ -314,66 +374,57 @@ public class TimingActivity extends BaseActivity {
                     ToastUtil.showMessage(TimingActivity.this, getString(R.string.at_least_one_action));
                     return;
                 }
-                String firstCommand = CommandHelper.SWITCH_COMMAND;
+                String firstCommand = CommandHelper.TIMING_COMMAND;
                 String secondCommand;
                 String thirdCommand;
+                int a = 0;
+                int b = 0;
                 if (c1_Open.isChecked() || c1_Close.isChecked()) {
-                    secondCommand = "01";
+                    a += 1;
                     if (c1_Open.isChecked()) {
-                        thirdCommand = "01";
-                    } else {
-                        thirdCommand = "02";
+                        b += 1;
                     }
-                    CommandHelper commandHelper = new CommandHelper.CommandBuilder().setFirstCommand(firstCommand).setSecondCommand(secondCommand).setThirdCommand(thirdCommand).build();
-                    cmds.add(commandHelper.toString());
                 }
                 if (c2_Open.isChecked() || c2_Close.isChecked()) {
-                    secondCommand = "02";
+                    a += 2;
                     if (c2_Open.isChecked()) {
-                        thirdCommand = "01";
-                    } else {
-                        thirdCommand = "02";
+                        b += 2;
                     }
-                    CommandHelper commandHelper = new CommandHelper.CommandBuilder().setFirstCommand(firstCommand).setSecondCommand(secondCommand).setThirdCommand(thirdCommand).build();
-                    cmds.add(commandHelper.toString());
                 }
                 if (c3_Open.isChecked() || c3_Close.isChecked()) {
-                    secondCommand = "03";
+                    a += 4;
                     if (c3_Open.isChecked()) {
-                        thirdCommand = "01";
-                    } else {
-                        thirdCommand = "02";
+                        b += 4;
                     }
-                    CommandHelper commandHelper = new CommandHelper.CommandBuilder().setFirstCommand(firstCommand).setSecondCommand(secondCommand).setThirdCommand(thirdCommand).build();
-                    cmds.add(commandHelper.toString());
                 }
                 if (c4_Open.isChecked() || c4_Close.isChecked()) {
-                    secondCommand = "04";
+                    a += 8;
                     if (c4_Open.isChecked()) {
-                        thirdCommand = "01";
-                    } else {
-                        thirdCommand = "02";
+                        b += 8;
                     }
-                    CommandHelper commandHelper = new CommandHelper.CommandBuilder().setFirstCommand(firstCommand).setSecondCommand(secondCommand).setThirdCommand(thirdCommand).build();
-                    cmds.add(commandHelper.toString());
                 }
+                secondCommand = "0" + Integer.toHexString(a);
+                thirdCommand = "0" + Integer.toHexString(b);
+                CommandHelper commandHelper = new CommandHelper.CommandBuilder().setFirstCommand(firstCommand).setSecondCommand(secondCommand).setThirdCommand(thirdCommand).build();
                 dialog.dismiss();
-                loopCreate();
+                createTiming(commandHelper.toString());
             }
         });
         dialog.setContentView(root);
         dialog.show();
     }
 
-    private void loopCreate() {
-        for (int i = 0; i < cmds.size(); i++) {
-            String cmd = cmds.get(i);
-            if (isRepeat) {
-                addRepeatTask(devTid, ctrlKey, cmd, repeatArr, time);
-            } else {
-                addOnceTask(devTid, ctrlKey, cmd, date, time);
-            }
+    private void createTiming(String cmd) {
+        if (isRepeat) {
+            addRepeatTask(devTid, ctrlKey, cmd, repeatArr, time);
+        } else {
+            addOnceTask(devTid, ctrlKey, cmd, date, time);
         }
     }
 
+    @Override
+    public void onRefresh() {
+        swipeLayout.setRefreshing(true);
+        getTasks();
+    }
 }

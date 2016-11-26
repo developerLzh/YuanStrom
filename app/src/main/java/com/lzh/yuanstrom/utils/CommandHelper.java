@@ -9,6 +9,7 @@ public class CommandHelper {
 
     /** 第一位备选 **/
     public static final String SWITCH_COMMAND = "01";//开关
+    public static final String TIMING_COMMAND = "02";//定时指令
     public static final String RETURN_COMMAND = "03";//获取信息
     public static final String SET_COMMAND = "04";//设置
 
