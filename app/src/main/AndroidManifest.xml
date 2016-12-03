@@ -142,6 +142,7 @@
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="behind"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
+        <activity android:name=".ui.MMainActivity" />
 
         <!--适配7.0-->
         <provider

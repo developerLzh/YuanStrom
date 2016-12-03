@@ -83,7 +83,9 @@ import me.hekr.hekrsdk.action.HekrUserAction;
 import me.hekr.hekrsdk.bean.FileBean;
 import me.hekr.hekrsdk.bean.ProfileBean;
 import me.hekr.hekrsdk.util.ConstantsUtil;
+
 import com.lzh.yuanstrom.utils.HekrCodeUtil;
+
 import me.hekr.hekrsdk.util.SpCache;
 
 /**
@@ -705,7 +707,7 @@ public class MainActivity extends BaseActivity {
                                     public void changeFail(int i) {
                                         hideLoading();
                                         Utils.handErrorCode(i, context);
-                                        Snackbar.make(coordinatorLayout, HekrCodeUtil.errorCode2Msg(context,i), Snackbar.LENGTH_SHORT).show();
+                                        Snackbar.make(coordinatorLayout, HekrCodeUtil.errorCode2Msg(context, i), Snackbar.LENGTH_SHORT).show();
                                     }
                                 });
                             }
@@ -772,14 +774,12 @@ public class MainActivity extends BaseActivity {
         photoHelper.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == CROP) {
-                if (data == null) {
-                    return;
-                }
-                if (StringUtils.isNotBlank(photoHelper.getTempPath())) {
-                    uploadPhoto(photoHelper.getTempPath());
-                } else if (StringUtils.isNotBlank(photoHelper.getCameraPath())) {
-                    uploadPhoto(photoHelper.getCameraPath());
-                }
+                    if (StringUtils.isNotBlank(photoHelper.getTempPath())) {
+                        uploadPhoto(photoHelper.getTempPath());
+                    } else if (StringUtils.isNotBlank(photoHelper.getCameraPath())) {
+                        uploadPhoto(photoHelper.getCameraPath());
+                    }
+
             } else if (requestCode == ADD_PROFILE) {
                 ProfileData profileData = (ProfileData) data.getSerializableExtra("profileData");
                 ExtraProperties extraProperties = new ExtraProperties();
@@ -822,7 +822,7 @@ public class MainActivity extends BaseActivity {
                 photoHelper.deleteTemp(photoHelper.getCameraPath());
                 photoHelper.setCameraPath("");
                 photoHelper.setTempPath("");
-                ToastUtil.showMessage(context, getString(R.string.set_failed) + "：" + HekrCodeUtil.errorCode2Msg(context,i));
+                ToastUtil.showMessage(context, getString(R.string.set_failed) + "：" + HekrCodeUtil.errorCode2Msg(context, i));
             }
         });
     }
