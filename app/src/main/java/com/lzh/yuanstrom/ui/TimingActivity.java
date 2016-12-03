@@ -204,6 +204,7 @@ public class TimingActivity extends BaseActivity implements SwipeRefreshLayout.O
         {
             DatePickerDialog dialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
                 boolean mFired = false;
+
                 @Override
                 public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                     if (mFired == true) {
@@ -212,7 +213,7 @@ public class TimingActivity extends BaseActivity implements SwipeRefreshLayout.O
                         mFired = true;
                     }
                     Log.e("date", i + "   " + i1 + "    " + i2);
-                    date = i + "-" + (i1 + 1) + "-" + i2;
+                    date = i + "-" + ((i1 + 1) < 10 ? ("0" + (i1 + 1)) : (i1 + 1)) + "-" + (i2 < 10 ? "0" + i2 : i2);
                     selectTime();
                 }
             }, year, monthOfYear, dayOfMonth);
@@ -228,6 +229,7 @@ public class TimingActivity extends BaseActivity implements SwipeRefreshLayout.O
     private void selectTime() {
         TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             boolean mFired = false;
+
             @Override
             public void onTimeSet(TimePicker timePicker, int i, int i1) {
                 if (mFired == true) {
@@ -336,7 +338,7 @@ public class TimingActivity extends BaseActivity implements SwipeRefreshLayout.O
         hekrUserAction.getHekrData(url, new HekrUserAction.GetHekrDataListener() {
             @Override
             public void getSuccess(Object o) {
-                Log.e("return-data",o.toString());
+                Log.e("return-data", o.toString());
                 swipeLayout.setRefreshing(false);
                 JSONArray ja = JSONArray.parseArray(o.toString());
                 List<TimingBean> beans = new ArrayList<>();
