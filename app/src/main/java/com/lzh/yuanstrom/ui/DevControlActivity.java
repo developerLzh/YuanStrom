@@ -37,6 +37,7 @@ import com.lzh.yuanstrom.utils.ToastUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.hekr.hekrsdk.action.HekrUser;
+
 import com.lzh.yuanstrom.utils.HekrCodeUtil;
 
 /**
@@ -71,6 +72,9 @@ public class DevControlActivity extends BaseActivity {
 
     @BindView(R.id.auth_share)
     RelativeLayout authShare;
+
+    @BindView(R.id.timing_task)
+    RelativeLayout timingTask;
 
     private String devTid;
 
@@ -141,6 +145,15 @@ public class DevControlActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+        timingTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DevControlActivity.this, TimingActivity.class);
+                intent.putExtra("devTid", devTid);
+                intent.putExtra("ctrlKey", LocalDeviceBean.findByTid(devTid).ctrlKey);
+                startActivity(intent);
+            }
+        });
     }
 
     private BroadcastReceiver connectionReceiver;
@@ -194,7 +207,7 @@ public class DevControlActivity extends BaseActivity {
 
                             @Override
                             public void deleteDeviceFail(int i) {
-                                Snackbar.make(rootView, HekrCodeUtil.errorCode2Msg(context,i), Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(rootView, HekrCodeUtil.errorCode2Msg(context, i), Snackbar.LENGTH_SHORT).show();
                             }
                         });
                         dialog.dismiss();
@@ -230,7 +243,7 @@ public class DevControlActivity extends BaseActivity {
 
                                 @Override
                                 public void renameDeviceFail(int i) {
-                                    Snackbar.make(rootView, HekrCodeUtil.errorCode2Msg(context,i), Snackbar.LENGTH_SHORT).show();
+                                    Snackbar.make(rootView, HekrCodeUtil.errorCode2Msg(context, i), Snackbar.LENGTH_SHORT).show();
                                 }
                             });
 

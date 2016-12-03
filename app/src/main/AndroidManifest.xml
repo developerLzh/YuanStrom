@@ -49,11 +49,6 @@
         </activity>
 
         <activity
-            android:name=".ui.DevActivity"
-            android:label="DevActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
             android:name=".ui.LoginWebActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -63,7 +58,7 @@
             android:name=".ui.ChazuoActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.YaoKong2Activity"
+            android:name=".ui.RegisterActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.MainActivity"

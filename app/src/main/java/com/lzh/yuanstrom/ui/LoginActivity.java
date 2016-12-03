@@ -1,5 +1,6 @@
 package com.lzh.yuanstrom.ui;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -44,7 +46,9 @@ import me.hekr.hekrsdk.bean.JWTBean;
 import me.hekr.hekrsdk.bean.MOAuthBean;
 import me.hekr.hekrsdk.util.BaseHttpUtil;
 import me.hekr.hekrsdk.util.ConstantsUtil;
+
 import com.lzh.yuanstrom.utils.HekrCodeUtil;
+
 import me.hekr.hekrsdk.util.SpCache;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -79,10 +83,11 @@ public class LoginActivity extends BaseActivity {
         String phone = editAccount.getText().toString();
         String psw = editPsw.getText().toString();
         String code = editCode.getText().toString();
-        if (phone.length() < 11 || !phone.matches("[0-9]+")) {
-            Snackbar.make(home, getString(R.string.please_legal_phone), Snackbar.LENGTH_SHORT).show();
+        if (!(phone.matches("[0-9]+") || phone.endsWith(".com"))) {
+            Snackbar.make(home, getString(R.string.please_legal_phone_or_email), Snackbar.LENGTH_SHORT).show();
             return;
         }
+        hideInput();
         if (type.equals("login")) {
             if (StringUtils.isBlank(phone) || StringUtils.isBlank(psw)) {
                 Snackbar.make(home, getString(R.string.blank_account_or_psw), Snackbar.LENGTH_SHORT).show();
@@ -95,6 +100,14 @@ public class LoginActivity extends BaseActivity {
                 return;
             }
             checkVerifyCode(phone, code, psw);
+        }
+    }
+
+    private void hideInput() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
+                    0);
         }
     }
 
@@ -142,11 +155,11 @@ public class LoginActivity extends BaseActivity {
     void getCode() {
         String phone = editAccount.getText().toString();
         if (StringUtils.isBlank(phone)) {
-            Snackbar.make(home, getString(R.string.please_phone), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(home, getString(R.string.please_phone_or_email), Snackbar.LENGTH_SHORT).show();
             return;
         }
-        if (phone.length() < 11 || !phone.matches("[0-9]+")) {
-            Snackbar.make(home, getString(R.string.please_legal_phone), Snackbar.LENGTH_SHORT).show();
+        if (!(phone.matches("[0-9]+") || phone.endsWith(".com"))) {
+            Snackbar.make(home, getString(R.string.please_legal_phone_or_email), Snackbar.LENGTH_SHORT).show();
             return;
         }
         herkGetCode(phone);
@@ -200,7 +213,7 @@ public class LoginActivity extends BaseActivity {
     private void changeUiBytype(String type) {
         if (type.equals("login")) {
             toolbar.setTitle(getResources().getString(R.string.login));
-            accountLayout.setHint(getString(R.string.login_account_hint));
+            accountLayout.setHint(getString(R.string.login_account_or_email));
             loginBtn.setText(getString(R.string.login));
             yanzhengCon.setVisibility(View.GONE);
             forgetPsw.setVisibility(View.VISIBLE);
@@ -223,36 +236,36 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.login_menu, menu);
+//        getMenuInflater().inflate(R.menu.login_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.change) {
-            Log.e("Tag", "menu changed");
-            if (type.equals("login")) {
-                type = "register";
-            } else {
-                type = "login";
-            }
-            changeUiBytype(type);
-            return true;
-        }
+//        int id = item.getItemId();
+//
+//        if (id == R.id.change) {
+//            Log.e("Tag", "menu changed");
+//            if (type.equals("login")) {
+//                type = "register";
+//            } else {
+//                type = "login";
+//            }
+//            changeUiBytype(type);
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
 
     @Override//这里getItem()这个却是通过item的索引
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.clear();
-        if (type.equals("login")) {
-            menu.add(0, R.id.change, 0, getString(R.string.register)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        } else {
-            menu.add(0, R.id.change, 0, getString(R.string.login)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        }
+//        menu.clear();
+//        if (type.equals("login")) {
+//            menu.add(0, R.id.change, 0, getString(R.string.register)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+//        } else {
+//            menu.add(0, R.id.change, 0, getString(R.string.login)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+//        }
         return true;
     }
 
@@ -272,7 +285,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void loginFail(int i) {
                 hideLoading();
-                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(context,i), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(context, i), Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -290,7 +303,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void checkVerifyCodeFail(int i) {
                 hideLoading();
-                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(context,i), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(context, i), Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -307,7 +320,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void registerFail(int i) {
                 hideLoading();
-                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(context,i), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(context, i), Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -327,7 +340,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void getImgCaptchaFail(int i) {
                 hideLoading();
-                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(context,i), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(context, i), Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -356,7 +369,7 @@ public class LoginActivity extends BaseActivity {
 
                                 @Override
                                 public void checkCaptchaFail(int i) {
-                                    Snackbar.make(home, HekrCodeUtil.errorCode2Msg(context,i), Snackbar.LENGTH_SHORT).show();
+                                    Snackbar.make(home, HekrCodeUtil.errorCode2Msg(context, i), Snackbar.LENGTH_SHORT).show();
                                 }
                             });
                         }
@@ -385,7 +398,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void getVerifyCodeFail(int i) {
                 hideLoading();
-                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(context,i), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(context, i), Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -424,7 +437,7 @@ public class LoginActivity extends BaseActivity {
             public void mOAuthFail(int errorCode) {
                 //失败
                 hideLoading();
-                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(context,errorCode), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(context, errorCode), Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -443,7 +456,7 @@ public class LoginActivity extends BaseActivity {
             public void createFail(int errorCode) {
                 //失败
                 hideLoading();
-                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(context,errorCode), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(home, HekrCodeUtil.errorCode2Msg(context, errorCode), Snackbar.LENGTH_SHORT).show();
             }
         });
     }

@@ -138,6 +138,7 @@ public class TimingActivity extends BaseActivity implements SwipeRefreshLayout.O
                 .setPositiveButton(getString(R.string.next_step), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
                         if (once.isChecked()) {
                             isRepeat = false;
                             selectDate();
@@ -166,6 +167,7 @@ public class TimingActivity extends BaseActivity implements SwipeRefreshLayout.O
                     .setPositiveButton(getString(R.string.next_step), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
                             if (!sunday.isChecked() && !monday.isChecked() && !tuesday.isChecked() && !wednesday.isChecked() && !thursday.isChecked() && !friday.isChecked() && !saturday.isChecked()) {
                                 ToastUtil.showMessage(context, getString(R.string.must_have_one));
                                 return;
@@ -201,8 +203,14 @@ public class TimingActivity extends BaseActivity implements SwipeRefreshLayout.O
 
         {
             DatePickerDialog dialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+                boolean mFired = false;
                 @Override
                 public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                    if (mFired == true) {
+                        return;
+                    } else {
+                        mFired = true;
+                    }
                     Log.e("date", i + "   " + i1 + "    " + i2);
                     date = i + "-" + (i1 + 1) + "-" + i2;
                     selectTime();
@@ -219,8 +227,14 @@ public class TimingActivity extends BaseActivity implements SwipeRefreshLayout.O
      */
     private void selectTime() {
         TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            boolean mFired = false;
             @Override
             public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                if (mFired == true) {
+                    return;
+                } else {
+                    mFired = true;
+                }
                 Log.e("timePicker", i + "      " + i1);
                 String hour = "";
                 String minute = "";

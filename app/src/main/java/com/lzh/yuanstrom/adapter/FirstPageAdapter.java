@@ -139,6 +139,11 @@ public class FirstPageAdapter extends RecyclerView.Adapter<FirstPageAdapter.View
                     return false;
                 }
             });
+            if (deviceBean.setSchedulerTask) {
+                holder.timingTask.setVisibility(View.VISIBLE);
+            } else {
+                holder.timingTask.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -165,6 +170,7 @@ public class FirstPageAdapter extends RecyclerView.Adapter<FirstPageAdapter.View
         public ImageView icon;
         public RelativeLayout root;
         public ImageView stateLine;
+        public ImageView timingTask;
 //        public TextView description;
 
         public ViewHolder(View itemView) {
@@ -174,6 +180,7 @@ public class FirstPageAdapter extends RecyclerView.Adapter<FirstPageAdapter.View
             icon = (ImageView) itemView.findViewById(R.id.image);
             root = (RelativeLayout) itemView.findViewById(R.id.root_view);
             stateLine = (ImageView) itemView.findViewById(R.id.line_state);
+            timingTask = (ImageView) itemView.findViewById(R.id.timing_icon);
 //            description = (TextView) itemView.findViewById(R.id.content);
         }
     }

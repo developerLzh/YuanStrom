@@ -58,16 +58,16 @@
 
     <string name="wait">Please wait a moment..</string>
 
-    <string name="please_phone">Please enter your phone number</string>
-    <string name="please_legal_phone">Please enter a valid phone number.</string>
+    <string name="please_phone_or_email">Please enter your phone number or E-mail address</string>
+    <string name="please_legal_phone_or_email">Please enter a valid phone number or E-mail address.</string>
 
     <string name="get_code_success">Obtain verification code success</string>
 
     <string name="yanzheng_code">Verification Code</string>
 
-    <string name="blank_account_or_psw">Please fill in the phone number or password</string>
+    <string name="blank_account_or_psw">Please fill in the account or password</string>
 
-    <string name="blank_account_or_psw_or_code">Please fill in the phone number, password and verification code.</string>
+    <string name="blank_account_or_psw_or_code">Please fill in the phone number or email, password and verification code.</string>
 
     <string name="peiwang_suc">Configuration success!</string>
     <string name="peizhi_dev_suc">Successful configuration device!</string>
@@ -305,7 +305,7 @@
     <string name="fourth_jack">fourth jack</string>
     <string name="action">action：</string>
 
-    <string name="now"></string>
+    <string name="now">" "</string>
     <string name="run_di">running the</string>
     <string name="tiao_order">th order</string>
 
@@ -445,4 +445,41 @@
     <string name="get_pin_code_suc">get the pinCode success</string>
     <string name="get_pin_code_failed">get the pinCode failed,error code:</string>
     <string name="maybe_one_minute">Starting with the query in the network device, which may take a minute or so...</string>
+    <string name="email_addr">E-mail address</string>
+    <string name="change_suc">Change success</string>
+    <string name="code8400004">Specifies that PID does not exist</string>
+    <string name="delete_suc">delete success</string>
+    <string name="email_register">E-mail Register</string>
+    <string name="friday">FRI.</string>
+    <string name="get_email_suc">Registered E-mail has been sent to your mailbox, you can log on after activation n(*≧▽≦*)n</string>
+    <string name="login_account_or_email">Phone number/E-mail address</string>
+    <string name="monday">MON.</string>
+    <string name="morning">morning</string>
+    <string name="must_have_one">Must choice a date</string>
+    <string name="next_step">next step</string>
+    <string name="no_timing">There is no query to any timing task, you can click on the Add button below to add a</string>
+    <string name="once">once</string>
+    <string name="once_or_repeat">Add a single task or a repeat task?</string>
+    <string name="phone_register">Phone number register</string>
+    <string name="please_date">Please choice_date</string>
+    <string name="please_legal_phone">Please enter a valid phone number.</string>
+    <string name="please_phone">Please enter your phone number</string>
+    <string name="please_time">Please select specific time</string>
+    <string name="repeat">repeat</string>
+    <string name="saturday">SAT.</string>
+    <string name="select_repeat_day">Select repeat cycle</string>
+    <string name="sunday">SUN.</string>
+    <string name="sure_to_change">Confirm modification</string>
+    <string name="task_content">task content</string>
+    <string name="thursday">Thur.</string>
+    <string name="timing_task">Timed task</string>
+    <string name="tuesday">Tues.</string>
+    <string name="wednesday">Wed.</string>
+    <string name="xingqi_er">Tuesday</string>
+    <string name="xingqi_liu">Saturday</string>
+    <string name="xingqi_san">Wednesday</string>
+    <string name="xingqi_si">Thurday</string>
+    <string name="xingqi_tian">Sunday</string>
+    <string name="xingqi_wu">Friday</string>
+    <string name="xingqi_yi">Monday</string>
 </resources>

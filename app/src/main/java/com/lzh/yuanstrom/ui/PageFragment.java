@@ -138,7 +138,8 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 //            secondPageAdapter = new SecondPageAdapter(getActivity());
 //            recyclerView.setAdapter(secondPageAdapter);
         } else if (mPage == 2) {
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2);
+            recyclerView.setLayoutManager(gridLayoutManager);
             thirdPageAdapter = new ThirdPageAdapter(getActivity());
             thirdPageAdapter.setOnClickListener(new ThirdPageAdapter.OnClickListener() {
                 @Override
@@ -220,6 +221,9 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onRefresh() {
+        if(!isAdded()){
+            return;
+        }
         if (mPage == 1) {
             mSwipeRefreshLayout.setRefreshing(true);
             getDevices();

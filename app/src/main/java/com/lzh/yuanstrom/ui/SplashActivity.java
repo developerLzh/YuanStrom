@@ -31,8 +31,8 @@ public class SplashActivity extends BaseActivity {
 
     @OnClick(R.id.register)
     void register() {
-        Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-        intent.putExtra("tag", "register");
+        Intent intent = new Intent(SplashActivity.this, RegisterActivity.class);
+        intent.putExtra("tag", "phone");
         startActivity(intent);
     }
 

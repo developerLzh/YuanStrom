@@ -62,8 +62,8 @@ public class ChazuoActivity extends BaseDevActivity {
     @BindView(R.id.radio_group)
     RadioGroup radioGroup;
 
-    @BindView(R.id.fab)
-    FloatingActionButton fab;
+//    @BindView(R.id.fab)
+//    FloatingActionButton fab;
 
     @OnClick(R.id.zisuo)
     void zisuo() {
@@ -154,15 +154,15 @@ public class ChazuoActivity extends BaseDevActivity {
 
         setCanBackToolbar(getString(R.string.dev_control));
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ChazuoActivity.this,TimingActivity.class);
-                intent.putExtra("devTid",devTid);
-                intent.putExtra("ctrlKey", LocalDeviceBean.findByTid(devTid).ctrlKey);
-                startActivity(intent);
-            }
-        });
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(ChazuoActivity.this,TimingActivity.class);
+//                intent.putExtra("devTid",devTid);
+//                intent.putExtra("ctrlKey", LocalDeviceBean.findByTid(devTid).ctrlKey);
+//                startActivity(intent);
+//            }
+//        });
     }
 
     @Override

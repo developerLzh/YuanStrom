@@ -127,7 +127,7 @@ public class TimingAdapter extends RecyclerView.Adapter<TimingAdapter.ViewHolder
                 hourInt = hourInt - 12;
                 noon = context.getString(R.string.afternoon);
             }
-            time = (hourInt > 10 ? hourInt.toString() : "0" + hourInt.toString()) + ":" + (Integer.parseInt(minute) > 10 ? minute : "0" + minute);
+            time = (hourInt >= 10 ? hourInt.toString() : "0" + hourInt.toString()) + ":" + (Integer.parseInt(minute) >= 10 ? minute : "0" + minute);
             holder.timeNoon.setText(noon);
             holder.hourMinute.setText(time);
             View.OnClickListener zz = new View.OnClickListener() {
@@ -276,7 +276,7 @@ public class TimingAdapter extends RecyclerView.Adapter<TimingAdapter.ViewHolder
                 wei.add("");
             }
             if ((x & 8) == 8) {
-                wei.add(context.getString(R.string.third_jack));
+                wei.add(context.getString(R.string.fourth_jack));
             } else {
                 wei.add("");
             }
@@ -429,8 +429,8 @@ public class TimingAdapter extends RecyclerView.Adapter<TimingAdapter.ViewHolder
 
     public void changeItem(TimingBean bean, String devTid, String ctrlKey, String taskName, boolean enable, String taskKey, String cronExpr) {
         String[] a = cronExpr.split(" ");
-        String minute = Integer.parseInt(a[1]) > 10 ? a[1] : "0" + Integer.parseInt(a[1]);
-        String hour = Integer.parseInt(a[2]) > 10 ? a[2] : "0" + Integer.parseInt(a[2]);
+        String minute = Integer.parseInt(a[1]) >= 10 ? a[1] : "0" + Integer.parseInt(a[1]);
+        String hour = Integer.parseInt(a[2]) >= 10 ? a[2] : "0" + Integer.parseInt(a[2]);
         String day = a[3];
         String month = a[4];
         String weeks = a[5];

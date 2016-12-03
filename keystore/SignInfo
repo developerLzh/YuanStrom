@@ -6,7 +6,7 @@ alias:源极风智能家居
 腾讯开放平台：853378172  LiuZiHao0              logo大小 16x16 512x512
 微博开放平台：15102875535  LiuZiHao00           logo大小 16x16 80x80 120x120
 
-常规打包logo尺寸                                logo大小 72x72 96x96 144x144
+常规打包logo尺寸                                logo大小 48x48 72x72 96x96 144x144
 
 修改默认包步骤 1.ic_launcher换为default_launcher
                2.app_name换为XX智能家居
