@@ -32,6 +32,7 @@ import com.lzh.yuanstrom.utils.CommandHelper;
 import com.lzh.yuanstrom.utils.FullCommandHelper;
 import com.lzh.yuanstrom.utils.HekrCodeUtil;
 import com.lzh.yuanstrom.utils.ToastUtil;
+import com.lzh.yuanstrom.widget.ChazuoSelectListener;
 import com.lzh.yuanstrom.widget.CusBottomSheetDialog;
 
 import java.util.ArrayList;
@@ -367,14 +368,26 @@ public class TimingActivity extends BaseActivity implements SwipeRefreshLayout.O
     private void showChazuoDialog(final LocalDeviceBean bean) {
         final CusBottomSheetDialog dialog = new CusBottomSheetDialog(this);
         View root = getLayoutInflater().inflate(R.layout.chazuo_bottom_layout, null);
-        final RadioButton c1_Open = (RadioButton) root.findViewById(R.id.chazuo_1_open);
-        final RadioButton c1_Close = (RadioButton) root.findViewById(R.id.chazuo_1_close);
-        final RadioButton c2_Open = (RadioButton) root.findViewById(R.id.chazuo_2_open);
-        final RadioButton c2_Close = (RadioButton) root.findViewById(R.id.chazuo_2_close);
-        final RadioButton c3_Open = (RadioButton) root.findViewById(R.id.chazuo_3_open);
-        final RadioButton c3_Close = (RadioButton) root.findViewById(R.id.chazuo_3_close);
-        final RadioButton c4_Open = (RadioButton) root.findViewById(R.id.chazuo_4_open);
-        final RadioButton c4_Close = (RadioButton) root.findViewById(R.id.chazuo_4_close);
+        final CheckBox c1_Open = (CheckBox) root.findViewById(R.id.chazuo_1_open);
+        final CheckBox c1_Close = (CheckBox) root.findViewById(R.id.chazuo_1_close);
+        c1_Open.setOnClickListener(new ChazuoSelectListener(c1_Open,c1_Close));
+        c1_Close.setOnClickListener(new ChazuoSelectListener(c1_Close,c1_Open));
+
+        final CheckBox c2_Open = (CheckBox) root.findViewById(R.id.chazuo_2_open);
+        final CheckBox c2_Close = (CheckBox) root.findViewById(R.id.chazuo_2_close);
+        c2_Open.setOnClickListener(new ChazuoSelectListener(c2_Open,c2_Close));
+        c2_Close.setOnClickListener(new ChazuoSelectListener(c2_Close,c2_Open));
+
+        final CheckBox c3_Open = (CheckBox) root.findViewById(R.id.chazuo_3_open);
+        final CheckBox c3_Close = (CheckBox) root.findViewById(R.id.chazuo_3_close);
+        c3_Open.setOnClickListener(new ChazuoSelectListener(c3_Open,c3_Close));
+        c3_Close.setOnClickListener(new ChazuoSelectListener(c3_Close,c3_Open));
+
+        final CheckBox c4_Open = (CheckBox) root.findViewById(R.id.chazuo_4_open);
+        final CheckBox c4_Close = (CheckBox) root.findViewById(R.id.chazuo_4_close);
+        c4_Open.setOnClickListener(new ChazuoSelectListener(c4_Open,c4_Close));
+        c4_Close.setOnClickListener(new ChazuoSelectListener(c4_Close,c4_Open));
+
         TextView cancel = (TextView) root.findViewById(R.id.cancel);
         TextView ensure = (TextView) root.findViewById(R.id.ensure);
         cancel.setOnClickListener(new View.OnClickListener() {

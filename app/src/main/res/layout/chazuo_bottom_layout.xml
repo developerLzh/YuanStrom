@@ -46,12 +46,12 @@
                 android:paddingTop="8dp"
                 android:text="@string/chazuo_1" />
 
-            <RadioGroup
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <RadioButton
+                <CheckBox
                     android:id="@+id/chazuo_1_open"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -65,9 +65,9 @@
                     android:text="open"
                     android:textColor="@color/text_default_color">
 
-                </RadioButton>
+                </CheckBox>
 
-                <RadioButton
+                <CheckBox
                     android:id="@+id/chazuo_1_close"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -82,8 +82,8 @@
                     android:text="close"
                     android:textColor="@color/text_default_color">
 
-                </RadioButton>
-            </RadioGroup>
+                </CheckBox>
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -106,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <RadioButton
+                <CheckBox
                     android:id="@+id/chazuo_2_open"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -120,9 +120,9 @@
                     android:text="open"
                     android:textColor="@color/text_default_color">
 
-                </RadioButton>
+                </CheckBox>
 
-                <RadioButton
+                <CheckBox
                     android:id="@+id/chazuo_2_close"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -137,7 +137,7 @@
                     android:text="close"
                     android:textColor="@color/text_default_color">
 
-                </RadioButton>
+                </CheckBox>
             </RadioGroup>
 
         </LinearLayout>
@@ -161,7 +161,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <RadioButton
+                <CheckBox
                     android:id="@+id/chazuo_3_open"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -175,9 +175,9 @@
                     android:text="open"
                     android:textColor="@color/text_default_color">
 
-                </RadioButton>
+                </CheckBox>
 
-                <RadioButton
+                <CheckBox
                     android:id="@+id/chazuo_3_close"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -192,7 +192,7 @@
                     android:text="close"
                     android:textColor="@color/text_default_color">
 
-                </RadioButton>
+                </CheckBox>
             </RadioGroup>
 
         </LinearLayout>
@@ -216,7 +216,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <RadioButton
+                <CheckBox
                     android:id="@+id/chazuo_4_open"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -230,9 +230,9 @@
                     android:text="open"
                     android:textColor="@color/text_default_color">
 
-                </RadioButton>
+                </CheckBox>
 
-                <RadioButton
+                <CheckBox
                     android:id="@+id/chazuo_4_close"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -247,7 +247,7 @@
                     android:text="close"
                     android:textColor="@color/text_default_color">
 
-                </RadioButton>
+                </CheckBox>
             </RadioGroup>
 
         </LinearLayout>
