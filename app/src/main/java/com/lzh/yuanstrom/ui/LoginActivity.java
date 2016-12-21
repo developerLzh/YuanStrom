@@ -5,11 +5,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,38 +24,27 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
-import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.lzh.yuanstrom.R;
-import com.lzh.yuanstrom.httphelper.NormalSubscriber;
-import com.lzh.yuanstrom.httphelper.SubscriberListener;
 import com.lzh.yuanstrom.utils.AppManager;
+import com.lzh.yuanstrom.utils.HekrCodeUtil;
 import com.lzh.yuanstrom.utils.StringUtils;
 import com.lzh.yuanstrom.utils.ToastUtil;
 import com.lzh.yuanstrom.utils.Utils;
-import com.tencent.bugly.crashreport.CrashReport;
 
-import java.util.concurrent.TimeUnit;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cz.msebera.android.httpclient.Header;
 import me.hekr.hekrsdk.HekrOAuthLoginActivity;
 import me.hekr.hekrsdk.action.HekrUser;
 import me.hekr.hekrsdk.action.HekrUserAction;
 import me.hekr.hekrsdk.bean.JWTBean;
 import me.hekr.hekrsdk.bean.MOAuthBean;
-import me.hekr.hekrsdk.util.BaseHttpUtil;
-import me.hekr.hekrsdk.util.ConstantsUtil;
-
-import com.lzh.yuanstrom.utils.HekrCodeUtil;
-
-import me.hekr.hekrsdk.util.SpCache;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by Vicent on 2016/10/10.
@@ -83,11 +75,11 @@ public class LoginActivity extends BaseActivity {
         String phone = editAccount.getText().toString();
         String psw = editPsw.getText().toString();
         String code = editCode.getText().toString();
-        if (!(phone.matches("[0-9]+") || phone.endsWith(".com"))) {
+        hideInput();
+        if (!(phone.matches("[0-9]+") || Utils.isEmail(phone))) {
             Snackbar.make(home, getString(R.string.please_legal_phone_or_email), Snackbar.LENGTH_SHORT).show();
             return;
         }
-        hideInput();
         if (type.equals("login")) {
             if (StringUtils.isBlank(phone) || StringUtils.isBlank(psw)) {
                 Snackbar.make(home, getString(R.string.blank_account_or_psw), Snackbar.LENGTH_SHORT).show();
@@ -116,7 +108,7 @@ public class LoginActivity extends BaseActivity {
 
     @OnClick(R.id.forget_psw)
     void forgetPsw() {
-        startActivity(new Intent(LoginActivity.this, ResetActivity.class));
+        showResetTypeDialog();
     }
 
     @BindView(R.id.login_qq)
@@ -158,31 +150,60 @@ public class LoginActivity extends BaseActivity {
             Snackbar.make(home, getString(R.string.please_phone_or_email), Snackbar.LENGTH_SHORT).show();
             return;
         }
-        if (!(phone.matches("[0-9]+") || phone.endsWith(".com"))) {
+        if (!(phone.matches("[0-9]+") || Utils.isEmail(phone))) {
             Snackbar.make(home, getString(R.string.please_legal_phone_or_email), Snackbar.LENGTH_SHORT).show();
             return;
         }
         herkGetCode(phone);
     }
 
-    private void startCountDown() {
-        Observable.interval(1, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.computation())
-                .subscribe(new NormalSubscriber<>(new SubscriberListener<Long>() {
-                    @Override
-                    public void onNext(Long aLong) {
-                        time++;
-                        if (time < 60) {
-                            getCode.setText(String.valueOf(60 - time));
-                        } else {
-                            getCode.setText(getString(R.string.get_code));
-                            getCode.setEnabled(true);
-                        }
-                    }
+    private Timer timer;
+    private TimerTask timerTask;
 
-                }));
+    private void startCountDown() {
+        if(timer != null || timerTask != null){
+            timer.cancel();
+            timerTask.cancel();
+            time = 0;
+            timer = null;
+            timerTask = null;
+        }
+        timer = new Timer();
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                time++;
+                if (time < 60) {
+                    handler.sendEmptyMessage(0);
+                } else {
+                    handler.sendEmptyMessage(1);
+                }
+            }
+        };
+        timer.schedule(timerTask,0,1000);
     }
+
+    Handler handler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            switch (msg.what){
+                case 0:
+                    getCode.setText(String.valueOf(60 - time));
+                    break;
+                case 1:
+                    getCode.setText(getString(R.string.get_code));
+                    getCode.setEnabled(true);
+
+                    timer.cancel();
+                    timerTask.cancel();
+                    time = 0;
+                    timer = null;
+                    timerTask = null;
+                    break;
+            }
+            return true;
+        }
+    });
 
     int time;
 
@@ -459,6 +480,62 @@ public class LoginActivity extends BaseActivity {
                 Snackbar.make(home, HekrCodeUtil.errorCode2Msg(context, errorCode), Snackbar.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void showResetTypeDialog(){
+        View v = LayoutInflater.from(this).inflate(R.layout.reset_psw_type_dialog,null);
+
+        final RadioButton phoneType = (RadioButton) v.findViewById(R.id.phone_type);
+        final RadioButton emailType = (RadioButton) v.findViewById(R.id.email_type);
+
+        AlertDialog dialog = new AlertDialog.Builder(this).setTitle(getString(R.string.account_type))
+                .setView(v)
+                .setPositiveButton(getString(R.string.next_step), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(phoneType.isChecked()){
+                            startActivity(new Intent(LoginActivity.this, ResetActivity.class));
+                        } else{
+                            showEmailResetDialog();
+                        }
+                        dialog.dismiss();
+                    }
+                }).create();
+        dialog.show();
+    }
+
+    private void showEmailResetDialog(){
+        final EditText editText = new EditText(this);
+        editText.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        editText.setHint(getString(R.string.please_email));
+
+        AlertDialog dialog = new AlertDialog.Builder(this).setTitle(getString(R.string.please_email))
+                .setView(editText)
+                .setPositiveButton(getString(R.string.reset_psw), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        hideInput();
+                        String s = editText.getText().toString();
+                        if(StringUtils.isBlank(s) || ! Utils.isEmail(s)){
+                            ToastUtil.showMessage(LoginActivity.this,getString(R.string.please_email));
+                            return;
+                        }
+                        hekrUserAction.reSendVerifiedEmail(s, new HekrUser.ReSendVerifiedEmailListener() {
+                            @Override
+                            public void reSendVerifiedEmailSuccess() {
+                                Snackbar.make(home,getString(R.string.email_suc),Snackbar.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void reSendVerifiedEmailFail(int i) {
+                                Snackbar.make(home, me.hekr.hekrsdk.util.HekrCodeUtil.errorCode2Msg(i),Snackbar.LENGTH_SHORT).show();
+                            }
+                        });
+                        dialog.dismiss();
+                    }
+                })
+                .create();
+        dialog.show();
     }
 
 }

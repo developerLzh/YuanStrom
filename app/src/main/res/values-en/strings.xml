@@ -482,4 +482,13 @@
     <string name="xingqi_tian">Sunday</string>
     <string name="xingqi_wu">Friday</string>
     <string name="xingqi_yi">Monday</string>
+
+    <string name="account_type">Please select account type</string>
+
+    <string name="please_email">Please enter the correct email address.</string>
+
+    <string name="email_suc">Reset the password mail has been sent to your mailbox, go and see n(*≧▽≦*)n</string>
+
+    <string name="notify_tips">you have new message.</string>
+
 </resources>

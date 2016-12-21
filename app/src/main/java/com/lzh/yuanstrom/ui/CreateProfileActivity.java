@@ -153,7 +153,6 @@ public class CreateProfileActivity extends BaseActivity {
         final CheckBox c4_Close = (CheckBox) root.findViewById(R.id.chazuo_4_close);
         c4_Open.setOnClickListener(new ChazuoSelectListener(c4_Open,c4_Close));
         c4_Close.setOnClickListener(new ChazuoSelectListener(c4_Close,c4_Open));
-
         TextView cancel = (TextView) root.findViewById(R.id.cancel);
         TextView ensure = (TextView) root.findViewById(R.id.ensure);
         cancel.setOnClickListener(new View.OnClickListener() {

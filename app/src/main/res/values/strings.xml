@@ -484,4 +484,13 @@
     <string name="email_addr">邮箱号</string>
 
     <string name="get_email_suc">注册邮件已下发至您的邮箱，激活后就可以登录啦 n(*≧▽≦*)n</string>
+
+    <string name="account_type">请选择账号类型</string>
+
+    <string name="please_email">请输入正确的邮箱</string>
+
+    <string name="email_suc">重置密码邮件已下发至您的邮箱，快去查看吧 n(*≧▽≦*)n</string>
+
+    <string name="notify_tips">您有新消息了</string>
+
 </resources>

@@ -270,6 +270,7 @@ public class PageFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 mSwipeRefreshLayout.setRefreshing(false);
                 LocalDeviceBean.deletAll();
                 for (DeviceBean deviceBean : list) {
+                    Log.e("devices",list.toString());
                     LocalDeviceBean local = LocalDeviceBean.dev2Local(deviceBean);
                     local.saveNew();
                 }

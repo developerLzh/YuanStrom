@@ -101,7 +101,7 @@
                 android:paddingTop="8dp"
                 android:text="@string/chazuo_2" />
 
-            <RadioGroup
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -138,7 +138,7 @@
                     android:textColor="@color/text_default_color">
 
                 </CheckBox>
-            </RadioGroup>
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -156,7 +156,7 @@
                 android:paddingTop="8dp"
                 android:text="@string/chazuo_3" />
 
-            <RadioGroup
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -193,7 +193,7 @@
                     android:textColor="@color/text_default_color">
 
                 </CheckBox>
-            </RadioGroup>
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -211,7 +211,7 @@
                 android:paddingTop="8dp"
                 android:text="@string/chazuo_4" />
 
-            <RadioGroup
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -248,7 +248,7 @@
                     android:textColor="@color/text_default_color">
 
                 </CheckBox>
-            </RadioGroup>
+            </LinearLayout>
 
         </LinearLayout>
 

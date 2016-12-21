@@ -49,6 +49,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.google.gson.Gson;
+import com.igexin.sdk.PushManager;
 import com.litesuits.android.log.Log;
 import com.lzh.yuanstrom.MyApplication;
 import com.lzh.yuanstrom.R;
@@ -57,6 +58,8 @@ import com.lzh.yuanstrom.bean.CustomerBean;
 import com.lzh.yuanstrom.bean.ExtraProperties;
 import com.lzh.yuanstrom.bean.ProfileData;
 import com.lzh.yuanstrom.common.GetCustomerListener;
+import com.lzh.yuanstrom.service.GeTuiService;
+import com.lzh.yuanstrom.service.PushCoreIntentService;
 import com.lzh.yuanstrom.utils.AppManager;
 import com.lzh.yuanstrom.utils.PhotoHelper;
 import com.lzh.yuanstrom.utils.StringUtils;
@@ -199,6 +202,13 @@ public class MainActivity extends BaseActivity {
         fabClick();
 
         getCustomerInfo();
+
+        initGetui();
+    }
+
+    private void initGetui() {
+        PushManager.getInstance().initialize(this.getApplicationContext(), GeTuiService.class);
+        PushManager.getInstance().registerPushIntentService(this.getApplicationContext(), PushCoreIntentService.class);
     }
 
     private void initHeaderImg() {
@@ -774,11 +784,11 @@ public class MainActivity extends BaseActivity {
         photoHelper.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == CROP) {
-                    if (StringUtils.isNotBlank(photoHelper.getTempPath())) {
-                        uploadPhoto(photoHelper.getTempPath());
-                    } else if (StringUtils.isNotBlank(photoHelper.getCameraPath())) {
-                        uploadPhoto(photoHelper.getCameraPath());
-                    }
+                if (StringUtils.isNotBlank(photoHelper.getTempPath())) {
+                    uploadPhoto(photoHelper.getTempPath());
+                } else if (StringUtils.isNotBlank(photoHelper.getCameraPath())) {
+                    uploadPhoto(photoHelper.getCameraPath());
+                }
 
             } else if (requestCode == ADD_PROFILE) {
                 ProfileData profileData = (ProfileData) data.getSerializableExtra("profileData");

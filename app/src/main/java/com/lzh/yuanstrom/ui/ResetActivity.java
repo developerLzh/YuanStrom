@@ -2,31 +2,27 @@ package com.lzh.yuanstrom.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.lzh.yuanstrom.R;
-import com.lzh.yuanstrom.httphelper.NormalSubscriber;
-import com.lzh.yuanstrom.httphelper.SubscriberListener;
 import com.lzh.yuanstrom.utils.AppManager;
+import com.lzh.yuanstrom.utils.HekrCodeUtil;
 import com.lzh.yuanstrom.utils.StringUtils;
 
-import java.util.concurrent.TimeUnit;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.hekr.hekrsdk.action.HekrUser;
-import com.lzh.yuanstrom.utils.HekrCodeUtil;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by Administrator on 2016/10/15.
@@ -134,24 +130,53 @@ public class ResetActivity extends BaseActivity {
         setCanBackToolbar(getString(R.string.reset_psw));
     }
 
-    private void startCountDown() {
-        Observable.interval(1, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.computation())
-                .subscribe(new NormalSubscriber<>(new SubscriberListener<Long>() {
-                    @Override
-                    public void onNext(Long aLong) {
-                        time++;
-                        if (time < 60) {
-                            getCode.setText(String.valueOf(60 - time));
-                        } else {
-                            getCode.setText(getString(R.string.get_code));
-                            getCode.setEnabled(true);
-                        }
-                    }
+    private Timer timer;
+    private TimerTask timerTask;
 
-                }));
+    private void startCountDown() {
+        if(timer != null || timerTask != null){
+            timer.cancel();
+            timerTask.cancel();
+            time = 0;
+            timer = null;
+            timerTask = null;
+        }
+        timer = new Timer();
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                time++;
+                if (time < 60) {
+                    handler.sendEmptyMessage(0);
+                } else {
+                    handler.sendEmptyMessage(1);
+                }
+            }
+        };
+        timer.schedule(timerTask,0,1000);
     }
+
+    Handler handler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            switch (msg.what){
+                case 0:
+                    getCode.setText(String.valueOf(60 - time));
+                    break;
+                case 1:
+                    getCode.setText(getString(R.string.get_code));
+                    getCode.setEnabled(true);
+
+                    timer.cancel();
+                    timerTask.cancel();
+                    time = 0;
+                    timer = null;
+                    timerTask = null;
+                    break;
+            }
+            return true;
+        }
+    });
 
     int time;
 

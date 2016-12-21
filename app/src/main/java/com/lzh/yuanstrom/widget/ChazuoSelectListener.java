@@ -1,16 +1,14 @@
 package com.lzh.yuanstrom.widget;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 
-import com.litesuits.android.log.Log;
-
 /**
- * Created by Administrator on 2016/12/5.
+ * Created by Administrator on 2016/12/10.
  */
 
-public class ChazuoSelectListener implements View.OnClickListener {
-
+public class ChazuoSelectListener implements View.OnClickListener{
     private CheckBox onClickBox;
     private CheckBox otherBox;
     public ChazuoSelectListener(CheckBox onClickBox, CheckBox otherBox) {
