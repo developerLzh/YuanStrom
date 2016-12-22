@@ -1,5 +1,7 @@
 package com.lzh.yuanstrom.ui;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -552,6 +554,17 @@ public class MainActivity extends BaseActivity {
         if (pageFragment != null && !isFromProfileActivity) {
             Log.e("pageNo", "--->" + pageFragment.mPage);
             pageFragment.onRefresh();
+        }
+
+        //取消通知栏消息
+        Intent intent = getIntent();
+        if (null != intent) {
+            int notifyId = intent.getIntExtra("notifyId", 0);
+            if (notifyId != 0) {
+                NotificationManager mNotificationManager = (NotificationManager) MyApplication.getInstance()
+                        .getSystemService(Context.NOTIFICATION_SERVICE);
+                mNotificationManager.cancel(notifyId);
+            }
         }
     }
 

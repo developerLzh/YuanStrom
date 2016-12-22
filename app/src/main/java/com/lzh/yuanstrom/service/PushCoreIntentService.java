@@ -96,21 +96,23 @@ public class PushCoreIntentService extends GTIntentService {
 
     private void detailMsg(String s) {
         Log.e("receive getuiMsg", s);
-        long[] vir = {0, 100, 200, 300};
-        newShowNotify(PushCoreIntentService.this,getString(R.string.app_name),getString(R.string.notify_tips),s,R.mipmap.ic_launcher,vir);
+        newShowNotify(PushCoreIntentService.this, getString(R.string.app_name), getString(R.string.notify_tips), s, R.mipmap.ic_launcher);
     }
 
-    private void newShowNotify(Context context, String tips, String title,
-                               String content, int icon, long[] vir) {
+    private static int NOTIFICATION_ID = 0;
 
+    private void newShowNotify(Context context, String tips, String title,
+                               String content, int icon) {
+        NOTIFICATION_ID += 1;
         String ns = Context.NOTIFICATION_SERVICE;
         NotificationManager mNotificationManager = (NotificationManager) MyApplication.getInstance()
                 .getSystemService(ns);
 
         Intent notificationIntent = new Intent(context, MainActivity.class);
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        notificationIntent.putExtra("notifyId", NOTIFICATION_ID);
         PendingIntent contentIntent = PendingIntent.getActivity(
-                MyApplication.getInstance(), 0, notificationIntent, 0);
+                MyApplication.getInstance(), NOTIFICATION_ID, notificationIntent, PendingIntent.FLAG_ONE_SHOT);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(
                 MyApplication.getInstance());
         builder.setSmallIcon(R.mipmap.bar_icon);
@@ -120,19 +122,18 @@ public class PushCoreIntentService extends GTIntentService {
         builder.setWhen(System.currentTimeMillis());
         builder.setContentTitle(title);
         builder.setContentText(content);
-        builder.setVibrate(vir);
         builder.setContentIntent(contentIntent);
 
-        NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
-        inboxStyle.setBigContentTitle(title);
-        inboxStyle.addLine(content.substring(0,content.length()/2));
-        inboxStyle.addLine(content.substring(content.length()/2,content.length()));
+        NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle();
+        bigTextStyle.bigText(content);
 
-        builder.setStyle(inboxStyle);
+        builder.setStyle(bigTextStyle);
+
+        builder.addAction(R.mipmap.age_icon, "查看", contentIntent);
 
         Notification notification = builder.build();
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
-        mNotificationManager.notify(0, notification);
+        notification.defaults = Notification.DEFAULT_ALL;
+        mNotificationManager.notify(NOTIFICATION_ID, notification);
     }
-
 }
